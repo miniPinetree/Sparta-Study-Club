@@ -2,12 +2,15 @@ import React from 'react';
 import styled from "styled-components";
 const Input = (props) => {
   
-  const { placeholder, _onChange,type, width,margin,padding,_onClick } =  props ;
+  const { bg, border, radius, placeholder, _onChange,type, width,margin,padding,_onClick } =  props ;
 
   const styles = {
     width: width,
     margin: margin,
     padding:padding,
+    border:border,
+    radius:radius,
+    bg: bg,
   }
   
 
@@ -32,17 +35,19 @@ Input.defaultProps = {
   width: '100%',
   margin: false,
   padding: false,
+  bg: '#F4F4F4',
 }
 
 const ElInput = styled.input`
   box-sizing: border-box;
-  border:1px solid #ccc;
-  border-radius: 3px;
   padding: ${(props)=> props.padding?`${props.padding};`:'19px 19px;'};
   outline: none;
   width: ${(props) => props.width};
   box-sizing: border-box;
+  background-color: ${(props) => props.bg};
   ${(props)=>props.margin?`margin:${props.margin};`:''}
+  ${(props)=>props.border?`border:${props.border};`:''}
+  ${(props)=>props.radius?`border-radius:${props.radius};`:''}
   &::placeholder{
     color:#CACACA;
     font-weight: 500;
@@ -52,7 +57,7 @@ const ElInput = styled.input`
   }
 `
 const Label = styled.label`
-`
+`;
 
 
 export default Input;

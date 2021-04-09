@@ -32,10 +32,10 @@ Button.defaultProps = {
   margin: false,
   width: '100%',
   padding: '15px 15px',
-  bg: '#5f0081',
+  bg: '#E2344E',
   color: 'white',
   disabled: false,
-  borderColor: '1px solid #5f0081',
+  borderColor: '1px solid #E2344E',
   size: '16px',
   bold: false,
  
