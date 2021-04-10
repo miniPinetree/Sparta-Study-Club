@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components";
 import '../scss/class.scss';
-import { Header } from '../components';
+import { Calendar, Header,Quest } from '../components';
 import { Image,Text,Grid } from '../elements';
 const MyPage=(props)=>{
     return(
@@ -22,14 +22,24 @@ const MyPage=(props)=>{
                 <TimeBtn>6시간</TimeBtn>
             </BtnBox>
        
-            <TodoBox className="todolist">
+            <QuestBox className="questlist">
                 <Text bold>오늘의 퀘스트! 현재 달성률: <Point>60%</Point></Text>                           
-                <TodoInput placeholder="미송님, 오늘의 목표를 정해주세요:)"/>
-            </TodoBox>        
+                <TodoInput placeholder="미송님, 오늘의 목표를 정해주세요:)" />
+                    { /*목표 추가 시 리스트 여기서 map*/}
+                <QuestListBox>
+                    {/* 목표가 없을 때.. */}
+                    {/* <Text size="15px" margin="80px 0px 0px 0px" color="#BBBBBB">등록된 오늘의 목표가 없습니다!</Text> */}
+                    <Quest quest="리액트 복습하기"/>
+                    <Quest quest="자바스크립트 문법 공부하기"/>
+                    <Quest quest="waka-time 알아보기"/>
+                </QuestListBox>
+            </QuestBox>        
         </ItemBox>        
         <ItemBox>
             <Grid>
-                        
+                <QuestBox>            
+                    <Calendar />
+               </QuestBox>             
             </Grid>
             
         </ItemBox>
@@ -39,12 +49,17 @@ const MyPage=(props)=>{
 }
 export default MyPage;
 
+const QuestListBox = styled.div`
+    
+    margin-top: 18px;
+`
+
 const ContentBox = styled.div`
     margin: 100px auto;
     width:1000px;
     border:1px solid red;
     display: flex;
-    gap:30px;
+    gap:35px;
 `
 
 const ItemBox = styled.div`
@@ -85,7 +100,7 @@ const TimeBtn = styled.button`
     }
 `
 
-const TodoBox = styled.div`
+const QuestBox = styled.div`
     width:425px;
     min-height: 300px;
     background-color: rgb(255,255,255,0.4);
@@ -95,7 +110,7 @@ const TodoBox = styled.div`
     padding:20px;
     box-sizing:border-box;
     font-size: 17px;   
-    &.todolist{
+    &.questlist{
         margin-left:3px;
     }
 `
