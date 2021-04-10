@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from "styled-components";
+import { Text, Grid } from "./index";
+
 const Input = (props) => {
   
-  const { bg, border, radius, placeholder, _onChange,type, width,margin,padding,_onClick } =  props ;
+  const { label, bg, border, radius, placeholder, _onChange,type, width,margin,padding,_onClick } =  props ;
 
   const styles = {
     width: width,
@@ -15,11 +17,11 @@ const Input = (props) => {
   
 
   return (
-    <React.Fragment>
-    
+     <Grid is_flex margin="0 0 10px 0">
+      {label && <Text margin="0px" bold>{label}</Text>}
       <ElInput {...styles} type={type} placeholder={placeholder} onClick={ _onClick} onChange={_onChange}/>
-    
-    </React.Fragment>
+      </Grid>
+
   )
 
 
@@ -39,6 +41,8 @@ Input.defaultProps = {
 }
 
 const ElInput = styled.input`
+height:45px;
+border-radius:5px;
   box-sizing: border-box;
   padding: ${(props)=> props.padding?`${props.padding};`:'19px 19px;'};
   outline: none;

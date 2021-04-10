@@ -29,8 +29,8 @@ Image.defaultProps = {
     width: ${(props)=>props.width};
     ${(props)=>props.height? `height:${props.height}`:""};
     background-image: url("${(props)=>props.src}");
-    background-size:cover;
     background-position:center;
+    background-repeat:no-repeat;
     box-sizing:border-box;
     margin:${(props)=>props.margin};
     `;

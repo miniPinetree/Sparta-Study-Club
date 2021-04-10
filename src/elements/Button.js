@@ -14,6 +14,7 @@ const Button = (props) => {
     borderColor: borderColor,
     size: size,
     bold: bold,
+   
   }
 
   return (
