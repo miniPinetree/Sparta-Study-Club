@@ -25,9 +25,11 @@ const LogIn=(props)=>{
 
     return(
 <React.Fragment>
-
+<Container>
       <LoginBox>
-        <Image height="100px" src="https://spartacodingclub.kr/static/v5/icons/logo_v2.svg"/>
+        <Grid>
+        <Image src="https://spartacodingclub.kr/static/v5/icons/logo_v2_hover.svg"/>
+        </Grid>
         <Input border="none" placeholder="이메일을 입력해주세요" _onChange={(e) => {}}/>
         <Input  border="none" placeholder="비밀번호를 입력해주세요" type="password" margin="10px 0px" _onChange={(e) => {}}/>
     
@@ -39,15 +41,21 @@ const LogIn=(props)=>{
      <Grid>
      <Rtan />
      </Grid>
-
+     </Container>
 </React.Fragment>
     );
 }
-
+const Container = styled.div`
+width:30%;
+height:100%;
+min-width:450px;
+background-color:gray;
+margin:auto;
+`;
 
 const LoginBox = styled.div`
-  width:30%;
-  max-width:300px;
+  width:300px;
+  /* max-width:300px; */
   margin: 0px auto;
   display: flex;
   align-items: center;
@@ -74,8 +82,7 @@ const FindIdPw = styled.ul`
 `;
 
 const Rtan = styled.img`
-width:200px; 
-height:200px; 
+width:200px;
 src:"https://spartacodingclub.kr/static/v5/images/imageTan_Q&A.png";
 `;
 
