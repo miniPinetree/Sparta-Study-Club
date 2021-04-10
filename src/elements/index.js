@@ -4,5 +4,6 @@ import Input from "./Input";
 import Text from "./Text";
 import Image from "./Image";
 import Modal from './Modal';
-
-export {Button, Grid, Input, Text, Image,Modal}; 
+import Progress from './Progress';
+import UserChat from './UserChat';
+export {Button, Grid, Input, Text, Image,Modal,Progress,UserChat}; 

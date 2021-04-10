@@ -30,13 +30,13 @@ const Calendar = (props) => {
       let days =  today.clone().startOf('year').week(week).startOf('week').add(index, 'day');
       //오늘
       if (moment().format('YYYYMMDD') === days.format('YYYYMMDD')) {
-       return <Daily day={days.format('D')} key={index} date={days.format('YYYY.M.D')} today/>
+       return <Daily day={days.format('D')} key={index} date={days.format('YYYY.M.D')}/>
       //이번달 아님
       } else if (days.format('MM') !== today.format('MM')) {
-       return <NotThisMonth/>
+       return <NotThisMonth key={index}/>
       //평범한 날
       } else {
-       return <Daily day={days.format('D')} key={index} today={'no'} date={days.format('YYYY.M.D')}/>
+       return <Daily day={days.format('D')} key={index} date={days.format('YYYY.M.D')}/>
       }
      })
      }
@@ -81,6 +81,7 @@ const Month = styled.span`
   font-family: "YESGothic-Bold";
   margin: 0px 15px;
   font-size: 18px;
+  font-weight: 600;
 `
 
 const CalendarBox = styled.div`
