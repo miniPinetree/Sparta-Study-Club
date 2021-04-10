@@ -2,7 +2,8 @@ import React from "react"
 import styled from "styled-components";
 import '../scss/class.scss';
 import { Calendar, Header,Quest } from '../components';
-import { Image,Text,Grid } from '../elements';
+import { Image, Text, Grid } from '../elements';
+import Rtan from '../images/rtan.png';
 const MyPage=(props)=>{
     return(
 <React.Fragment>
@@ -40,6 +41,9 @@ const MyPage=(props)=>{
                 <QuestBox>            
                     <Calendar />
                </QuestBox>             
+                <RtanBox>
+                    <Image src={ Rtan} width="70px" height="70px"/>
+                </RtanBox>
             </Grid>
             
         </ItemBox>
@@ -57,13 +61,11 @@ const QuestListBox = styled.div`
 const ContentBox = styled.div`
     margin: 100px auto;
     width:1000px;
-    border:1px solid red;
     display: flex;
     gap:35px;
 `
 
 const ItemBox = styled.div`
-    border:1px solid blue;
     padding:15px;
 `
 const Mentbox = styled.div`
@@ -123,4 +125,10 @@ const TodoInput = styled.input`
     text-align: center;
     padding:7px;
     margin-top:7px;
+`
+const RtanBox = styled.div`
+    position: relative;
+    z-index:99;
+    top:-50px;
+    left:365px;
 `

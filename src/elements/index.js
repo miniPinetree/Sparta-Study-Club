@@ -3,5 +3,6 @@ import Grid from "./Grid";
 import Input from "./Input";
 import Text from "./Text";
 import Image from "./Image";
+import Modal from './Modal';
 
-export {Button, Grid, Input, Text, Image}; 
+export {Button, Grid, Input, Text, Image,Modal}; 

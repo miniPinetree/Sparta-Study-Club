@@ -3,18 +3,49 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { faChevronCircleRight } from "@fortawesome/free-solid-svg-icons";
-import {Grid,Text} from '../elements';
+import {Grid} from '../elements';
 import moment from 'moment';
 import { useState } from 'react';
-
+import Daily from './Daily';
 const Calendar = (props) => {
  
  const [getMoment, setMoment] = useState(moment());
  const today = getMoment;
  //오늘이 들어간 시작하는 이번달 주가 1년중에서 몇번째 주인지.
- const firstWeek = today.clone().startOf('month').week();
- //끝나는 주가 1이면 53주로. 아니라면 이번달 끝나는 주로 바로 사용.
- const lastweek = today.clone().endOf('month').week() === 1? 53 : today.clone().endOf('month').week();
+ const firstWeek = today.clone().startOf('month').week(); //시작하는 week() 주.
+  //끝나는 주가 1이면 53주로. 아니라면 이번달 끝나는 주로 바로 사용.
+ const lastweek = today.clone().endOf('month').week() === 1 ? 53 : today.clone().endOf('month').week();//끝나는 week()주
+
+ const calendarArr = () => {
+  
+  let result = [];
+  let week = firstWeek;
+  for (week; week <= lastweek; week++) {
+   
+   result = result.concat(
+    <CalendarInnerBox key={week}>
+     {
+      Array(7).fill(0).map((data,index) => {
+      
+      let days =  today.clone().startOf('year').week(week).startOf('week').add(index, 'day');
+      //오늘
+      if (moment().format('YYYYMMDD') === days.format('YYYYMMDD')) {
+       return <Daily day={days.format('D')} key={index} date={days.format('YYYY.M.D')} today/>
+      //이번달 아님
+      } else if (days.format('MM') !== today.format('MM')) {
+       return <NotThisMonth/>
+      //평범한 날
+      } else {
+       return <Daily day={days.format('D')} key={index} today={'no'} date={days.format('YYYY.M.D')}/>
+      }
+     })
+     }
+    </CalendarInnerBox>
+   )
+  }
+  return result;
+ }
+
 
  return (
  <React.Fragment>
@@ -36,6 +67,9 @@ const Calendar = (props) => {
      <Week>FRI</Week>
      <Week className="sat">SAT</Week>
     </WeekBox>
+    <DayBox>
+     {calendarArr()}
+    </DayBox>
    </CalendarBox>
   </React.Fragment>
  )
@@ -52,7 +86,8 @@ const Month = styled.span`
 const CalendarBox = styled.div`
   border:1px solid black;
   margin-top: 15px;
-  padding: 5px 0px 5px 0px;
+  padding: 5px 0px 2px 0px;
+  background-color: #ffffff;
 `;
 
 const WeekBox = styled.div`
@@ -71,4 +106,19 @@ align-items:center;
 const Week = styled.div`
  font-size: 12px;
  font-weight: 600;
+`
+
+const CalendarInnerBox = styled.div`
+ display: flex;
+`
+
+const DayBox = styled.div`
+ display: grid;
+ padding:3px;
+`
+
+const NotThisMonth = styled.div`
+ width:54px;
+ height: 60px;
+ 
 `
