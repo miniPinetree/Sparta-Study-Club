@@ -2,13 +2,14 @@ import React from "react";
 import styled from "styled-components";
 
 const Image = (props)=>{
-    const { src, width, height, margin } = props;
+    const { src, width, height, margin,cursor } = props;
 
     const styles ={
         src: src,
         width:width,
         height:height,
-        margin:margin,
+        margin: margin,
+        cursor:cursor,
     }
     return (
         <React.Fragment>
@@ -21,7 +22,8 @@ const Image = (props)=>{
 Image.defaultProps = {
     src: "",
     width: "100%",
-    margin:"0",
+    margin: "0",
+    cursor: false,
     };
 
     const ImageDefault = styled.div`
@@ -32,7 +34,8 @@ Image.defaultProps = {
     background-size:cover;
     background-position:center;
     box-sizing:border-box;
-    margin:${(props)=>props.margin};
+    margin:${(props) => props.margin};
+    ${(props)=>props.cursor? `cursor:pointer;`:''};
     `;
 
 export default Image;
