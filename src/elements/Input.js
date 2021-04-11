@@ -38,11 +38,12 @@ Input.defaultProps = {
   margin: false,
   padding: false,
   bg: '#F4F4F4',
+  radius:"5px",
 }
 
 const ElInput = styled.input`
 height:45px;
-border-radius:5px;
+border-radius:${(props) => props.radius};
   box-sizing: border-box;
   padding: ${(props)=> props.padding?`${props.padding};`:'19px 19px;'};
   outline: none;

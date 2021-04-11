@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import '../scss/main.scss';
 import { emailCheck } from "../shared/common";
 import { useDispatch, useSelector } from "react-redux";
 import { Text, Grid, Input, Button, Image } from "../elements";
@@ -78,15 +79,12 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   display: flex;
+  position:relative;
 `;
 
 const LoginBox = styled.div`
-width:35%;
-height:70%;
-min-width:346px;
-min-height:490px;
-  max-width: 450px;
-  max-height: 550px;
+width:450px;
+height:550px;
   border-radius: 15px;
   box-shadow: 1px 1px 20px #cfcfcf;
   background-color: #ffffff;
@@ -114,12 +112,10 @@ const Rtan = styled.div`
     box-sizing:border-box;
   height:220px;
   width:220px;
-  position:relative;
-  bottom:-28%;
-  left:-34%;
+  position:absolute;
+  right:32%;
+  bottom:15%;
   @media screen and (max-width: 1067px) {
-   width:20%;
-   position:fixed;
 }
 `;
 

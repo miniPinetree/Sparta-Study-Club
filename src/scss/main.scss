@@ -1,4 +1,4 @@
-// @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
 // <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
 // * {
 //   font-family: "Spoqa Han Sans", "Spoqa Han Sans JP", "Sans-serif";
@@ -10,4 +10,11 @@
     format("woff");
   font-weight: normal;
   font-style: normal;
+}
+
+body {
+  font-family: "Spoqa Han Sans";
+  // background-image: url("../images/background.png");
+  color: #000;
+  overflow: hidden;
 }

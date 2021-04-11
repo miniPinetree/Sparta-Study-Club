@@ -9,8 +9,8 @@
     "classnames": "^2.3.1",
     "connected-react-router": "6.8.0",
     "history": "4.10.1",
-    "node-sass": "4.14.1",
     "open-color": "^1.8.0",
+    "postcss-loader": "^3.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.3",
@@ -46,5 +46,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "css-loader": "^5.2.1",
+    "node-sass": "^5.0.0"
   }
 }
