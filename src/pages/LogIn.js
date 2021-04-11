@@ -1,33 +1,48 @@
 import React from "react";
+import Swal from "sweetalert2";
 import styled from "styled-components";
 import '../scss/main.scss';
+import bgImg from "./images/bg.png";
+import { Text, Grid, Input, Button, Image } from "../elements";
+
 import { emailCheck } from "../shared/common";
 import { useDispatch, useSelector } from "react-redux";
-import { Text, Grid, Input, Button, Image } from "../elements";
-import bgImg from "./images/bg.png";
+import {actionCreators as userActions} from "../redux/modules/user";
 
 const LogIn = (props) => {
-  // const dispatch = useDispatch();
-
+  const dispatch = useDispatch();
   const [id, setId] = React.useState("");
   const [pwd, setPwd] = React.useState("");
 
+  //로그인 API 호출
   const login = () => {
-    //입력 값 정합성 체크 후 login API 요청
     if (id === "" || pwd === "") {
-      window.alert("아이디와 비밀번호를 입력해주세요.");
+      Swal.fire({
+        text: "정보를 입력해주세요.",
+        confirmButtonColor: "#E3344E",
+      })
       return;
     }
-    if (!emailCheck(id)) {
-      window.alert("이메일 형식이 맞지 않습니다.");
+    else if (!emailCheck(id)) {
+      Swal.fire({
+        text: "올바른 이메일 형식이 아닙니다.",
+        confirmButtonColor: "#E3344E",
+      })
+      return;
+    }else{
+      Swal.fire({
+        text: "DB로 디스패치 :) !!",
+        confirmButtonColor: "#E3344E",
+      })
+         //   dispatch(userActions.loginDB(id, pwd));
     }
-    //   dispatch(userActions.loginDB(id, pwd));
+ 
   };
 
   return (
 
       <Container>
-       
+       <InRtan>
         <LoginBox>
           <InternalBox>
             <Image
@@ -40,24 +55,36 @@ const LogIn = (props) => {
               margin="15px 0 0 0"
                 border="none"
                 placeholder="이메일을 입력해주세요"
-                _onChange={(e) => {}}
+                _onChange={(e) => {
+                  setId(e.target.value)
+                }}
               />
+                
               <Input
                 border="none"
                 placeholder="비밀번호를 입력해주세요"
                 type="password"
-                margin="10px 0px"
-                _onChange={(e) => {}}
+                _onChange={(e) => {
+                  setPwd(e.target.value)
+                }}
               />
+               {pwd && pwd.length < 6 ? (
+              <Text color="#E2344E" size="11px" margin="0 10px">
+                6자 이상 입력해주세요.
+              </Text>
+            ) : (
+              ""
+            )}
             </Grid>
+           
             <Grid>
-              <Button _onClick={() => {}}>로그인</Button>
+              <Button _onClick={login}>로그인</Button>
               <Button
                 margin="10px 0 0 0"
                 bg="#ffffff"
                 color="#E2344E"
                 _onClick={() => {
-                  //   history.push('/signup');
+                    props.history.push('/signup');
                 }}
               >
                 회원가입
@@ -67,6 +94,7 @@ const LogIn = (props) => {
          
         </LoginBox>
         <Rtan/>
+        </InRtan>
       </Container>
 
   );
@@ -80,8 +108,15 @@ const Container = styled.div`
   align-items: center;
   display: flex;
   position:relative;
+  font-family: "Spoqa Han Sans";
 `;
-
+const InRtan = styled.div`
+width:700px;
+height:630px;
+position:relative;
+box-sizing:border-box;
+padding:40px 0 0 0;
+`;
 const LoginBox = styled.div`
 width:450px;
 height:550px;
@@ -113,8 +148,8 @@ const Rtan = styled.div`
   height:220px;
   width:220px;
   position:absolute;
-  right:32%;
-  bottom:15%;
+  right:0;
+  bottom:0;
   @media screen and (max-width: 1067px) {
 }
 `;

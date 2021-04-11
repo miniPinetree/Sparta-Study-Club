@@ -1,11 +1,10 @@
-import React from 'react';
+import React, {forwardRef} from 'react';
 import styled from "styled-components";
 import { Text, Grid } from "./index";
 
-const Input = (props) => {
+const Input = forwardRef((props, ref) => {
   
   const { label, bg, border, radius, placeholder, _onChange,type, width,margin,padding,_onClick } =  props ;
-
   const styles = {
     width: width,
     margin: margin,
@@ -19,13 +18,13 @@ const Input = (props) => {
   return (
      <Grid is_flex margin="0 0 10px 0">
       {label && <Text margin="0px" bold>{label}</Text>}
-      <ElInput {...styles} type={type} placeholder={placeholder} onClick={ _onClick} onChange={_onChange}/>
+      <ElInput ref={ref} {...styles} type={type} placeholder={placeholder} onClick={ _onClick} onChange={_onChange}/>
       </Grid>
 
-  )
+  );
 
 
-}
+});
 
 
 Input.defaultProps = {

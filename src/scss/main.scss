@@ -14,7 +14,12 @@
 
 body {
   font-family: "Spoqa Han Sans";
+  // font-family: "GmarketSansBold";
   // background-image: url("../images/background.png");
   color: #000;
   overflow: hidden;
+}
+
+button:disabled {
+  color: rgb(118, 118, 118);
 }

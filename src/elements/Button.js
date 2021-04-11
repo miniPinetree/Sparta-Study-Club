@@ -40,7 +40,7 @@ Button.defaultProps = {
   size: '16px',
   bold: false,
   radius:'3px',
- 
+
 }
 
 const BasicButton = styled.button`
