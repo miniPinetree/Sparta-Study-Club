@@ -51,7 +51,6 @@ const MyPage = (props) => {
                 <TimeBtn>6시간</TimeBtn>
               </BtnBox>
             )}
-
             <QuestBox className="questlist">
               <Text bold>
                 오늘의 퀘스트! 현재 달성률: <Point>60%</Point>
@@ -80,6 +79,7 @@ const MyPage = (props) => {
           </ItemBox>
         </ContentBox>
       </ContainerBox>
+
     </React.Fragment>
   );
 };
