@@ -4,6 +4,7 @@ import { createBrowserHistory } from "history";
 import { connectRouter } from "connected-react-router";
 import User from './modules/user';
 import Quest from './modules/quest';
+
 export const history = createBrowserHistory();
 
 const rootReducer = combineReducers({

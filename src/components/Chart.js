@@ -139,23 +139,23 @@ return data['datasets'][0]['data'][tooltipItem['index']]+"시간 달성!";
       <Grid is_flex padding="0 1px 0 10px">
           {/* day기준 map으로 data 채워넣기 */}
           <Lable><Text size="10px" bold>{day+" "+studyTime}시간<br/>
-          <Point>{questRate}</Point>완료!
+          <Point>{questRate}</Point> 완료!
           </Text>
           </Lable>
           <Lable><Text size="10px" bold>{day+" "+studyTime}시간<br/>
-          <Point>{questRate}</Point>완료!
+          <Point>{questRate}</Point> 완료!
           </Text>
           </Lable>
           <Lable><Text size="10px" bold>{day+" "+studyTime}시간<br/>
-          <Point>{questRate}</Point>완료!
+          <Point>{questRate}</Point> 완료!
           </Text>
           </Lable>
           <Lable><Text size="10px" bold>{day+" "+studyTime}시간<br/>
-          <Point>{questRate}</Point>완료!
+          <Point>{questRate}</Point> 완료!
           </Text>
           </Lable>
           <Lable><Text size="10px" bold>{day+" "+studyTime}시간<br/>
-          <Point>{questRate}</Point>완료!
+          <Point>{questRate}</Point> 완료!
           </Text>
           </Lable>
       </Grid>

@@ -17,7 +17,12 @@ const setUser = createAction(SET_USER, (user) => ({ user }));
 const getUser = createAction(GET_USER, (user) => ({ user }));
 
 const initialState = {
-  user: null,
+  //더미 ! 서버와 연결할 때는 null로 바꾸세요.
+  user: {
+    nickname: "영은짱짱맨",
+    startTime: 1618215080374,
+    setTime: 6,
+  },
   token: null,
   is_login: false,
 };
@@ -82,16 +87,19 @@ const loginDB = (id, pwd) => {
         console.log(res, res.data);
         if(res.data.msg==="success"){
           setCookie("token", res.data.token);
+          //토큰을 헤더 기본값으로 설정
         axios.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${res.data.token}`;
+        const userInfo = {
+          nickname: res.data.nickname,
+          startTime: res.data.startTime,
+          setTime: res.data.setTime,
+        }
         dispatch(
-          setUser({
-            nickname: res.data.nickname,
-            startTime: res.data.startTime,
-            setTime: res.data.setTime,
-          })
+          setUser(userInfo)
         );
+        setCookie("info", userInfo, 24 - (new Date().getHours()));
         history.push("/mypage");
         }else{
           Swal.fire({

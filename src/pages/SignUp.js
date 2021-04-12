@@ -116,6 +116,7 @@ const SignUp = (props) => {
         <LoginBox>
           <InternalBox>
             <Image
+            contain
               width="292px"
               height="72px"
               src="https://spartacodingclub.kr/static/v5/icons/logo_v2_hover.svg"

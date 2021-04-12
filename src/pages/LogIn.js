@@ -46,7 +46,9 @@ const LogIn = (props) => {
         <LoginBox>
           <InternalBox>
             <Image
-              height="18%"
+            contain="true"
+            height="20%"
+              
               src="https://spartacodingclub.kr/static/v5/icons/logo_v2_hover.svg"
             />
 

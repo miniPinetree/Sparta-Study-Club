@@ -1,18 +1,27 @@
 import React from "react";
+import {useSelector} from "react-redux";
 import styled from "styled-components";
 
+//목표시간과 경과시간 기준 진행률
 const Progress = (props) => {
- //더미.. 3시간 기준 1시간
- let time = 60;
- let goalTime = 180;
+const timeInfo = useSelector(state => state.user.user);
+let _progressTime = (new Date().getTime() - timeInfo.startTime)/1000/60/60;
+let goalTime = timeInfo.setTime;
+
+const [progressTime, setTime] = React.useState(_progressTime);
+
 
  return (
   <ProgressBar>
-   <HighLight width={(time / goalTime) * 100 + '%'} />
+   <HighLight width={(progressTime / goalTime) * 100 + '%'} />
    <Dot/>
   </ProgressBar>
 )
+
 }
+Progress.defaultProps={
+
+};
 
 export default Progress;
 

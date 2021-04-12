@@ -16,11 +16,10 @@ body {
   font-family: "Spoqa Han Sans";
   color: #000;
   overflow: hidden;
+  background-image: url("../images/background.png");
 }
 
 button:disabled {
-  color: rgb(118, 118, 118);
-  background-image: url("../images/background.png");
-  color: #000;
-
+  background-color: rgb(165, 163, 163);
+  color: rgb(100, 97, 97);
 }
