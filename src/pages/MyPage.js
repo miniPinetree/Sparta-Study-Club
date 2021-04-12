@@ -79,7 +79,6 @@ const MyPage = (props) => {
           </ItemBox>
         </ContentBox>
       </ContainerBox>
-
     </React.Fragment>
   );
 };
