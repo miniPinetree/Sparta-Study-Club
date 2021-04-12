@@ -8,7 +8,8 @@ const Image = (props)=>{
         src: src,
         width:width,
         height:height,
-        margin:margin,
+        margin: margin,
+       
     }
     return (
         <React.Fragment>
@@ -21,7 +22,7 @@ const Image = (props)=>{
 Image.defaultProps = {
     src: "",
     width: "100%",
-    margin:"0",
+    margin: "0",
     };
 
     const ImageDefault = styled.div`
@@ -32,7 +33,7 @@ Image.defaultProps = {
     background-position:center;
     background-repeat:no-repeat;
     box-sizing:border-box;
-    margin:${(props)=>props.margin};
-    `;
+    margin:${(props) => props.margin};
+    `
 
 export default Image;

@@ -2,25 +2,26 @@ import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 import { createBrowserHistory } from "history";
 import { connectRouter } from "connected-react-router";
-
-import User from "./modules/user";
-
+import User from './modules/user';
+import Quest from './modules/quest';
 export const history = createBrowserHistory();
 
-//리듀서는 하나만 이용가능하므로 rootReducer로 합함.
 const rootReducer = combineReducers({
-    user:User,
-    router: connectRouter(history),
-})
+  user: User,
+  quest:Quest,
+  router: connectRouter(history),
+});
 
-//미들웨어 추가 및 enhancer로 합치기
-const middlewares = [thunk.withExtraArgument({history:history})];
-//개발환경에서 로거를 사용할 수 있게 함.
+const middlewares = [thunk.withExtraArgument({ history })];
+
 const env = process.env.NODE_ENV;
-if (env==="development"){
-    const {logger}=require("redux-logger");
-    middlewares.push(logger);
-}
+
+if (env === "development") {
+  const { logger } = require("redux-logger");
+  middlewares.push(logger);
+};
+
+>>>>>>> origin/brchA
 const composeEnhancers =
   typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
