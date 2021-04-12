@@ -5,8 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckSquare } from "@fortawesome/free-solid-svg-icons";
 
 const LastQuest = (props) => {
- 
- //useSelector로 리스트 가져와서 돌리기.
 
   const { questList } = props;
   console.log(questList);

@@ -7,13 +7,11 @@ import {RESP} from '../shared/response';
 
 const Daily = (props) => {
     
-    //서버 연동 전..
+  //서버 연동 전..
   const res = RESP.STUDYDATA;
   const today = res.find((q) => q.day === props.date);
-  const questRateBg = !today || today?.questRate === 0 ? '#EFEFEF': today.questRate === 100 ? '#FBCECE':'#FCE3E3';
- 
-
- 
+  //배경 색상 나누기 (퀘스트달성률)
+  const questRateBg = !today || today?.questRate === 0 ? '#F2F2F2' : today.questRate === 100 ? '#FBCECE' : '#FCE3E3';
 
   //props 전달받은 날짜 쪼개쓰기
     const date = props.date.split('/');
