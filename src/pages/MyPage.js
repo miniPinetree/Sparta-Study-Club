@@ -77,8 +77,10 @@ const MyPage = (props) => {
               </QuestListBox>
             </QuestBox>
           </ItemBox>
-          <ItemBox>
-            <Chart />
+            <ItemBox>
+            <Grid margin='0px 0px 35px 0px'>
+                <Chart />
+            </Grid>
             <Grid>
               <QuestBox>
                 <Calendar />
@@ -108,7 +110,7 @@ const QuestListBox = styled.div`
 `;
 
 const ContentBox = styled.div`
-  margin: auto;
+  margin: 70px auto 0px auto;
   width: 1000px;
   display: flex;
   gap: 35px;
