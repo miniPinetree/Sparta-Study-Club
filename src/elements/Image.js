@@ -33,6 +33,7 @@ Image.defaultProps = {
     background-position:center;
     background-repeat:no-repeat;
     box-sizing:border-box;
+    background-size: cover;
     margin:${(props) => props.margin};
     `
 
