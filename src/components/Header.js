@@ -6,14 +6,17 @@ import { faBook } from "@fortawesome/free-solid-svg-icons";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import { faComments } from "@fortawesome/free-solid-svg-icons";
 import { Image } from '../elements';
+import '../scss/class.scss';
 import Logo from '../images/MypageLogo.png'
 
 const Header = (props) => {
   return (
     <React.Fragment>
-      <HeaderBox>
-          <Image src={Logo} width="55px" height="30px" margin="10px 0px"/>
-          <IconBox>
+          <HeaderBox>
+              <IconBox style={{margin:'0px'}}>
+              <Image src={Logo} width="55px" height="30px" margin="10px 0px"/>
+             </IconBox>
+                  <IconBox>
               <IconInnerBox className='logout'>
                   <FontAwesomeIcon icon={faSignOutAlt} size='2x' color={'white'}/>
               </IconInnerBox>

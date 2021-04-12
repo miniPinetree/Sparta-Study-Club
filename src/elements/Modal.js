@@ -4,7 +4,7 @@ import Text from './Text';
 import styled from "styled-components";
 const Modal = ( props ) => {
    
-    const { open, close, header } = props;
+    const { open, close, header,rate } = props;
 
     return (
       
@@ -12,7 +12,7 @@ const Modal = ( props ) => {
             { open ? (  
                 <section>
                     <header>
-                        <Text>{header[1]}월 {header[2]}일 달성률! <Point>50%</Point></Text>
+                        <Text>{header[1]}월 {header[2]}일 달성률! <Point>{rate?rate:'0'}%</Point></Text>
                         <button className="close" onClick={close}> &times; </button>
                     </header>
                     <main>

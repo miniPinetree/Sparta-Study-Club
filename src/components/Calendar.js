@@ -7,6 +7,7 @@ import {Grid} from '../elements';
 import moment from 'moment';
 import { useState } from 'react';
 import Daily from './Daily';
+
 const Calendar = (props) => {
  
  const [getMoment, setMoment] = useState(moment());
@@ -30,13 +31,13 @@ const Calendar = (props) => {
       let days =  today.clone().startOf('year').week(week).startOf('week').add(index, 'day');
       //오늘
       if (moment().format('YYYYMMDD') === days.format('YYYYMMDD')) {
-       return <Daily day={days.format('D')} key={index} date={days.format('YYYY.M.D')}/>
+       return <Daily day={days.format('D')} key={index} date={days.format('YYYY/MM/DD')}/>
       //이번달 아님
       } else if (days.format('MM') !== today.format('MM')) {
        return <NotThisMonth key={index}/>
       //평범한 날
       } else {
-       return <Daily day={days.format('D')} key={index} date={days.format('YYYY.M.D')}/>
+       return <Daily day={days.format('D')} key={index} date={days.format('YYYY/MM/DD')}/>
       }
      })
      }
@@ -115,7 +116,8 @@ const CalendarInnerBox = styled.div`
 
 const DayBox = styled.div`
  display: grid;
- padding:3px;
+ padding:3px 0px 2px 3px;
+
 `
 
 const NotThisMonth = styled.div`
