@@ -66,5 +66,24 @@ export const RESP = {
   
  ],
 },
+{
+   'day': '2021/04/11',
+   'questRate': 50,
+   'studyTime': String(new Date(2021, 3, 11, 19, 0, 40, 30).getTime()),
+   'studySetTime': 1,
+   'quest': [
+    {
+     'questId': 9,
+     'questContents': 'git 공부하기',
+     'questYn': true,
+    },
+    {
+     'questId': 10,
+     'questContents': '웹소켓 알아보기',
+     'questYn': false,
+    }
+   ],
+  },  
+
  ]
 }
