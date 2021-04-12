@@ -5,7 +5,7 @@ const getCookie = (key) => {
     return parts.pop().split(";").shift();
   }
 };
-const setCookie = (key, value, exp = 2) => {
+const setCookie = (key, value, exp = 24) => {
   let date = new Date();
   date.setTime(date.getTime() + exp *60 * 60 * 1000);
   document.cookie = `${key}=${value};expires=${date.toUTCString()};path=/`;
