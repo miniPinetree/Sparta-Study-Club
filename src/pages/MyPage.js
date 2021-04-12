@@ -5,7 +5,15 @@ import '../scss/class.scss';
 import { Calendar, Header,Quest,Chat } from '../components';
 import { Image, Text, Grid,Progress } from '../elements';
 import Rtan from '../images/rtan.png';
+import moment from 'moment';
 const MyPage=(props)=>{
+
+    let today = new Date();
+    let hours = Math.floor((today % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+    
+    console.log(hours);
+
 
 
     return (
