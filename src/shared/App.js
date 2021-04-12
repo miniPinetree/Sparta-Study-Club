@@ -3,13 +3,11 @@ import './App.css';
 import '../scss/main.scss';
 import { ConnectedRouter } from "connected-react-router";
 import { BrowserRouter, Route } from "react-router-dom";
-import { history } from "../redux/configStore";
 import LogIn from "../pages/LogIn";
 import SignUp from "../pages/SignUp";
 import MyPage from "../pages/MyPage";
 
 //리덕스 스토어의 history를 사용하기 위함.
-import { ConnectedRouter } from "connected-react-router";
 import {history} from "../redux/configStore";
 
 import { connect } from 'react-redux';

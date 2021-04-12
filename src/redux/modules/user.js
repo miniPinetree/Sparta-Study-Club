@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import Swal from "sweetalert2";
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";

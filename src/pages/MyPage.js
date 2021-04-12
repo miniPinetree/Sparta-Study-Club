@@ -69,7 +69,6 @@ const MyPage=(props)=>{
         </ContainerBox>
     </React.Fragment>
         );
->>>>>>> origin/brchA
 }
 export default MyPage;
 
