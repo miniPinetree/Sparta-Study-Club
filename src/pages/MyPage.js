@@ -55,11 +55,13 @@ const MyPage=(props)=>{
                     </QuestBox>
                 </ItemBox>
                 <ItemBox>
-                <Chart/>
                     <Grid>
+                        <Grid margin='0px 0px 45px 0px'>        
+                            <Chart />
+                        </Grid>
                         <QuestBox>
                             <Calendar />
-                    </QuestBox>
+                        </QuestBox>
                         <RtanBox>
                             <Image src={ Rtan} width="70px" height="70px"/>
                         </RtanBox>
