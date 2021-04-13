@@ -7,6 +7,8 @@ import {Grid} from '../elements';
 import moment from 'moment';
 import { useState } from 'react';
 import Daily from './Daily';
+import { useDispatch } from "react-redux";
+import { actionCreators as questActions } from "../redux/modules/quest";
 
 const Calendar = (props) => {
  
@@ -16,7 +18,8 @@ const Calendar = (props) => {
  const firstWeek = today.clone().startOf('month').week(); //시작하는 week() 주.
   //끝나는 주가 1이면 53주로. 아니라면 이번달 끝나는 주로 바로 사용.
  const lastweek = today.clone().endOf('month').week() === 1 ? 53 : today.clone().endOf('month').week();//끝나는 week()주
-
+ const dispatch = useDispatch();
+  
  const calendarArr = () => {
   
   let result = [];
@@ -53,10 +56,18 @@ const Calendar = (props) => {
    <Grid>
     {/*subtract 두번째 인자단위로 빼기. add 더하기*/ }
     <FontAwesomeIcon icon={faChevronCircleLeft} size="1x" className="month-btn"
-     onClick={() => { setMoment(getMoment.clone().subtract(1, 'month')) }} style={{cursor:'pointer'}}/>
+         onClick={() => {
+           setMoment(getMoment.clone().subtract(1, 'month'));
+           let _date = getMoment.clone().subtract(1, 'month').format('YYMM');
+           //dispatch(questActions.getMonthQuestDB(_date));
+         }} style={{ cursor: 'pointer' }} />
      <Month>{today.format('MMMM YYYY')}</Month>
      <FontAwesomeIcon icon={faChevronCircleRight} size="1x" className="month-btn"
-     onClick={()=>{ setMoment(getMoment.clone().add(1, 'month')) }} style={{cursor:'pointer'}}/>
+         onClick={() => {
+           setMoment(getMoment.clone().add(1, 'month'));
+           let _date = getMoment.clone().add(1, 'month').format('YYMM');
+           //dispatch(questActions.getMonthQuestDB(_date));
+         }} style={{ cursor: 'pointer' }} />
    </Grid>
    <CalendarBox>
     <WeekBox>

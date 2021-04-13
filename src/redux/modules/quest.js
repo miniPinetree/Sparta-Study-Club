@@ -12,12 +12,16 @@ const DELETE_QUEST = 'DELETE_QUEST';
 const UPDATE_QUEST = 'UPDATE_QUEST';
 const SET_MONTH_QUEST = 'SET_MONTH_QUEST';
 const LOADING = 'LOADING';
+const CHATTING = 'CHATTING';
+
 const setQuest = createAction(SET_QUEST, (dayQuest) => ({ dayQuest }));
 const addQuest = createAction(ADD_QUEST, (quest) => ({ quest }));
 const deleteQuest = createAction(DELETE_QUEST, (questId) => ({ questId }));
 const updateQuest = createAction(UPDATE_QUEST, (questId,questYn) => ({ questId,questYn}));
 const setMonthQuest = createAction(SET_MONTH_QUEST, (monthQuest) => ({monthQuest}));
 const loading = createAction(LOADING, (isLoading) => ({ isLoading }));
+const setChatting = createAction(CHATTING, (on_off) => ({ on_off }));
+
 const initialState = {
  dayQuest: [
   {
@@ -118,19 +122,22 @@ const initialState = {
   },  
 
  ],
- isLoading :false,
+ isLoading: false,
+ chat : true,
 }
 
-const getMonthQuestDB = (month = null) => {
+
+//월 리스트가 없을 때 빈 리스트로 오는지 null로 오는지?
+const getMonthQuestDB = (date = null) => {
  return function (dispatch, getState, { history }) {
   
-  if (!month) {
+  if (!date) {
    return;
   }
   dispatch(loading(true));
   axios({
    method: 'get',
-   url: `${config.api}/calendar/${month}`,
+   url: `${config.api}/calendar/${date}`,
   }).then((res) => {
    let _monthQuest = [...res.data.studyData];
    dispatch(setMonthQuest(_monthQuest));
@@ -186,6 +193,16 @@ const addQuestDB = (questContents =null) => {
   }
   dispacth(addQuest(quest));
 
+ }
+}
+
+//채팅방 클릭 on/off
+const onOffChat = () => {
+ return function (dispacth, getState, { history }) {
+  
+  let _chat = getState().quest.chat;
+  _chat = _chat ? false : true;
+  dispacth(setChatting(_chat));
  }
 }
 
@@ -249,8 +266,6 @@ const updateQuestDB = (questId= null) => {
  }
 }
 
-
-
 export default handleActions({
  [SET_QUEST]: (state, action) => produce(state, (draft) => {
   draft.dayQuest = action.payload.dayQuest;
@@ -273,6 +288,9 @@ export default handleActions({
  [LOADING]: (state, action) => produce(state, (draft) => {
   draft.isLoading = action.payload.isLoading;
  }),
+ [CHATTING]: (state, action) => produce(state, (draft) => {
+  draft.chat = action.payload.on_off;
+ }),
 }, initialState);
 
 const actionCreators = {
@@ -280,6 +298,7 @@ const actionCreators = {
  addQuestDB,
  deleteQuestDB,
  updateQuestDB,
+ onOffChat,
 };
 
 export { actionCreators };
