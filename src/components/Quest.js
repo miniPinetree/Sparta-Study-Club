@@ -1,28 +1,36 @@
 import React from "react";
 import styled from "styled-components";
 import Checkbox from '@material-ui/core/Checkbox';
+import { actionCreators as questActions } from "../redux/modules/quest";
 import { Text } from '../elements';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch } from 'react-redux';
 import '../scss/class.scss';
 const Quest = (props) => {
- const [checked, setChecked] = React.useState(true);
- const { quest} = props;
- const handleChange = (event) => {
-    setChecked(event.target.checked);
+ 
+ const { quest } = props;
+ let checked = quest.questYn;
+const dispatch = useDispatch();
+
+const changeChecked = () => {
+  checked = checked ? false : true;
+  dispatch(questActions.updateQuestDB(quest.questId));
  };
  
-
  return (
   <React.Fragment>
       <FlexBox>
     <Checkbox color="secondary"
      inputProps={{ 'aria-label': 'secondary checkbox' }}
-     onClick={handleChange}/>
+     onClick={changeChecked} checked={checked}/>
      <Text margin='9px 0px 0px 0px' size="15px">
-     {quest}  
+     {quest.questContents}  
      </Text>
-     <FontAwesomeIcon icon={faTimes} size='1x' color={'#000'} className="Delete-btn"/>
+       <FontAwesomeIcon icon={faTimes} size='1x' color={'#000'} className="Delete-btn"
+         onClick={() => {
+           dispatch(questActions.deleteQuestDB(quest.questId));
+         }}/>
     </FlexBox>
  </React.Fragment>
 ) 

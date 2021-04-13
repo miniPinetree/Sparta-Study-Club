@@ -1,5 +1,6 @@
 import React from "react";
-import {actionCreators as userActions} from "../redux/modules/user";
+import { actionCreators as userActions } from "../redux/modules/user";
+import { actionCreators as questActions } from "../redux/modules/quest";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import Swal from "sweetalert2";
@@ -13,6 +14,15 @@ const MyPage = (props) => {
 
   //리덕스 내 데이터가 변경되면 리렌더링된다.
   const user = useSelector((state) => state.user.user);
+  const dayQuest = useSelector((state) => state.quest.dayQuest);
+
+  React.useEffect(() => {
+    
+    let month = String(new Date().getMonth + 1);
+  //  dispatch(questActions.getMonthQuestDB(month));
+
+  }, []);
+
 
   //서버연결시 아래 줄 삭제
 //  const [ time, selectTime ] = React.useState(user.setTime);
@@ -22,7 +32,7 @@ const MyPage = (props) => {
   const greeting = () => {
     const ment = [
       "오늘도 달려볼까요?",
-      "천리길도 Hello World 부터랍니다!",
+      "천리길도 Hello World 부터!",
       "코딩할 준비 되셨죠?",
       "딱 코딩하기 좋은 날씨에요!",
       "어서 시작하러 가봐요!",
@@ -49,6 +59,20 @@ const MyPage = (props) => {
       dispatch(userActions.setTimeDB(new Date().getTime(),btnVal));
   }
   };
+
+  const addDayQeust = (e) => {
+    
+    if (e.target.value.length === 0) {
+      Swal.fire({
+        html: '<br> 내용을 입력해주세요!✏️<br>',
+        confirmButtonColor: "#E3344E",
+      })
+      return false;
+    }
+    dispatch(questActions.addQuestDB(e.target.value));
+  }
+
+
   return (
     <React.Fragment>
       <ContainerBox>
@@ -92,15 +116,27 @@ const MyPage = (props) => {
               <Text bold>
                 오늘의 퀘스트! 현재 달성률: <Point>{}</Point>
               </Text>
-              <TodoInput placeholder={user.setTime? "미송님, 오늘의 목표를 정해주세요:)":
-            "목표 시간을 선택해주세요 !"} />
-              {/*목표 추가 시 리스트 여기서 map*/}
+              <TodoInput placeholder={user.setTime ? `${user.nickname}님, 오늘의 목표를 정해주세요:)` :
+                "목표 시간을 선택해주세요 !"} onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      if (!user.setTime) {
+                        Swal.fire({
+                          html: '<br>목표 시간을 먼저 선택해주세요!🚩<br>',
+                          confirmButtonColor: '#E3344E',
+                        })
+                      } else {
+                        addDayQeust(e);  
+                      }
+                    }
+                  }
+                }/>
+              {/* 퀘스트 내역에 따라 조건부 렌더링*/ }
               <QuestListBox>
-                {/* 목표가 없을 때.. */}
-                {/* <Text size="15px" margin="80px 0px 0px 0px" color="#BBBBBB">등록된 오늘의 목표가 없습니다!</Text> */}
-                <Quest quest="리액트 복습하기" />
-                <Quest quest="자바스크립트 문법 공부하기" />
-                <Quest quest="waka-time 알아보기" />
+                {dayQuest.length === 0 ? <Text size="15px" margin="80px 0px 0px 0px" color="#BBBBBB">등록된 오늘의 목표가 없습니다!</Text> :
+                  dayQuest.map((q) => {
+                    return <Quest quest={q} key={q.questId}/>
+                  })
+                }
               </QuestListBox>
             </QuestBox>
           </ItemBox>

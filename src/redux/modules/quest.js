@@ -19,8 +19,105 @@ const updateQuest = createAction(UPDATE_QUEST, (questId,questYn) => ({ questId,q
 const setMonthQuest = createAction(SET_MONTH_QUEST, (monthQuest) => ({monthQuest}));
 const loading = createAction(LOADING, (isLoading) => ({ isLoading }));
 const initialState = {
- dayQuest: [],
- monthQuest: [],
+ dayQuest: [
+  {
+   questId: 1,
+   questContents: '자바스크립트 공부하기',
+   questYn: true,
+  },
+  {
+   questId: 2,
+   questContents: '리액트 복습하기',
+   questYn: false,
+
+  }
+],
+ monthQuest: [
+  {
+   'day': '2021/04/08',
+   'questRate': 100,
+   'studyTime': String(new Date(2021, 3, 8, 12, 0, 10, 22).getTime()),
+   'studySetTime': 2,
+   'quest': [
+    {
+     'questId': 1,
+     'questContents': '자바스크립트 공부하기',
+     'questYn': true,
+    },
+    {
+     'questId': 2,
+     'questContents': '메인페이지 view 작업하기',
+     'questYn': true,
+    }
+   ],
+  },
+  {
+ 'day': '2021/04/09',
+ 'questRate': 50,
+ 'studyTime': String(new Date(2021, 3, 9, 2, 30, 40, 0).getTime()),
+ 'studySetTime': 4,
+ 'quest': [
+  {
+   'questId': 3,
+   'questContents': '회원가입 및 로그인 기능 완료하기',
+   'questYn': false,
+  },
+  {
+   'questId': 4,
+   'questContents': '리액트 doc 참고 공부하기',
+   'questYn': false,
+  },
+  {
+   'questId': 5,
+   'questContents': '밥 먹기',
+   'questYn': true,
+  },
+  {
+   'questId': 6,
+   'questContents': '잠자기',
+   'questYn': true,
+  },
+ ],
+  },
+  {
+ 'day': '2021/04/10',
+ 'questRate': 0,
+ 'studyTime': String(new Date(2021, 3, 11, 19, 22, 0, 0).getTime()),
+ 'studySetTime': 2,
+ 'quest': [
+  {
+   'questId': 7,
+   'questContents': '메인페이지 css 수정하기',
+   'questYn': false,
+  },
+  {
+   'questId': 8,
+   'questContents': 'post 기능 만들기',
+   'questYn': false,
+  },
+  
+ ],
+},
+{
+   'day': '2021/04/11',
+   'questRate': 50,
+   'studyTime': String(new Date(2021, 3, 11, 19, 0, 40, 30).getTime()),
+   'studySetTime': 1,
+   'quest': [
+    {
+     'questId': 9,
+     'questContents': 'git 공부하기',
+     'questYn': true,
+    },
+    {
+     'questId': 10,
+     'questContents': '웹소켓 알아보기',
+     'questYn': false,
+    }
+   ],
+  },  
+
+ ],
  isLoading :false,
 }
 
@@ -52,12 +149,12 @@ const addQuestDB = (questContents =null) => {
  return function (dispacth, getState, { history }) {
   if (!questContents) {
    Swal.fire({
-    text: '내용을 입력해주세요!',
+    text: '내용을 입력해주세요!✏️',
     confirmButtonColor: '#E3344E',
-   })
+   });
    return false;
   }
-
+/*
   axios({
    method: 'post',
    url: `${config.api}/quest`,
@@ -74,9 +171,21 @@ const addQuestDB = (questContents =null) => {
     dispacth(addQuest(quest));
 
    } else {
-    console.log('퀘스트 등록 실패..');
+    Swal.fire({
+     text: '퀘스트 등록에 실패했습니다. ',
+     confirmButtonColor: '#E3344E',
+    });       
    }
   }).catch(err => console.log(err));
+  */
+  
+  let quest = {
+   questId: Math.floor(Math.random() * 100)+20, //우선 이렇게 테스트..!!
+   questContents: questContents,
+   questYn: false,
+  }
+  dispacth(addQuest(quest));
+
  }
 }
 
@@ -86,6 +195,8 @@ const deleteQuestDB = (questId=null) => {
    return false;
   }
 
+  dispacth(deleteQuest(questId));
+  /*
   axios({
    method: 'delete',
    url: `${config.api}/quest/${questId}`,
@@ -93,11 +204,14 @@ const deleteQuestDB = (questId=null) => {
    if (res.data.msg === 'success') {
     dispacth(deleteQuest(questId));
    } else {
-    console.log('퀘스트 삭제 실패..');
+     Swal.fire({
+     text: '퀘스트 삭제를 실패했습니다. ',
+     confirmButtonColor: '#E3344E',
+    });    
    }
 
   }).catch(err => console.log(err));
-
+*/
  }
 }
 
@@ -108,9 +222,12 @@ const updateQuestDB = (questId= null) => {
    return false;
   }
  
-  const quest = getState().dayQuest.find((q) => q.questId === questId);
-  let questYn = quest.questYn?false:true;
+  const quest = getState().quest.dayQuest.find((q) => q.questId === questId);
+  let questYn = quest.questYn ? false : true;
+  //서버 연동시 밑에 활성화
+  dispacth(updateQuest(questId,questYn))
 
+  /*
   axios({
    method: 'patch',
    url: `${config.api}/quest`,
@@ -122,10 +239,13 @@ const updateQuestDB = (questId= null) => {
    if (res.data.msg === 'success') {
     dispacth(updateQuest(questId, questYn));
    } else {
-    console.log('퀘스트 업데이트 실패..');
+     Swal.fire({
+     text: '퀘스트 업데이트에 실패했습니다. ',
+     confirmButtonColor: '#E3344E',
+    });  
    }
   })
-
+*/
  }
 }
 
@@ -136,7 +256,7 @@ export default handleActions({
   draft.dayQuest = action.payload.dayQuest;
  }),
  [ADD_QUEST]: (state, action) => produce(state, (draft) => {
-  draft.list.push(action.payload.quest);
+  draft.dayQuest.push(action.payload.quest);
  }),
  [DELETE_QUEST]: (state, action) => produce(state, (draft) => {
   let idx = draft.dayQuest.findIndex((q) => q.questId === action.payload.questId);
