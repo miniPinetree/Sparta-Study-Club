@@ -4,38 +4,32 @@ import styled from "styled-components";
 
 //목표시간과 경과시간 기준 진행률
 const Progress = (props) => {
-  const timeInfo = useSelector((state) => state.user.user);
-  const targetTime = timeInfo.setTime;
-
+  const user = useSelector((state) => state.user.user);
+  const targetTime=user.setTime;
   //경과시간 계산
   const calProgress = () => {
     let _progressTime =
-      (new Date().getTime() - timeInfo.startTime) / 1000 / 60 / 60;
-    console.log("cal실행", new Date(), _progressTime);
-    return _progressTime;
+      (new Date().getTime() - user.startTime) / 1000 / 60 / 60;
+      console.log("네 하고 있어요~",_progressTime);
+      return _progressTime;
   };
-
   const [progressTime, setTime] = React.useState(calProgress);
-
   //일정한 주기로 진행률 업데이트
   const checkProgress = setInterval(
     function () {
+      console.log("목표시간의 10%마다반영하니?", new Date());
       setTime(calProgress);
-      console.log("목표시간의 10%마다반영하니?", progressTime, new Date());
-      // clearInterval
     },
     //과도한 리렌더링 방지를 위해 목표시간의 10% 변동이 있을 때만 체크하여 반영
     (targetTime * 60 * 60 * 1000) / 10
   );
-
   React.useEffect(() => {
-    console.log("useEffect", progressTime, new Date());
-    if (progressTime >= targetTime) {
+    if (progressTime<targetTime) {
+      console.log("10분의 1시간 후에 실행해라!",new Date());
+      return checkProgress;
+    } else {
       console.log("반복종료!");
       return clearInterval(checkProgress);
-    } else {
-      console.log("6분뒤에 실행해라!");
-      return checkProgress;
     }
   }, []);
 

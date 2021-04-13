@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import styled from "styled-components";
 import "../scss/main.scss";
 import Swal from "sweetalert2";
@@ -22,70 +23,72 @@ const SignUp = (props) => {
   //이메일 중복 확인 API
   const verificateId = () => {
     //test  code
-    Swal.fire({
-      text: "이메일 중복여부",
-      confirmButtonColor: "#E3344E",
-    });
-    setVerifiedId(id);
-
-    // axios({
-    //   method: "post",
-    //   url: `${config.api}/user/email`,
-    //   data: {
-    //     email: id,
-    //   },
-    // })
-    //   .then((res) => {
-    //     if (res.data.msg === "success") {
-    //       setVerifiedId(id);
-    //     } else {
-    //       Swal.fire({
-    //         text: "이미 가입된 이메일입니다.",
-    //         confirmButtonColor: "#E3344E",
-    //       });
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     Swal.fire({
-    //       text: "잠시 후 다시 시도해주세요.",
-    //       confirmButtonColor: "rgb(118, 118, 118)",
-    //     });
-    //   });
+    // Swal.fire({
+    //   text: "이메일 중복여부",
+    //   confirmButtonColor: "#E3344E",
+    // });
+    setVerifiedId(id); //서버연결되면 삭제
+    console.log("서버로 이메일 중복확인");
+    axios({
+      method: "post",
+      url:`${config.api}/user/email`,
+      data: {
+        email: id,
+      },
+    })
+      .then((res) => {
+        if (res.data.msg === "success") {
+          setVerifiedId(id);
+        } else {
+          Swal.fire({
+            text: "이미 가입된 이메일입니다.",
+            confirmButtonColor: "#E3344E",
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        Swal.fire({
+          text: "잠시 후 다시 시도해주세요.",
+          confirmButtonColor: "rgb(118, 118, 118)",
+        });
+      });
   };
 
   //닉네임 중복확인 API
   const verificateNick = () => {
     //test code
-    Swal.fire({
-      text: "닉네임 중복여부",
-      confirmButtonColor: "#E3344E",
-    });
-    setVerifiedNick(nick);
-    // axios({
-    //   method: "post",
-    //   url: `${config.api}/user/nickname`,
-    //   data: {
-    //     nickname: nick,
-    //   },
-    // })
-    //   .then((res) => {
-    //     if (res.data.msg === "success") {
-    //       setVerifiedNick(nick);
-    //     } else {
-    //       Swal.fire({
-    //         text: "이미 가입된 닉네임입니다.",
-    //         confirmButtonColor: "#E3344E",
-    //       });
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     Swal.fire({
-    //       text: "잠시 후 다시 시도해주세요.",
-    //       confirmButtonColor: "rgb(118, 118, 118)",
-    //     });
-    //   });
+    // Swal.fire({
+    //   text: "닉네임 중복여부",
+    //   confirmButtonColor: "#E3344E",
+    // });
+    console.log("서버로 닉네임 중복확인");
+    setVerifiedNick(nick);//서버와 연결되면 삭제
+    axios({
+      method: "post",
+      url: `${config.api}/user/nickname`,
+      data: {
+        nickname: nick,
+      },
+    })
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.msg === "success") {
+          setVerifiedNick(nick);
+        } else {
+          Swal.fire({
+            text: "이미 가입된 닉네임입니다.",
+            confirmButtonColor: "#E3344E",
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        Swal.fire({
+          text: "잠시 후 다시 시도해주세요.",
+          confirmButtonColor: "rgb(118, 118, 118)",
+        });
+      });
   };
 
   const signUp = () => {

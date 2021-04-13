@@ -30,13 +30,8 @@ const LogIn = (props) => {
       })
       return;
     }else{
-      Swal.fire({
-        text: "DB로 디스패치 :) !!",
-        confirmButtonColor: "#E3344E",
-      })
-         //   dispatch(userActions.loginDB(id, pwd));
+      dispatch(userActions.loginDB(id, pwd));
     }
- 
   };
 
   return (
