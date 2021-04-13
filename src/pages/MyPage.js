@@ -16,7 +16,7 @@ const MyPage = (props) => {
   //리덕스 내 데이터가 변경되면 리렌더링된다.
   const user = useSelector((state) => state.user.user);
   const dayQuest = useSelector((state) => state.quest.dayQuest);
-  let dayRate = dayQuest.filter((q) => q.questYn === true).length / dayQuest.length;
+  let dayRate = Math.round((dayQuest.filter((q) => q.questYn === true).length / dayQuest.length)*100);
   console.log(dayRate);
   let chatOnOff = useSelector((state) => state.quest.chat);
 
@@ -119,7 +119,7 @@ const MyPage = (props) => {
             )}
             <QuestBox className="questlist">
               <Text bold>
-                오늘의 퀘스트! 현재 달성률: <Point>{}</Point>
+                오늘의 퀘스트! 현재 달성률: <Point>{dayRate}%</Point>
               </Text>
               <TodoInput placeholder={user.setTime ? `${user.nickname}님, 오늘의 목표를 정해주세요:)` :
                 "목표 시간을 선택해주세요 !"} onKeyPress={(e) => {
@@ -173,6 +173,21 @@ const ContainerBox = styled.div`
 
 const QuestListBox = styled.div`
   margin-top: 18px;
+  max-height: 515px;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+  width:17px;
+  height: 100vh;
+  background: transparent;
+  }
+ 
+ &::-webkit-scrollbar-thumb{
+  background-color:transparent;
+  border-radius: 20px;
+  height: 50px;
+  background-clip: padding-box;
+  border: 4px solid transparent;
+  }
 `;
 
 const ContentBox = styled.div`
@@ -224,7 +239,7 @@ const TimeBtn = styled.button`
     :disabled{
 
     }
-    disal
+  
 `;
 
 const QuestBox = styled.div`
