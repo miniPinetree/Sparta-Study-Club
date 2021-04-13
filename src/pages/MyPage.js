@@ -119,7 +119,7 @@ const MyPage = (props) => {
             )}
             <QuestBox className="questlist">
               <Text bold>
-                오늘의 퀘스트! 현재 달성률: <Point>{dayRate}%</Point>
+                오늘의 퀘스트! 현재 달성률: <Point>{dayRate?dayRate:0}%</Point>
               </Text>
               <TodoInput placeholder={user.setTime ? `${user.nickname}님, 오늘의 목표를 정해주세요:)` :
                 "목표 시간을 선택해주세요 !"} onKeyPress={(e) => {
