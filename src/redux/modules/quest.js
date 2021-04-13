@@ -160,7 +160,6 @@ const actionCreators = {
  addQuestDB,
  deleteQuestDB,
  updateQuestDB,
->>>>>>> 78123aa6544836e23af6c826603ff7affc9a5a87
 };
 
 export { actionCreators };

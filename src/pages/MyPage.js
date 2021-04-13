@@ -11,7 +11,7 @@ import Rtan from "../images/rtan.png";
 const MyPage = (props) => {
   const dispatch = useDispatch();
 
-  //리덕스 내 데이터가 변경되면 리렌더링된다. 
+  //리덕스 내 데이터가 변경되면 리렌더링된다.
   const user = useSelector((state) => state.user.user);
 
   //서버연결시 아래 줄 삭제
@@ -30,7 +30,7 @@ const MyPage = (props) => {
     const idx = Math.floor(Math.random() * ment.length);
     return ment[idx];
   };
-
+//목표 시간 설정 함수
   const setTargetTime = (e) => {
     const btnVal = Number(e.target.innerText.slice(0,1));
     console.log(btnVal);

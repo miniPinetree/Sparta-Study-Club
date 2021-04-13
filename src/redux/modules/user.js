@@ -18,7 +18,7 @@ const initialState = {
   //더미 ! 서버와 연결할 때는 null로 바꾸세요.
   user: {
     nickname: "영은짱짱맨",
-    startTime: 1618270325581,
+    startTime: 1618289275736,
     setTime: 1,
   },
 };
@@ -70,7 +70,7 @@ const loginDB = (id, pwd) => {
   return function (dispatch, getState, { history }) {
     axios({
       method: "post",
-      url: `${config.api}/login`,
+      url: `${config.api}/user/auth`,
       data: {
         email: id,
         password: pwd,
