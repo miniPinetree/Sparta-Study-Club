@@ -40,6 +40,7 @@ export default Quest;
 
 const FlexBox = styled.div`
  display: flex;
+
    
  //퀘스트 삭제 시
 & .Delete-btn {

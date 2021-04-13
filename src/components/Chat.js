@@ -11,7 +11,7 @@ const Chat = (props) => {
  
   const dispatch = useDispatch();
  return (
-   <div className={props.chat?'on_chat':'off_chat'}>
+   <ChatAllbox className={props.chat?'on_chat':'off_chat'}>
     <ChatTopbox>
       <Grid is_flex padding='10px 15px 0px 15px'>
         <Text size='20px' bold color='#e3344e'>Chat</Text>
@@ -27,11 +27,16 @@ const Chat = (props) => {
       <ChatInput placeholder='Message..'/>
     </ChatBottomBox>
     </ChatBox>
-  </div>
+  </ChatAllbox>
 )
 }
 
 export default Chat;
+
+const ChatAllbox = styled.div`
+  position: relative;
+  z-index: 900;
+`;
 
 const ChatBox = styled.div`
  width:260px;
