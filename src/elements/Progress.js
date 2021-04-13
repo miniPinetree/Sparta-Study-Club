@@ -1,7 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-
 //목표시간과 경과시간 기준 진행률
 const Progress = (props) => {
   const user = useSelector((state) => state.user.user);
@@ -13,17 +12,10 @@ const Progress = (props) => {
       (new Date().getTime() - user.startTime) / 1000 / 60 / 60;
     let rate = _progressTime/targetTime*100;
     return rate;
-    // if(rate>=100){
-    //   console.log("드디어종료");
-    //   // clearInterval(checkProgress);
-    //   return 100;
-    // }else{
-      
-    // }
   };
 
   const [progressRate, setRate] = React.useState(calProgress);
-
+console.log(progressRate)
   //일정한 주기로 진행률 업데이트
   const checkProgress =setInterval(function(){
     if(calProgress()>=100){
@@ -36,9 +28,7 @@ const Progress = (props) => {
     //과도한 리렌더링 방지를 위해 목표시간의 10% 변동이 있을 때만 체크하여 반영
     (targetTime * 60 * 60 * 1000) / 10
   );
-
   React.useEffect(() => {
-    console.log("내가부름");
       return checkProgress;
   }, []);
 
