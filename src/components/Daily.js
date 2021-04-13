@@ -3,13 +3,15 @@ import React, { useState } from 'react';
 import { Modal } from '../elements';
 import { LastQuest } from '../components';
 import '../scss/class.scss';
-import {RESP} from '../shared/response';
+import { RESP } from '../shared/response';
+import { useDispatch, useSelector } from "react-redux";
 
 const Daily = (props) => {
     
   //서버 연동 전..
-  const res = RESP.STUDYDATA;
-  const today = res.find((q) => q.day === props.date);
+  //const questList = useSelector((state)=> state.quest.list);
+  const questList = RESP.STUDYDATA;
+  const today = questList.find((q) => q.day === props.date);
   //배경 색상 나누기 (퀘스트달성률)
   const questRateBg = !today || today?.questRate === 0 ? '#F2F2F2' : today.questRate === 100 ? '#FBCECE' : '#FCE3E3';
 
@@ -49,18 +51,5 @@ const DayBox = styled.div`
  font-size:12px;
  cursor: pointer;
  font-weight: 600;
-
-&.none {
-  background-color: #eeeeee;
-}
-
-&.incompletion {
-  background-color: #f5e7e7;
-}
-
-&.completion {
-  background-color: #f5d6d6;
-}
-
 `
 
