@@ -8,29 +8,37 @@ const Progress = (props) => {
   const targetTime=user.setTime;
   //경과시간 계산
   const calProgress = () => {
-    if (progressTime<targetTime||!progressTime){
-    let _progressTime =
+    // if (progressTime<targetTime||!progressTime){}
+    const _progressTime =
       (new Date().getTime() - user.startTime) / 1000 / 60 / 60;
-      console.log("네 하고 있어요~",new Date(),_progressTime);
-      return _progressTime;
-    }
+    let rate = _progressTime/targetTime*100;
+    return rate;
+    // if(rate>=100){
+    //   console.log("드디어종료");
+    //   // clearInterval(checkProgress);
+    //   return 100;
+    // }else{
+      
+    // }
   };
-  const [progressTime, setTime] = React.useState(calProgress);
+
+  const [progressRate, setRate] = React.useState(calProgress);
+
   //일정한 주기로 진행률 업데이트
-  const checkProgress = setInterval(
-    function () {
-      if (progressTime<targetTime){
-        console.log("목표시간의 10%마다반영하니?", new Date());
-      setTime(calProgress);
-      }else {
-        console.log("반복종료!");
-        clearInterval(checkProgress);
-      }
-    },
+  const checkProgress =setInterval(function(){
+    if(calProgress()>=100){
+      clearInterval(checkProgress);
+      return;
+    }else{
+        setRate(calProgress);
+    }
+  },
     //과도한 리렌더링 방지를 위해 목표시간의 10% 변동이 있을 때만 체크하여 반영
     (targetTime * 60 * 60 * 1000) / 10
   );
+
   React.useEffect(() => {
+    console.log("내가부름");
       return checkProgress;
   }, []);
 
@@ -38,16 +46,16 @@ const Progress = (props) => {
     <ProgressBar>
       <HighLight
         width={
-          progressTime >= targetTime
-            ? 100 + "%"
-            : (progressTime / targetTime) * 100 + "%"
+          progressRate + "%"
         }
       />
       <Dot />
     </ProgressBar>
   );
 };
-Progress.defaultProps = {};
+Progress.defaultProps = {
+
+};
 
 export default Progress;
 

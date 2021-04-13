@@ -37,7 +37,7 @@ const initialState = {
    'day': '2021/04/08',
    'questRate': 100,
    'studyTime': String(new Date(2021, 3, 8, 12, 0, 10, 22).getTime()),
-   'studySetTime': 2,
+   'studySetTime': 3,
    'quest': [
     {
      'questId': 1,
@@ -55,7 +55,7 @@ const initialState = {
  'day': '2021/04/09',
  'questRate': 50,
  'studyTime': String(new Date(2021, 3, 9, 2, 30, 40, 0).getTime()),
- 'studySetTime': 4,
+ 'studySetTime': 5,
  'quest': [
   {
    'questId': 3,
@@ -100,9 +100,9 @@ const initialState = {
 },
 {
    'day': '2021/04/11',
-   'questRate': 50,
+   'questRate': 60,
    'studyTime': String(new Date(2021, 3, 11, 19, 0, 40, 30).getTime()),
-   'studySetTime': 1,
+   'studySetTime': 4,
    'quest': [
     {
      'questId': 9,
@@ -116,6 +116,24 @@ const initialState = {
     }
    ],
   },  
+  {
+    'day': '2021/04/12',
+    'questRate': 50,
+    'studyTime': String(new Date(2021, 3, 11, 19, 0, 40, 30).getTime()),
+    'studySetTime': 3,
+    'quest': [
+     {
+      'questId': 9,
+      'questContents': 'git 공부하기',
+      'questYn': true,
+     },
+     {
+      'questId': 10,
+      'questContents': '웹소켓 알아보기',
+      'questYn': false,
+     }
+    ],
+   }
 
  ],
  isLoading :false,
