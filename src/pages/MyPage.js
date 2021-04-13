@@ -6,6 +6,7 @@ import styled from "styled-components";
 import Swal from "sweetalert2";
 import Chart from "../components/Chart";
 import "../scss/class.scss";
+import moment from 'moment';
 import { Calendar, Header, Quest, Chat } from "../components";
 import { Image, Text, Grid, Progress } from "../elements";
 import Rtan from "../images/rtan.png";
@@ -15,11 +16,14 @@ const MyPage = (props) => {
   //리덕스 내 데이터가 변경되면 리렌더링된다.
   const user = useSelector((state) => state.user.user);
   const dayQuest = useSelector((state) => state.quest.dayQuest);
+  let dayRate = dayQuest.filter((q) => q.questYn === true).length / dayQuest.length;
+  console.log(dayRate);
+  let chatOnOff = useSelector((state) => state.quest.chat);
 
   React.useEffect(() => {
     
-    let month = String(new Date().getMonth + 1);
-  //  dispatch(questActions.getMonthQuestDB(month));
+    let date = moment().format('YYMM');
+  //dispatch(questActions.getMonthQuestDB(date));
 
   }, []);
 
@@ -70,14 +74,15 @@ const MyPage = (props) => {
       return false;
     }
     dispatch(questActions.addQuestDB(e.target.value));
+    e.target.value = '';
   }
 
 
   return (
     <React.Fragment>
-      <ContainerBox>
+      <ContainerBox style={chatOnOff ? { paddingLeft: '230px' } : {}}>
         <Header />
-        <Chat />
+        <Chat chat={chatOnOff}/>
         <ContentBox>
           <ItemBox>
             <Mentbox>
@@ -163,9 +168,7 @@ export default MyPage;
 const ContainerBox = styled.div`
   box-sizing: border-box;
   width: 100%;
-  overflow: hidden;
-  //채팅방 여부로 바꿔주기.
-  padding-left: 300px;
+
 `;
 
 const QuestListBox = styled.div`
@@ -174,7 +177,7 @@ const QuestListBox = styled.div`
 
 const ContentBox = styled.div`
   margin: 100px auto 0px auto;
-  width: 1000px;
+  width: 900px;
   display: flex;
   gap: 35px;
 `;

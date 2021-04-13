@@ -2,30 +2,33 @@ import React from "react";
 import styled from 'styled-components';
 import { Grid, Text,UserChat } from '../elements';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft} from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { actionCreators as questActions } from "../redux/modules/quest";
+import { useSelector, useDispatch } from "react-redux";
+import '../scss/class.scss';
 
 const Chat = (props) => {
  
+  const dispatch = useDispatch();
  return (
-  <React.Fragment>
-   
-   <ChatTopbox>
-   <Grid is_flex padding='10px 15px 0px 15px'>
-     <Text size='20px' bold color='#e3344e'>Chat</Text>
-     <FontAwesomeIcon icon={faChevronLeft} size='1x' color={'#e3344e'} style={{cursor:'pointer'}}/>
-    </Grid>
+   <div className={props.chat?'on_chat':'off_chat'}>
+    <ChatTopbox>
+      <Grid is_flex padding='10px 15px 0px 15px'>
+        <Text size='20px' bold color='#e3344e'>Chat</Text>
+        <FontAwesomeIcon icon={faChevronLeft} size='1x' color={'#e3344e'} style={{ cursor: 'pointer' }} onClick={() => {
+           dispatch(questActions.onOffChat());
+          }}/>
+      </Grid>
     </ChatTopbox>
    <ChatBox>
     {/* 더미.... */}
-    
     <UserChat />
-    
     <ChatBottomBox>
-       <ChatInput placeholder='Message..'/>
+      <ChatInput placeholder='Message..'/>
     </ChatBottomBox>
     </ChatBox>
-  </React.Fragment>
- )
+  </div>
+)
 }
 
 export default Chat;

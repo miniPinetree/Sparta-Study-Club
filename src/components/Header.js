@@ -8,25 +8,35 @@ import { faComments } from "@fortawesome/free-solid-svg-icons";
 import { Image } from '../elements';
 import '../scss/class.scss';
 import Logo from '../images/MypageLogo.png'
+import { history } from "../redux/configStore";
+import { actionCreators as questActions } from "../redux/modules/quest";
+import { useSelector, useDispatch } from "react-redux";
+
+
 
 const Header = (props) => {
+
+    const dispacth = useDispatch();
+
   return (
     <React.Fragment>
           <HeaderBox>
-              <IconBox style={{margin:'0px'}}>
-              <Image src={Logo} width="55px" height="30px" margin="10px 0px"/>
+              <IconBox style={{margin:'0px'}} onClick={() => {history.push('/')}}>
+            <Image src={Logo} width="55px" height="30px" margin="10px 0px"/>
              </IconBox>
-                  <IconBox>
-              <IconInnerBox className='logout'>
-                  <FontAwesomeIcon icon={faSignOutAlt} size='2x' color={'white'}/>
+                <IconBox>
+              <IconInnerBox >
+                <FontAwesomeIcon icon={faSignOutAlt} size='2x' color={'white'}/>
               </IconInnerBox>
-              <IconInnerBox className='study'>
-                  <FontAwesomeIcon icon={faBook} size='2x' color={'white'} />
+              <IconInnerBox >
+                <FontAwesomeIcon icon={faBook} size='2x' color={'white'} />
               </IconInnerBox>
-              <IconInnerBox className='chat'>
-                  <FontAwesomeIcon icon={faComments} size='2x' color={'white'}/>
+              <IconInnerBox >
+                <FontAwesomeIcon icon={faComments} size='2x' color={'white'} onClick={() => {
+                    dispacth(questActions.onOffChat());
+                }}/>
               </IconInnerBox>    
-              <IconInnerBox className='mypage pick-page'>
+              <IconInnerBox className='pick-page'>
                   <FontAwesomeIcon icon={faUser} size='2x' color={'white'}/>
               </IconInnerBox>
           </IconBox>
