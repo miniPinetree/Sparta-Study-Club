@@ -17,8 +17,8 @@ const getUser = createAction(GET_USER, (user) => ({ user }));
 const initialState = {
   //더미 ! 서버와 연결할 때는 null로 바꾸세요.
   user: {
-    nickname: "영은짱짱맨",
-    startTime: 1618357712945,
+    nickname: "영은짱짱맨",//null,
+    startTime:1618357712945,
     setTime: 6,
   },
 };
@@ -77,7 +77,7 @@ const loginDB = (id, pwd) => {
       },
       //서버와 도메인이 달라도 쿠키 전송 허용.
       //서버쪽은 credentials cors 설정 필요
-      withCredentials: true,
+      //withCredentials: true,
     })
       .then((res) => {
         console.log(res, res.data);
@@ -109,6 +109,8 @@ const loginDB = (id, pwd) => {
 };
 //시간추가 API
 //목표시간을 유저 정보에 업데이트
+//studySetTime만 보내면 됨. (study Time백엔드에서 자동생성.. => 받아옴)
+//userTodayId userinfo 세팅해서 할 일 추가할 때 보내기.
 const setTimeDB = (startTime, targetTime)=>{
   return function (dispatch, getState, { history }) {
     const nickname = getState().user.user.nickname;

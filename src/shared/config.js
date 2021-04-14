@@ -2,6 +2,6 @@
 //프로젝트 규모 확장 시 유용
 
 const config={
-    api:"http://13.209.65.9",
+    api:"http://3.34.198.18:3030/",
 };
 export{config};
