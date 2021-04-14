@@ -71,13 +71,6 @@ const loginDB = (id, pwd) => {
         email: id,
         password: pwd,
       },
-      //서버와 도메인이 달라도 쿠키 전송 허용.
-      //서버쪽은 credentials cors 설정 필요
-<<<<<<< HEAD
-      // withCredentials: true,
-=======
-      //withCredentials: true,
->>>>>>> 8e04d02f602008d9f70cdf4e428aedec62b71bb4
     })
       .then((res) => {
         console.log(res, res.data);
@@ -148,7 +141,7 @@ const loginCheckDB = () => {
  const nickname=getCookie('user');
  console.log("로그인유지함수", token, nickname);
    if(!token||!nickname){
-    return false;
+    history.push("/");
    }else{
      console.log(nickname);
     dispatch(

@@ -66,7 +66,7 @@ const LogIn = (props) => {
               />
                {pwd && pwd.length < 6 ? (
               <Text color="#E2344E" size="11px" margin="0 10px">
-                6자 이상 입력해주세요.
+                8자 이상 입력해주세요.
               </Text>
             ) : (
               ""
