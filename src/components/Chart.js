@@ -152,7 +152,7 @@ const Chart = (props) => {
           {range.map((day, idx) => {
             const date = day.day.split("/");
             return (
-              <Lable>
+              <Lable key={idx}>
                 <Text size="10px" bold>
                   {date[1] + "월" + date[2] + "일 " + day.studySetTime}시간
                   <br />

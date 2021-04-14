@@ -58,14 +58,14 @@ const Calendar = (props) => {
     <FontAwesomeIcon icon={faChevronCircleLeft} size="1x" className="month-btn"
          onClick={() => {
            setMoment(getMoment.clone().subtract(1, 'month'));
-           let _date = getMoment.clone().subtract(1, 'month').format('YYMM');
+           let _date = getMoment.clone().subtract(1, 'month').format('YYYYM');
            //dispatch(questActions.getMonthQuestDB(_date));
          }} style={{ cursor: 'pointer' }} />
      <Month>{today.format('MMMM YYYY')}</Month>
      <FontAwesomeIcon icon={faChevronCircleRight} size="1x" className="month-btn"
          onClick={() => {
            setMoment(getMoment.clone().add(1, 'month'));
-           let _date = getMoment.clone().add(1, 'month').format('YYMM');
+           let _date = getMoment.clone().add(1, 'month').format('YYYYM');
            //dispatch(questActions.getMonthQuestDB(_date));
          }} style={{ cursor: 'pointer' }} />
    </Grid>
