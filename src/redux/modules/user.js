@@ -83,8 +83,8 @@ const loginDB = (id, pwd) => {
           setCookie("user", res.data.nickname, 24 - new Date().getHours());
           //토큰을 헤더 기본값으로 설정
           axios.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${res.data.token}`;
+            "authorization"
+          ] = `${res.data.token}`; //Bearer
           history.push("/mypage");
         } else {
           Swal.fire({
@@ -105,6 +105,8 @@ const loginDB = (id, pwd) => {
 const setTimeDB = (startTime, targetTime)=>{
   return function (dispatch, getState, { history }) {
     const nickname = getState().user.user.nickname;
+    const token = getCookie("token");
+    console.log(targetTime);
       axios({
           method:"post",
           url: `${config.api}/quest/time`,
@@ -139,7 +141,9 @@ const loginCheckDB = () => {
 
  const token = getCookie('token');
  const nickname=getCookie('user');
- console.log("로그인유지함수", token, nickname);
+ axios.defaults.headers.common[
+  "authorization"
+] = `${token}`; //Bearer
    if(!token||!nickname){
     history.push("/");
    }else{
