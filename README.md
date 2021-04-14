@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# 스파르타 스터디 클럽 !!!
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
