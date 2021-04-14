@@ -104,7 +104,7 @@ const initialState = {
 },
 {
    'day': '2021/04/11',
-   'questRate': 60,
+   'questRate': 50,
    'studyTime': String(new Date(2021, 3, 11, 19, 0, 40, 30).getTime()),
    'studySetTime': 4,
    'quest': [
@@ -127,13 +127,13 @@ const initialState = {
     'studySetTime': 3,
     'quest': [
      {
-      'questId': 9,
-      'questContents': 'git 공부하기',
+      'questId': 11,
+      'questContents': '밥먹기',
       'questYn': true,
      },
      {
-      'questId': 10,
-      'questContents': '웹소켓 알아보기',
+      'questId': 12,
+      'questContents': '잠자기',
       'questYn': false,
      }
     ],
