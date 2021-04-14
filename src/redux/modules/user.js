@@ -18,7 +18,7 @@ const initialState = {
   //더미 ! 서버와 연결할 때는 null로 바꾸세요.
   user: {
     nickname: "영은짱짱맨",
-    startTime: 1618308397495,
+    startTime: 1618357712945,
     setTime: 6,
   },
 };

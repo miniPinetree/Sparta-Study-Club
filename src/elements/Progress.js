@@ -13,7 +13,6 @@ const Progress = (props) => {
     let rate = _progressTime/targetTime*100;
     return rate;
   };
-
   const [progressRate, setRate] = React.useState(calProgress);
 console.log(progressRate)
   //일정한 주기로 진행률 업데이트
@@ -36,7 +35,7 @@ console.log(progressRate)
     <ProgressBar>
       <HighLight
         width={
-          progressRate + "%"
+          progressRate<100? progressRate+"%":"100%"
         }
       />
       <Dot />
