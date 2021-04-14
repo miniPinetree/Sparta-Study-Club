@@ -33,7 +33,6 @@ const LogIn = (props) => {
       dispatch(userActions.loginDB(id, pwd));
     }
   };
-
   return (
 
       <Container>

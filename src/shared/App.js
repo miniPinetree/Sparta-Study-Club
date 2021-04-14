@@ -12,21 +12,29 @@ import {history} from "../redux/configStore";
 
 import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
-import { setCookie, getCookie, deleteCookie } from "./Cookie";
+import { useDispatch, useSelector } from "react-redux";
 import {actionCreators as userActions} from "../redux/modules/user"; 
 
 function App() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
 
-  const initializeUserInfo = () => {
-    const token = getCookie('token');
-    if(!token) return;
+//   const initializeUserInfo = () => {
+//     const token = getCookie('token');
+//     const info = getCookie('study');
+//     console.log(token,info,JSON.parse(info));
+//     if(!token) return;
 
-    const { UserActions } = this.props;
-    UserActions.loginCheckDB();
-};
+//     const { UserActions } = this.props;
+//     UserActions.loginCheckDB();
+// };
 React.useEffect(()=>{
- // initializeUserInfo();
- console.log("get user");
+ 
+ if(!user){
+  dispatch(userActions.loginCheckDB());
+ }else{
+  console.log("유지실패");
+ }
 }, []);
 
 

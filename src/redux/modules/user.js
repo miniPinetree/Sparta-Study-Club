@@ -16,14 +16,18 @@ const getUser = createAction(GET_USER, (user) => ({ user }));
 
 const initialState = {
   //더미 ! 서버와 연결할 때는 null로 바꾸세요.
-  user: {
-    nickname: "영은짱짱맨",
-    startTime: 1618357712945,
-    setTime: 6,
-  },
+  user:null,
 };
 
 //middleware actions
+
+      //다르게 적어보기
+      // const data={
+      //   email:id,
+      //   password:pwd,
+      //   nickname:nick,
+      // }
+      // axios.post(`${config.api}/user`,data)
 
 //회원가입 API
 const signupDB = (id, pwd, nick) => {
@@ -36,15 +40,7 @@ const signupDB = (id, pwd, nick) => {
         password: pwd,
         nickname: nick,
       },
-    })
-      //다르게 적어보기
-      // const data={
-      //   email:id,
-      //   password:pwd,
-      //   nickname:nick,
-      // }
-      // axios.post(`${config.api}/user`,data)
-      .then((res) => {
+    }).then((res) => {
         console.log(res, res.data);
         if (res.data.msg === "success") {
           Swal.fire({
@@ -52,7 +48,7 @@ const signupDB = (id, pwd, nick) => {
             confirmButtonColor: "#E3344E",
           }).then((result) => {
             if (result.isConfirmed) {
-              history.push("/login");
+              history.push("/");
             }
           });
         } else {
@@ -77,23 +73,21 @@ const loginDB = (id, pwd) => {
       },
       //서버와 도메인이 달라도 쿠키 전송 허용.
       //서버쪽은 credentials cors 설정 필요
-      withCredentials: true,
+      // withCredentials: true,
     })
       .then((res) => {
         console.log(res, res.data);
         if (res.data.msg === "success") {
           const userInfo = {
             nickname: res.data.nickname,
-            startTime: res.data.startTime,
-            setTime: res.data.setTime,
           };
           dispatch(setUser(userInfo));
           setCookie("token", res.data.token);
+          setCookie("user", res.data.nickname, 24 - new Date().getHours());
           //토큰을 헤더 기본값으로 설정
           axios.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${res.data.token}`;
-          setCookie("info", userInfo, 24 - new Date().getHours());
           history.push("/mypage");
         } else {
           Swal.fire({
@@ -103,7 +97,7 @@ const loginDB = (id, pwd) => {
         }
       })
       .catch((err) => {
-        console.log(err, err.toJSON());
+        console.log(err);
       });
   };
 };
@@ -112,74 +106,48 @@ const loginDB = (id, pwd) => {
 const setTimeDB = (startTime, targetTime)=>{
   return function (dispatch, getState, { history }) {
     const nickname = getState().user.user.nickname;
-    const userInfo = {
-      nickname: nickname,
-      startTime: startTime,
-      setTime: targetTime,
-    };
-    console.log(nickname,userInfo);
-    setCookie("info", userInfo, 24 - new Date().getHours());
-
-      // axios({
-      //     method:"post",
-      //     url: `${config.api}/time`,
-      //     data:{
-      //         studyTime:startTime,
-      //         studySetTime:targetTime
-      //     },
-      // }).then((res)=>{
-      //     console.log(res.data);
-      //     if(res.data.msg==="fail"){
-      //         Swal.fire({
-      //             text: `저장에 실패했습니다.`,
-      //             confirmButtonColor: "#E3344E",
-      //           });
-      //           return;
-      //     }else{
-      //       const nickname = getState().user.user.nickname;
-      //       const userInfo = {
-      //         nickname: nickname,
-      //         startTime: startTime,
-      //         setTime: targetTime,
-      //       };
-      //         dispatch(setUser(userInfo)).then((res)=>{
-      //           setCookie("info", userInfo, 24 - new Date().getHours());
-      //           Swal.fire({
-      //           title:`${nickname}님이라면 할 수 있어요`,
-      //           text: `목표를 정해 ${targetTime}시간 내에 완수해봐요 🐱‍🏍
-      //           `,
-      //           confirmButtonColor: "#E3344E",
-      //         });
-      //     })
-      //     }}).catch((err) => {
-      //     console.log(err, err.toJSON());
-      //   });
+      axios({
+          method:"post",
+          url: `${config.api}/quest/time`,
+          data:{
+              studySetTime:targetTime
+          },
+      }).then((res)=>{
+          console.log(res.data);
+          if(res.data.msg==="fail"){
+              Swal.fire({
+                  text: `저장에 실패했습니다.`,
+                  confirmButtonColor: "#E3344E",
+                });
+                return;
+          }else{
+                Swal.fire({
+                title:`${nickname}님이라면 할 수 있어요`,
+                text: `목표를 정해 ${targetTime}시간 내에 완수해봐요 🐱‍🏍
+                `,
+                confirmButtonColor: "#E3344E",
+              });
+          }
+          }).catch((err) => {
+          console.log(err);
+        });
   };
 };
-
 //로그인 유지, mypage렌더링 과정에서 토큰을 검증하므로
 //여기서는 클라이언트에 저장되어 있는 정보로만 1차 확인한다.
 const loginCheckDB = () => {
   return function (dispatch, getState, { history }) {
-    // const header = {
-    //   headers:{
-    //     {"token": getCookie("token")},
-    //   }
-    // }
-    //다른 방식으로 적어보기
-    // axios.get(`${config.api}/??`, header)
 
-    //default로 설정한 헤더가 잘 가지는 지 서버에 확인
-    const info = getCookie("info");
-   if(!info){
-    dispatch(logoutDB());
-    history.replace("/");
+ const token = getCookie('token');
+ const nickname=getCookie('user');
+ console.log("로그인유지함수", token, nickname);
+   if(!token||!nickname){
+    return false;
    }else{
+     console.log(nickname);
     dispatch(
       setUser({
-        nickname: info.nickname,
-        startTime: info.startTime,
-        setTime: info.setTime,
+        nickname: nickname,
       })
     );
     history.push("/mypage");
@@ -190,10 +158,10 @@ const loginCheckDB = () => {
 const logoutDB = () => {
   return function (dispatch, getState, { history }) {
     deleteCookie("token");
+    deleteCookie("user");
     axios.defaults.headers.common["Authorization"] = null;
     delete axios.defaults.headers.common["Authorization"];
     dispatch(logOut());
-    history.replace("/");
   };
 };
 

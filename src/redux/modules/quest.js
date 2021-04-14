@@ -144,7 +144,6 @@ const initialState = {
  chat : true,
 }
 
-
 //월 리스트가 없을 때 빈 리스트로 오는지 null로 오는지?
 const getMonthQuestDB = (date = null) => {
  return function (dispatch, getState, { history }) {

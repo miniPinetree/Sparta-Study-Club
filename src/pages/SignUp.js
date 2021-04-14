@@ -28,7 +28,7 @@ const SignUp = (props) => {
     //   confirmButtonColor: "#E3344E",
     // });
     setVerifiedId(id); //서버연결되면 삭제
-    console.log("서버로 이메일 중복확인");
+    console.log("서버로 이메일 중복확인", new Date());
     axios({
       method: "post",
       url:`${config.api}/user/email`,
@@ -37,8 +37,13 @@ const SignUp = (props) => {
       },
     })
       .then((res) => {
+        console.log(res.data);
         if (res.data.msg === "success") {
           setVerifiedId(id);
+          Swal.fire({
+            text: "성공.",
+            confirmButtonColor: "#E3344E",
+          });
         } else {
           Swal.fire({
             text: "이미 가입된 이메일입니다.",
@@ -75,6 +80,10 @@ const SignUp = (props) => {
         console.log(res.data);
         if (res.data.msg === "success") {
           setVerifiedNick(nick);
+          Swal.fire({
+            text: "성공.",
+            confirmButtonColor: "#E3344E",
+          });
         } else {
           Swal.fire({
             text: "이미 가입된 닉네임입니다.",
@@ -201,9 +210,9 @@ const SignUp = (props) => {
                   setPwd(e.target.value);
                 }}
               />
-              {pwd && pwd.length < 6 ? (
+              {pwd && pwd.length < 8 ? (
                 <Text color="#E2344E" size="11px" margin="0 0 10px 10px">
-                  6자 이상 입력해주세요.
+                  8자 이상 입력해주세요.
                 </Text>
               ) : (
                 ""

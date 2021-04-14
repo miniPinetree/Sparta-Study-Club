@@ -12,7 +12,6 @@ import { Image, Text, Grid, Progress } from "../elements";
 import Rtan from "../images/rtan.png";
 const MyPage = (props) => {
   const dispatch = useDispatch();
-
   //리덕스 내 데이터가 변경되면 리렌더링된다.
   const user = useSelector((state) => state.user.user);
   const dayQuest = useSelector((state) => state.quest.dayQuest);
@@ -92,7 +91,7 @@ const MyPage = (props) => {
                 height="40px"
               />
               <Text size="18px" margin="7px" bold>
-                <Point>'{user.nickname}님'</Point> {greeting()}
+                <Point>'{user?.nickname}님'</Point> {greeting()}
               </Text>
             </Mentbox>
             {/* 시간 설정 시 더미표시.
@@ -103,7 +102,7 @@ const MyPage = (props) => {
                         <Text size="12px" margin="0px 0px 0px 11px">{user.setTime}시간/3시간</Text>
                         </div>
                     </Mentbox> */}
-            {user.setTime ? (
+            {user?.setTime ? (
               <ProgressBox>
                 <Progress/>
               </ProgressBox>
@@ -121,7 +120,7 @@ const MyPage = (props) => {
               <Text bold>
                 오늘의 퀘스트! 현재 달성률: <Point>{dayRate?dayRate:0}%</Point>
               </Text>
-              <TodoInput placeholder={user.setTime ? `${user.nickname}님, 오늘의 목표를 정해주세요:)` :
+              <TodoInput placeholder={user?.setTime ? `${user?.nickname}님, 오늘의 목표를 정해주세요:)` :
                 "목표 시간을 선택해주세요 !"} onKeyPress={(e) => {
                     if (e.key === 'Enter') {
                       if (!user.setTime) {
