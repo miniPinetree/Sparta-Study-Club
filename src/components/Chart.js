@@ -15,8 +15,9 @@ const Chart = (props) => {
     const day = questList.find((q) => q.day === _day);
     if (day) range.push(day);
   }
-  console.log(range);
-  const rangeLabel = range.map((day) => {
+  console.log(questList);
+
+  const rangeLabel = questList.map((day) => {
     if (day.studySetTime && day.questRate > 30) {
       return day.studySetTime + "시간동안 " + day.questRate + "%달성!";
     } else if (day.studySetTime && day.questRate > 0) {
@@ -25,7 +26,7 @@ const Chart = (props) => {
       return "달성률이 아쉬워요. 다음에 더 잘할 수 있어요!";
     }
   });
-  const rangeData = range.map((day) => {
+  const rangeData = questList.map((day) => {
     return day.studySetTime;
   });
 
@@ -149,7 +150,7 @@ const Chart = (props) => {
         <Xaxis />
         <Grid is_flex padding="0 1px 0 10px">
           {/* day기준 map으로 data 채워넣기 */}
-          {range.map((day, idx) => {
+          {questList.map((day, idx) => {
             const date = day.day.split("/");
             return (
               <Lable key={idx}>
