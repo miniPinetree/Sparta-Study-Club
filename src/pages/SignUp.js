@@ -27,8 +27,6 @@ const SignUp = (props) => {
     //   text: "이메일 중복여부",
     //   confirmButtonColor: "#E3344E",
     // });
-    setVerifiedId(id); //서버연결되면 삭제
-    console.log("서버로 이메일 중복확인", new Date());
     axios({
       method: "post",
       url:`${config.api}/user/email`,
@@ -37,13 +35,8 @@ const SignUp = (props) => {
       },
     })
       .then((res) => {
-        console.log(res.data);
         if (res.data.msg === "success") {
           setVerifiedId(id);
-          Swal.fire({
-            text: "성공.",
-            confirmButtonColor: "#E3344E",
-          });
         } else {
           Swal.fire({
             text: "이미 가입된 이메일입니다.",
@@ -67,8 +60,6 @@ const SignUp = (props) => {
     //   text: "닉네임 중복여부",
     //   confirmButtonColor: "#E3344E",
     // });
-    console.log("서버로 닉네임 중복확인");
-    setVerifiedNick(nick);//서버와 연결되면 삭제
     axios({
       method: "post",
       url: `${config.api}/user/nickname`,
@@ -77,13 +68,8 @@ const SignUp = (props) => {
       },
     })
       .then((res) => {
-        console.log(res.data);
         if (res.data.msg === "success") {
           setVerifiedNick(nick);
-          Swal.fire({
-            text: "성공.",
-            confirmButtonColor: "#E3344E",
-          });
         } else {
           Swal.fire({
             text: "이미 가입된 닉네임입니다.",
@@ -238,6 +224,7 @@ const SignUp = (props) => {
             verified_nick &&
             id.length > 2 &&
             nick.length > 2 &&
+            pwd &&
             pwd === confirm_pwd ? (
               <Button _onClick={signUp}>회원가입</Button>
             ) : (

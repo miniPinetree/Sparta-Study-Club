@@ -19,25 +19,12 @@ function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
 
-//   const initializeUserInfo = () => {
-//     const token = getCookie('token');
-//     const info = getCookie('study');
-//     console.log(token,info,JSON.parse(info));
-//     if(!token) return;
-
-//     const { UserActions } = this.props;
-//     UserActions.loginCheckDB();
-// };
 React.useEffect(()=>{
  
- if(!user){
+ if(!user&&window.location.pathname !== "/signup"){
   dispatch(userActions.loginCheckDB());
- }else{
-  console.log("유지실패");
  }
 }, []);
-
-
   return (
     <React.Fragment>
     <ConnectedRouter history={history}>
@@ -48,5 +35,4 @@ React.useEffect(()=>{
     </React.Fragment>
   );
 }
-
 export default App;

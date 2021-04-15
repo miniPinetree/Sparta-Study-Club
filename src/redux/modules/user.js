@@ -15,12 +15,9 @@ const setUser = createAction(SET_USER, (user) => ({ user }));
 const getUser = createAction(GET_USER, (user) => ({ user }));
 
 const initialState = {
-  //더미 ! 서버와 연결할 때는 null로 바꾸세요.
   user:null,
 };
-
 //middleware actions
-
       //다르게 적어보기
       // const data={
       //   email:id,
@@ -28,7 +25,6 @@ const initialState = {
       //   nickname:nick,
       // }
       // axios.post(`${config.api}/user`,data)
-
 //회원가입 API
 const signupDB = (id, pwd, nick) => {
   return function (dispatch, getState, { history }) {
@@ -79,12 +75,13 @@ const loginDB = (id, pwd) => {
             nickname: res.data.nickname,
           };
           dispatch(setUser(userInfo));
-          setCookie("token", res.data.token);
+          setCookie("token", res.data.token, 24 - new Date().getHours());
+          setCookie("userToday", res.data.userTodayId, 24 - new Date().getHours());
           setCookie("user", res.data.nickname, 24 - new Date().getHours());
           //토큰을 헤더 기본값으로 설정
           axios.defaults.headers.common[
             "authorization"
-          ] = `${res.data.token}`; //Bearer
+          ] = `Bearer ${res.data.token}`; //Bearer
           history.push("/mypage");
         } else {
           Swal.fire({
@@ -105,8 +102,6 @@ const loginDB = (id, pwd) => {
 const setTimeDB = (startTime, targetTime)=>{
   return function (dispatch, getState, { history }) {
     const nickname = getState().user.user.nickname;
-    const token = getCookie("token");
-    console.log(targetTime);
       axios({
           method:"post",
           url: `${config.api}/quest/time`,
@@ -117,11 +112,16 @@ const setTimeDB = (startTime, targetTime)=>{
           console.log(res.data);
           if(res.data.msg==="fail"){
               Swal.fire({
-                  text: `저장에 실패했습니다.`,
+                  text: `이미 설정된 시간이 있습니다.`,
                   confirmButtonColor: "#E3344E",
                 });
                 return;
           }else{
+            let time = res.data.studyTime
+            // .split("T")[1];
+            // time = time.split(".")[0]
+                setCookie("time", time, 24 - new Date().getHours());
+                setCookie("userToday", res.data.userTodayId, 24 - new Date().getHours());
                 Swal.fire({
                 title:`${nickname}님이라면 할 수 있어요`,
                 text: `목표를 정해 ${targetTime}시간 내에 완수해봐요 🐱‍🏍
@@ -138,12 +138,11 @@ const setTimeDB = (startTime, targetTime)=>{
 //여기서는 클라이언트에 저장되어 있는 정보로만 1차 확인한다.
 const loginCheckDB = () => {
   return function (dispatch, getState, { history }) {
-
  const token = getCookie('token');
  const nickname=getCookie('user');
  axios.defaults.headers.common[
   "authorization"
-] = `${token}`; //Bearer
+] = `Bearer ${token}`; //Bearer
    if(!token||!nickname){
     history.push("/");
    }else{
@@ -179,6 +178,7 @@ export default handleActions(
       produce(state, (draft) => {
         draft.user = null;
       }),
+
     [GET_USER]: (state, action) => produce(state, (draft) => {}),
   },
   initialState
