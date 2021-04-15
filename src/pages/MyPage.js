@@ -15,10 +15,11 @@ const MyPage = (props) => {
   //리덕스 내 데이터가 변경되면 리렌더링된다.
   const user = useSelector((state) => state.user.user);
   const dayQuest = useSelector((state) => state.quest.dayQuest);
-  //const monthQuest = useSelector((state) => state.quest.monthQuest);
-  //const today = moment().format('YYYY/MM/DD');
-  //const todayList = monthQuest.find((m) => m.day === today);
-  //let dayRate = todayList ? Math.floor(todayList.questRate) : 0;
+/*  const monthQuest = useSelector((state) => state.quest.monthQuest);
+  const today = moment().format('YYYY/MM/DD');
+  const todayList = monthQuest.find((m) => m.day === today);
+  let dayRate = todayList ? Math.floor(todayList.questRate) : 0;
+*/
   let dayRate = Math.round((dayQuest.filter((q) => q.questYn === true).length / dayQuest.length)*100);
   const chatOnOff = useSelector((state) => state.quest.chat);
 
@@ -26,7 +27,7 @@ const MyPage = (props) => {
     //두개로..
     let date = moment().format('YYYYM');
   dispatch(questActions.getMonthQuestDB(date));
-  }, []);
+  }, [dayRate]);
 
   //회원에게 랜덤으로 보이는 멘트.
   const greeting = () => {
