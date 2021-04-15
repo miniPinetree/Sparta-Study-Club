@@ -37,7 +37,6 @@ const signupDB = (id, pwd, nick) => {
         nickname: nick,
       },
     }).then((res) => {
-        console.log(res, res.data);
         if (res.data.msg === "success") {
           Swal.fire({
             text: "가입이 완료되었습니다!",
@@ -69,17 +68,17 @@ const loginDB = (id, pwd) => {
       },
     })
       .then((res) => {
-        console.log(res, res.data);
         if (res.data.msg === "success") {
           const userInfo = {
             nickname: res.data.nickname,
             userTodayId:res.data.userTodayId,
             setTime:res.data.studySetTime,
+            startTime:res.data.studyTime,
           };
+          console.log(res.data, userInfo);
           dispatch(setUser(userInfo));
           setCookie("token", res.data.token, 24 - new Date().getHours());
-          setCookie("userTodayId", res.data.userTodayId, 24 - new Date().getHours());
-          setCookie("user", res.data.nickname, 24 - new Date().getHours());
+          setCookie("_study", JSON.stringify(userInfo), 24 - new Date().getHours());
           //토큰을 헤더 기본값으로 설정
           axios.defaults.headers.common[
             "authorization"
@@ -119,17 +118,16 @@ const setTimeDB = (startTime, targetTime)=>{
                 });
                 return;
           }else{
-
+            console.log(res.data);
             const userInfo = {
               nickname: nickname,
               userTodayId:res.data.userTodayId,
+              startTime:res.data.studyTime,
               setTime:targetTime,
             };
             dispatch(setUser(userInfo));
-            // .split("T")[1];
-            // time = time.split(".")[0]
-                setCookie("time", targetTime, 24 - new Date().getHours());
-                setCookie("userTodayId", res.data.userTodayId, 24 - new Date().getHours());
+            console.log(userInfo, typeof userInfo);
+            setCookie("_study", JSON.stringify(userInfo), 24 - new Date().getHours());
                 Swal.fire({
                 title:`${nickname}님이라면 할 수 있어요`,
                 text: `목표를 정해 ${targetTime}시간 내에 완수해봐요 🐱‍🏍
@@ -146,25 +144,23 @@ const setTimeDB = (startTime, targetTime)=>{
 //여기서는 클라이언트에 저장되어 있는 정보로만 1차 확인한다.
 const loginCheckDB = () => {
   return function (dispatch, getState, { history }) {
+//  const nickname = getState().user.user.nickname;
  const token = getCookie('token');
- const nickname=getCookie('user');
- const userTodayId = getCookie("userTodayId");
- const studySetTime = getCookie('time');
+ const _userInfo = getCookie('_study');
+console.log(typeof _userInfo,token);
  axios.defaults.headers.common[
   "authorization"
 ] = `Bearer ${token}`; //Bearer
-   if(!token||!nickname){
+
+   if(!token||!_userInfo){
     history.push("/");
    }else{
-     console.log(nickname);
-    dispatch(
-      setUser({
-        nickname: nickname,
-        userTodayId: userTodayId,
-        setTime:studySetTime,
-      })
-    );
-    history.push("/mypage");
+      const userInfo = JSON.parse(_userInfo);
+      console.log(userInfo);
+      dispatch(
+        setUser(userInfo)
+      );
+      history.push("/mypage");
    }
   };
 };
@@ -172,10 +168,11 @@ const loginCheckDB = () => {
 const logoutDB = () => {
   return function (dispatch, getState, { history }) {
     deleteCookie("token");
-    deleteCookie("user");
+    deleteCookie("_study");
     axios.defaults.headers.common["Authorization"] = null;
     delete axios.defaults.headers.common["Authorization"];
     dispatch(logOut());
+    history.replace('/');
   };
 };
 

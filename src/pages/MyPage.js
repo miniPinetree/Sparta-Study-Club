@@ -17,7 +17,11 @@ const MyPage = (props) => {
   const dayQuest = useSelector((state) => state.quest.dayQuest);
   let dayRate = Math.round((dayQuest.filter((q) => q.questYn === true).length / dayQuest.length)*100);
   let chatOnOff = useSelector((state) => state.quest.chat);
-console.log(user);
+
+  //테스트용도
+let monthQuest = useSelector((state)=> state.quest.monthQuest);
+  console.log(user, monthQuest);
+
   React.useEffect(() => {
     //두개로..
     let date = moment().format('YYYYM');
