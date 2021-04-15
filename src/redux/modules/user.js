@@ -73,10 +73,12 @@ const loginDB = (id, pwd) => {
         if (res.data.msg === "success") {
           const userInfo = {
             nickname: res.data.nickname,
+            userTodayId:res.data.userTodayId,
+            studySetTime:res.data.studySetTime,
           };
           dispatch(setUser(userInfo));
           setCookie("token", res.data.token, 24 - new Date().getHours());
-          setCookie("userToday", res.data.userTodayId, 24 - new Date().getHours());
+          setCookie("userTodayId", res.data.userTodayId, 24 - new Date().getHours());
           setCookie("user", res.data.nickname, 24 - new Date().getHours());
           //토큰을 헤더 기본값으로 설정
           axios.defaults.headers.common[
@@ -117,11 +119,17 @@ const setTimeDB = (startTime, targetTime)=>{
                 });
                 return;
           }else{
-            let time = res.data.studyTime
+
+            const userInfo = {
+              nickname: nickname,
+              userTodayId:res.data.userTodayId,
+              studySetTime:targetTime,
+            };
+            dispatch(setUser(userInfo));
             // .split("T")[1];
             // time = time.split(".")[0]
-                setCookie("time", time, 24 - new Date().getHours());
-                setCookie("userToday", res.data.userTodayId, 24 - new Date().getHours());
+                setCookie("time", targetTime, 24 - new Date().getHours());
+                setCookie("userTodayId", res.data.userTodayId, 24 - new Date().getHours());
                 Swal.fire({
                 title:`${nickname}님이라면 할 수 있어요`,
                 text: `목표를 정해 ${targetTime}시간 내에 완수해봐요 🐱‍🏍
@@ -140,6 +148,8 @@ const loginCheckDB = () => {
   return function (dispatch, getState, { history }) {
  const token = getCookie('token');
  const nickname=getCookie('user');
+ const userTodayId = getCookie("userTodayId");
+ const studySetTime = getCookie('time');
  axios.defaults.headers.common[
   "authorization"
 ] = `Bearer ${token}`; //Bearer
@@ -150,6 +160,8 @@ const loginCheckDB = () => {
     dispatch(
       setUser({
         nickname: nickname,
+        userTodayId: userTodayId,
+        studySetTime:studySetTime,
       })
     );
     history.push("/mypage");

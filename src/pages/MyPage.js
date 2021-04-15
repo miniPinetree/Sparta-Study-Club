@@ -17,20 +17,14 @@ const MyPage = (props) => {
   const dayQuest = useSelector((state) => state.quest.dayQuest);
   let dayRate = Math.round((dayQuest.filter((q) => q.questYn === true).length / dayQuest.length)*100);
   let chatOnOff = useSelector((state) => state.quest.chat);
-
+console.log(user);
   React.useEffect(() => {
     //두개로..
     let date = moment().format('YYYYM');
-  //dispatch(questActions.getMonthQuestDB(date));
-
+  dispatch(questActions.getMonthQuestDB(date));
   }, []);
 
-
-  //서버연결시 아래 줄 삭제
-//  const [ time, selectTime ] = React.useState(user.setTime);
-
   //회원에게 랜덤으로 보이는 멘트.
-
   const greeting = () => {
     const ment = [
       "오늘도 달려볼까요?",
@@ -61,7 +55,9 @@ const MyPage = (props) => {
       dispatch(userActions.setTimeDB(new Date().getTime(),btnVal));
   }
   };
-
+const getTargetTime = ()=>{
+  
+}
   const addDayQeust = (e) => {
     
     if (e.target.value.length === 0) {

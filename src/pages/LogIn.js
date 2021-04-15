@@ -64,7 +64,7 @@ const LogIn = (props) => {
                   setPwd(e.target.value)
                 }}
               />
-               {pwd && pwd.length < 6 ? (
+               {pwd && pwd.length < 8 ? (
               <Text color="#E2344E" size="11px" margin="0 10px">
                 8자 이상 입력해주세요.
               </Text>
