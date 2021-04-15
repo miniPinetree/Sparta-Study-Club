@@ -74,6 +74,7 @@ const loginDB = (id, pwd) => {
           const userInfo = {
             nickname: res.data.nickname,
             userTodayId:res.data.userTodayId,
+            studySetTime:res.data.studySetTime,
             setTime:res.data.studySetTime,
           };
           dispatch(setUser(userInfo));
@@ -123,6 +124,7 @@ const setTimeDB = (startTime, targetTime)=>{
             const userInfo = {
               nickname: nickname,
               userTodayId:res.data.userTodayId,
+              studySetTime:targetTime,
               setTime:targetTime,
             };
             dispatch(setUser(userInfo));
@@ -161,6 +163,7 @@ const loginCheckDB = () => {
       setUser({
         nickname: nickname,
         userTodayId: userTodayId,
+        studySetTime:studySetTime,
         setTime:studySetTime,
       })
     );
