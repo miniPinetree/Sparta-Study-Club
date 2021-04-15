@@ -222,7 +222,7 @@ const getMonthQuestDB = (date = null) => {
 const addQuestDB = (questContents =null) => {
  return function (dispacth, getState, { history }) {
 
-  const userTodayId = getCookie('userTodayId');
+  const userTodayId = getState().user.user.userTodayId;
   if (!questContents) {
    Swal.fire({
     text: '내용을 입력해주세요!✏️',
@@ -271,7 +271,7 @@ const onOffChat = () => {
 const deleteQuestDB = (questId=null) => {
   return function (dispacth, getState, { history }) {
   const token = getCookie('token');
-  const userTodayId = getCookie('userTodayId');
+  const userTodayId = getState().user.user.userTodayId;
     console.log(`userToday: ${userTodayId} questId: ${questId}`)
   if (!questId || !userTodayId) {
     console.log('questId 혹은 userTodayId가 없습니다.');
@@ -308,7 +308,7 @@ const deleteQuestDB = (questId=null) => {
 const updateQuestDB = (questId= null) => {
  return function (dispacth, getState, { history }) { 
   
-  const userTodayId = getCookie('userTodayId');
+  const userTodayId = getState().user.user.userTodayId;
    
    if (!questId || !userTodayId) {
     console.log('questId 혹은 userTodayId가 없습니다.');
