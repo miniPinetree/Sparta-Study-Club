@@ -123,11 +123,7 @@ const setTimeDB = (startTime, targetTime)=>{
             const userInfo = {
               nickname: nickname,
               userTodayId:res.data.userTodayId,
-<<<<<<< HEAD
               startTime:res.data.studyTime,
-=======
-              studySetTime:targetTime,
->>>>>>> c7cb3d77446f08e60f025145e6ade0a016b165f8
               setTime:targetTime,
             };
             dispatch(setUser(userInfo));
