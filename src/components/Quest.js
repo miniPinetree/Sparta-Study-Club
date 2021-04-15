@@ -20,7 +20,7 @@ const changeChecked = () => {
  
  return (
   <React.Fragment>
-      <FlexBox>
+   <FlexBox>
     <Checkbox color="secondary"
      inputProps={{ 'aria-label': 'secondary checkbox' }}
      onClick={changeChecked} checked={checked}/>

@@ -72,6 +72,7 @@ const loginDB = (id, pwd) => {
           const userInfo = {
             nickname: res.data.nickname,
             userTodayId:res.data.userTodayId,
+            studySetTime:res.data.studySetTime,
             setTime:res.data.studySetTime,
             startTime:res.data.studyTime,
           };
@@ -122,7 +123,11 @@ const setTimeDB = (startTime, targetTime)=>{
             const userInfo = {
               nickname: nickname,
               userTodayId:res.data.userTodayId,
+<<<<<<< HEAD
               startTime:res.data.studyTime,
+=======
+              studySetTime:targetTime,
+>>>>>>> c7cb3d77446f08e60f025145e6ade0a016b165f8
               setTime:targetTime,
             };
             dispatch(setUser(userInfo));
@@ -155,12 +160,14 @@ console.log(typeof _userInfo,token);
    if(!token||!_userInfo){
     history.push("/");
    }else{
+
       const userInfo = JSON.parse(_userInfo);
       console.log(userInfo);
       dispatch(
         setUser(userInfo)
       );
       history.push("/mypage");
+
    }
   };
 };
