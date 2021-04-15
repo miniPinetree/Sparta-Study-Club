@@ -10,28 +10,27 @@ import moment from 'moment';
 import { Calendar, Header, Quest, Chat } from "../components";
 import { Image, Text, Grid, Progress } from "../elements";
 import Rtan from "../images/rtan.png";
-import Spinner from '../shared/Spinner';
 
 const MyPage = (props) => {
   const dispatch = useDispatch();
   //리덕스 내 데이터가 변경되면 리렌더링된다.
   const user = useSelector((state) => state.user.user);
   const dayQuest = useSelector((state) => state.quest.dayQuest);
-  /*  const monthQuest = useSelector((state) => state.quest.monthQuest);
-    const today = moment().format('YYYY/MM/DD');
-    const todayList = monthQuest.find((m) => m.day === today);
-    let dayRate = todayList ? Math.floor(todayList.questRate) : 0;
-  */
-  let dayRate = Math.round((dayQuest.filter((q) => q.questYn === true).length / dayQuest.length) * 100);
+
+  const monthQuest = useSelector((state) => state.quest.monthQuest);
+  const today = moment().format('YYYY/MM/DD');
+  const todayList = monthQuest.find((m) => m.day === today);
+  let dayRate = todayList ? Math.floor(todayList.questRate) : 0;
+  
+  //let dayRate = Math.round((dayQuest.filter((q) => q.questYn === true).length / dayQuest.length) * 100);
+
   const chatOnOff = useSelector((state) => state.quest.chat);
   const loading = useSelector((state) => state.quest.isLoading);
-
-
   React.useEffect(() => {
     //두개로..
     let date = moment().format('YYYYM');
     dispatch(questActions.getMonthQuestDB(date));
-  }, [dayRate]);
+  }, []);
 
   //회원에게 랜덤으로 보이는 멘트.
   const greeting = () => {
@@ -77,6 +76,7 @@ const MyPage = (props) => {
       return false;
     }
     dispatch(questActions.addQuestDB(e.target.value));
+    
     e.target.value = '';
   }
 
@@ -86,11 +86,11 @@ const MyPage = (props) => {
       <ContainerBox style={chatOnOff ? { paddingLeft: '230px' } : {}}>
         <Header />
         <Chat chat={chatOnOff} />
-        {loading ? (
+        {/*{loading ? (
 
           <Spinner/>
           ):(
-       
+          */}
           <ContentBox>
           <ItemBox>
             {user?.setTime ? (
@@ -142,6 +142,7 @@ const MyPage = (props) => {
                   })
                 } else {
                   addDayQeust(e);
+                  
                 }
               }
             }
@@ -170,7 +171,7 @@ const MyPage = (props) => {
         </Grid>
       </ItemBox>
         </ContentBox>
-     )}
+        {/*})}*/}
       </ContainerBox>
     </React.Fragment>
   );

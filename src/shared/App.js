@@ -23,7 +23,8 @@ React.useEffect(()=>{
  
  if(!user&&window.location.pathname !== "/signup"){
   dispatch(userActions.loginCheckDB());
- }
+  }
+  
 }, []);
   return (
     <React.Fragment>

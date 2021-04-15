@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { getCookie } from '../shared/Cookie';
 //목표시간과 경과시간 기준 진행률
 const Progress = (props) => {
   const user = useSelector((state) => state.user.user);

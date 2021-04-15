@@ -7,7 +7,7 @@ import { faCheckSquare } from "@fortawesome/free-solid-svg-icons";
 const LastQuest = (props) => {
 
   const { questList } = props;
-  console.log(questList);
+ 
 
   //지정한 퀘스트 없을 때..
   if (!questList) {

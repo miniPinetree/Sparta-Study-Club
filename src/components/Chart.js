@@ -15,7 +15,6 @@ const Chart = (props) => {
     const day = questList.find((q) => q.day === _day);
     if (day) range.push(day);
   }
-  console.log(questList);
 
   const rangeLabel = questList.map((day) => {
     if (day.studySetTime && day.questRate > 30) {

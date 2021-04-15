@@ -10,13 +10,14 @@ import '../scss/class.scss';
 import Logo from '../images/MypageLogo.png'
 import { history } from "../redux/configStore";
 import { actionCreators as questActions } from "../redux/modules/quest";
+import {actionCreators as userActions} from "../redux/modules/user";
 import { useSelector, useDispatch } from "react-redux";
 
 
 
 const Header = (props) => {
 
-    const dispacth = useDispatch();
+    const dispatch = useDispatch();
 
   return (
     <React.Fragment>
@@ -26,14 +27,16 @@ const Header = (props) => {
              </IconBox>
                 <IconBox>
               <IconInnerBox >
-                <FontAwesomeIcon icon={faSignOutAlt} size='2x' color={'white'}/>
+                <FontAwesomeIcon icon={faSignOutAlt} size='2x' color={'white'} onClick={()=>{
+                  dispatch(userActions.logoutDB());
+                }}/>
               </IconInnerBox>
               <IconInnerBox >
                 <FontAwesomeIcon icon={faBook} size='2x' color={'white'} />
               </IconInnerBox>
               <IconInnerBox >
                 <FontAwesomeIcon icon={faComments} size='2x' color={'white'} onClick={() => {
-                    dispacth(questActions.onOffChat());
+                    dispatch(questActions.onOffChat());
                 }}/>
               </IconInnerBox>    
               <IconInnerBox className='pick-page'>
