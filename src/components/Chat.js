@@ -22,8 +22,8 @@ const Chat = (props) => {
     </ChatTopbox>
    <ChatBox>
     {/* 더미.... */}
-    <UserChat />
-    <ChatBottomBox>
+       <UserChat />
+   <ChatBottomBox>
       <ChatInput placeholder='Message..'/>
     </ChatBottomBox>
     </ChatBox>

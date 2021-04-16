@@ -18,7 +18,6 @@ const MyPage = (props) => {
   //리덕스 내 데이터가 변경되면 리렌더링된다.
   const user = useSelector((state) => state.user.user);
   const dayQuest = useSelector((state) => state.quest.dayQuest);
-
   const monthQuest = useSelector((state) => state.quest.monthQuest);
   const today = moment().format('YYYY/MM/DD');
   const todayList = monthQuest.find((m) => m.day === today);
