@@ -15,9 +15,9 @@ const LOADING = 'LOADING';
 const CHATTING = 'CHATTING';
 
 const setQuest = createAction(SET_QUEST, (dayQuest) => ({ dayQuest }));
-const addQuest = createAction(ADD_QUEST, (quest,questRate) => ({ quest,questRate }));
-const deleteQuest = createAction(DELETE_QUEST, (questId,questRate) => ({ questId,questRate }));
-const updateQuest = createAction(UPDATE_QUEST, (questId,questYn,questRate) => ({ questId,questYn,questRate}));
+const addQuest = createAction(ADD_QUEST, (quest,questRate,monthQuest) => ({ quest,questRate,monthQuest }));
+const deleteQuest = createAction(DELETE_QUEST, (questId,questRate,monthQuest) => ({ questId,questRate,monthQuest }));
+const updateQuest = createAction(UPDATE_QUEST, (questId,questYn,questRate,monthQuest) => ({ questId,questYn,questRate,monthQuest}));
 const setMonthQuest = createAction(SET_MONTH_QUEST, (monthQuest) => ({monthQuest}));
 const loading = createAction(LOADING, (isLoading) => ({ isLoading }));
 const setChatting = createAction(CHATTING, (on_off) => ({ on_off }));
@@ -160,7 +160,7 @@ const getMonthQuestDB = (date = null) => {
   }).then((res) => {
 
     if (res.data.msg === 'success') {
-      console.log(res)
+      
       const _data = res.data.data;
       //날짜만 뽑아서 중복 제거.
       const _day = _data.map((d) => d.day);
@@ -236,14 +236,40 @@ const addQuestDB = (questContents =null) => {
    },
   }).then((res) => {
    if (res.data.msg === 'success') {
-    let quest = {
+    let _quest = {
      questId: res.data.questId,
      questContents: res.data.questContents,
      questYn : false,
     }
-    dispacth(addQuest(quest,res.data.questRate));
-    const monthQuest = getState().quest.monthQuest;
-    console.log(monthQuest);
+     const _monthQuest = getState().quest.monthQuest;
+     const user = getState().user.user;
+     const today = moment().format('YYYY/MM/DD');
+     const todayMonthQuest = _monthQuest.find((m)=> m.day === today);
+     //monthQuest에 오늘 날짜가 없다면.
+     if (!todayMonthQuest) {
+       
+       let monthQuest = {
+         day: today,
+         questRate: 0,
+         studyTime: user.startTime,
+         studySetTime: user.studySetTime,
+         quest: [],
+       }
+
+       monthQuest.quest.push(_quest);
+       console.log(monthQuest);
+       dispacth(addQuest(_quest, res.data.questRate, monthQuest));
+       return false;
+     }
+     
+     let copyQuest = todayMonthQuest.quest.filter(() => true);
+     copyQuest = [...copyQuest, _quest];
+    
+     let _todayMonthQuest = Object.assign({}, todayMonthQuest);
+    _todayMonthQuest.quest = copyQuest;
+      
+     dispacth(addQuest(_quest, res.data.questRate,_todayMonthQuest));
+
 
    } else {
     Swal.fire({
@@ -268,7 +294,7 @@ const onOffChat = () => {
 //userTodayId body에 같이 실어서 보내기 추가만.
 const deleteQuestDB = (questId=null) => {
   return function (dispacth, getState, { history }) {
-  const token = getCookie('token');
+  
   const userTodayId = getState().user.user.userTodayId;
     console.log(`userToday: ${userTodayId} questId: ${questId}`)
   if (!questId || !userTodayId) {
@@ -279,9 +305,7 @@ const deleteQuestDB = (questId=null) => {
   axios({
    method: 'delete',
    url: `${config.api}/quest`,
-    header: {
-      "authorization":`Bearer ${token}`,
-    },
+    
    data:{
     userTodayId:userTodayId,
     questId:questId,
@@ -289,7 +313,21 @@ const deleteQuestDB = (questId=null) => {
   }).then((res) => {
     
    if (res.data.msg === 'success') {
-    dispacth(deleteQuest(questId,res.data.questRate));
+     
+     const _monthQuest = getState().quest.monthQuest;
+     const today = moment().format('YYYY/MM/DD');
+     const todayMonthQuest = _monthQuest.find((m) => m.day === today);
+     let copyQuest = todayMonthQuest.quest.filter(() => true);
+     
+     let idx = copyQuest.findIndex((q) => q.questId === questId);
+     copyQuest.splice(idx, 1);
+     let _todayMonthQuest = Object.assign({}, todayMonthQuest);
+     _todayMonthQuest.quest = copyQuest;
+
+     
+     dispacth(deleteQuest(questId, res.data.questRate,_todayMonthQuest));
+     
+
    } else {
      
      Swal.fire({
@@ -329,7 +367,20 @@ const updateQuestDB = (questId= null) => {
    },
   }).then((res) => {
    if (res.data.msg === 'success') {
-    dispacth(updateQuest(questId, questYn,res.data.questRate));
+     
+     const _monthQuest = getState().quest.monthQuest;
+     const today = moment().format('YYYY/MM/DD');
+     const todayMonthQuest = _monthQuest.find((m) => m.day === today);
+     let copyQeust = todayMonthQuest.quest.filter(() => true);
+
+     let idx = copyQeust.findIndex((q) => q.questId === questId);
+     copyQeust[idx] = { ...copyQeust[idx], questYn: questYn };
+     
+     let _todayMonthQuest = Object.assign({}, todayMonthQuest);
+     _todayMonthQuest.quest = copyQeust;
+      dispacth(updateQuest(questId, questYn, res.data.questRate, _todayMonthQuest));
+     
+
    } else {
      Swal.fire({
      text: '퀘스트 업데이트에 실패했습니다. ',
@@ -353,6 +404,15 @@ export default handleActions({
    if (idx !== -1) {
        draft.monthQuest[idx].questRate = action.payload.questRate;
    }
+
+     let _idx = draft.monthQuest.findIndex((m) => m.day === action.payload.monthQuest.day);
+
+     if (_idx === -1) {
+       draft.monthQuest = [...draft.monthQuest, action.payload.monthQuest]
+     } else {
+       draft.monthQuest[_idx] = action.payload.monthQuest;
+     }
+
  }),
  [DELETE_QUEST]: (state, action) => produce(state, (draft) => {
   let idx = draft.dayQuest.findIndex((q) => q.questId === action.payload.questId);
@@ -360,7 +420,9 @@ export default handleActions({
   let today = moment().format('YYYY/MM/DD');
   let _idx = draft.monthQuest.findIndex((m) => m.day === today);
    if (_idx !== -1) {
+   draft.monthQuest[_idx] = action.payload.monthQuest;
    draft.monthQuest[_idx].questRate = action.payload.questRate;
+   
    }
  }),
  [UPDATE_QUEST]: (state, action) => produce(state, (draft) => {
@@ -369,7 +431,9 @@ export default handleActions({
   let today = moment().format('YYYY/MM/DD');
   let _idx = draft.monthQuest.findIndex((m) => m.day === today);
    if (_idx !== -1) {
-     draft.monthQuest[_idx].questRate = action.payload.questRate; 
+     draft.monthQuest[_idx] = action.payload.monthQuest;
+     draft.monthQuest[_idx].questRate = action.payload.questRate;
+     
    }
  }),
  [SET_MONTH_QUEST]: (state, action) => produce(state, (draft) => {
@@ -394,42 +458,3 @@ const actionCreators = {
 
 export { actionCreators };
 
-/*
-const _data = [
-  {userTodayId: '89432423-34234-234324-3423424-3423424234',
-    day: '2021/04/14',
-    studyTime: '2021-04-13T20:19:51.2342',
-    studyTimeStamp: '1231231232.3423432',
-    studySetTime: 5,
-    questRate: 0,
-    questId: '4324324-34234sfs-sdfdsfsd-sfdf',
-    questContents: '그림그리기',
-    questYn: true,
-    email: 'dfsdf@dsf.com'
-  },
-  {userTodayId: '89432423-34234-234324-3423424-3423424234',
-    day: '2021/04/14',
-    studyTime: '2021-04-13T20:19:51.2342',
-    studyTimeStamp: '1231231232.3423432',
-    studySetTime: 5,
-    questRate: 0,
-    questId: '4324324-34234sfs-sdfdsfsd-sfdf',
-    questContents: '공부하기',
-    questYn: true,
-    email: 'dfsdf@dsf.com'
-  },
-  {userTodayId: '89432423-34234-234324-3423424-3423424234',
-    day: '2021/04/16',
-    studyTime: '2021-04-13T20:19:51.2342',
-    studyTimeStamp: '1231231232.3423432',
-    studySetTime: 3,
-    questRate: 0,
-    questId: '4324324-34234sfs-sdfdsfsd-sfdf',
-    questContents: '잠자기',
-    questYn: true,
-    email: 'dfsdf@dsf.com'
-  },
-
-]
-
-*/
