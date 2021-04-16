@@ -216,13 +216,10 @@ const getMonthQuestDB = (date = null) => {
   }).catch(err => console.log(err));
  }
 }
-
-
-
 const addQuestDB = (questContents =null) => {
  return function (dispacth, getState, { history }) {
-
   const userTodayId = getState().user.user.userTodayId;
+
   if (!questContents) {
    Swal.fire({
     text: '내용을 입력해주세요!✏️',
@@ -230,7 +227,6 @@ const addQuestDB = (questContents =null) => {
    });
    return false;
    }
-
   axios({
    method: 'post',
    url: `${config.api}/quest`,
@@ -246,6 +242,8 @@ const addQuestDB = (questContents =null) => {
      questYn : false,
     }
     dispacth(addQuest(quest,res.data.questRate));
+    const monthQuest = getState().quest.monthQuest;
+    console.log(monthQuest);
 
    } else {
     Swal.fire({
