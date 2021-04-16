@@ -425,9 +425,10 @@ export default handleActions({
   let today = moment().format('YYYY/MM/DD');
   let _idx = draft.monthQuest.findIndex((m) => m.day === today);
    if (_idx !== -1) {
+   draft.monthQuest[_idx] = action.payload.monthQuest;
    draft.monthQuest[_idx].questRate = action.payload.questRate;
-     draft.monthQuest[_idx] = action.payload.monthQuest;
-  }
+   
+   }
  }),
  [UPDATE_QUEST]: (state, action) => produce(state, (draft) => {
   let idx = draft.dayQuest.findIndex((q) => q.questId === action.payload.questId);

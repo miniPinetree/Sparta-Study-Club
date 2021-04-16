@@ -10,6 +10,8 @@ import moment from 'moment';
 import { Calendar, Header, Quest, Chat } from "../components";
 import { Image, Text, Grid, Progress } from "../elements";
 import Rtan from "../images/rtan.png";
+import Spinner from '../shared/Spinner';
+
 
 const MyPage = (props) => {
   const dispatch = useDispatch();
@@ -86,11 +88,11 @@ const MyPage = (props) => {
       <ContainerBox style={chatOnOff ? { paddingLeft: '230px' } : {}}>
         <Header />
         <Chat chat={chatOnOff} />
-        {/*{loading ? (
+        {loading ? (
 
           <Spinner/>
           ):(
-          */}
+          
           <ContentBox>
           <ItemBox>
             {user?.setTime ? (
@@ -171,7 +173,7 @@ const MyPage = (props) => {
         </Grid>
       </ItemBox>
         </ContentBox>
-        {/*})}*/}
+        )}
       </ContainerBox>
     </React.Fragment>
   );
