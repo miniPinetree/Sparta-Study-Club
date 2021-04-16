@@ -8,7 +8,8 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from 'react-redux';
 import '../scss/class.scss';
 const Quest = (props) => {
- 
+  console.log("할일");
+
  const { quest } = props;
  let checked = quest.questYn;
 const dispatch = useDispatch();
@@ -25,14 +26,13 @@ const changeChecked = () => {
      inputProps={{ 'aria-label': 'secondary checkbox' }}
      onClick={changeChecked} checked={checked}/>
      <Text margin='9px 0px 0px 0px' size="15px">
-     {quest.questContents}  
-     </Text>
+     {quest.questContents}
        <FontAwesomeIcon icon={faTimes} size='1x' color={'#000'} className="Delete-btn"
          onClick={() => {
            dispatch(questActions.deleteQuestDB(quest.questId));
-         }}/>
+         }}/></Text>
     </FlexBox>
- </React.Fragment>
+</React.Fragment>
 ) 
 }
 

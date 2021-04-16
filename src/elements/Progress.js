@@ -15,7 +15,6 @@ const Progress = (props) => {
     return rate;
   };
   const [progressRate, setRate] = React.useState(calProgress);
-console.log(progressRate)
   //일정한 주기로 진행률 업데이트
   const checkProgress =setInterval(function(){
     if(calProgress()>=100){
