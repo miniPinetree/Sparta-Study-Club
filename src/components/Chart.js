@@ -8,25 +8,19 @@ import moment from "moment";
 const Chart = (props) => {
 
   const dayInfo = useSelector((state) => state.quest.monthQuest);
+  const user = useSelector((state)=>state.user.user);
   let range = [];
 
-console.log(dayInfo);
-
-//그래프로 보여줄 범위는 최대 5일이다.
-//5일치 미만이면 오늘날짜를 포함하여 보여준다.
+//그래프로 보여줄 범위는 최대 5일
 if(dayInfo.length>5){
   dayInfo.filter((q,idx)=>{
-    if(idx<4){
+    if(idx<5){
       range.push(q);
     }})}else{
       range = dayInfo;
     }
-  // for(let i = 1; i < 6; i++){
-  //   const _day = moment().subtract(i, "d").format("YYYY/MM/DD");
-  //    const day = dayInfo.find((q) => q.day === _day);
-  //    if (day) range.push(day);}
 
-  console.log(range);
+    console.log(range);
 
   const rangeLabel = range.map((day) => {
     if (day.studySetTime && day.questRate > 30) {
@@ -152,12 +146,12 @@ if(dayInfo.length>5){
           }}
         />
         <Xaxis />
-        <Grid is_flex padding="0 1px 0 10px">
+        <LabelBox>
           {/* day기준 map으로 data 채워넣기 */}
-          {dayInfo.map((day, idx) => {
+          {range.map((day, idx) => {
             const date = day.day.split("/");
             return (
-              <Lable key={idx}>
+              <Label key={idx} >
                 <Text size="10px" bold>
                   {date[1] + "월" + date[2] + "일 " + day.studySetTime}시간
                   <br />
@@ -167,10 +161,10 @@ if(dayInfo.length>5){
                     <Point>0%</Point>
                   )}
                 </Text>
-              </Lable>
+              </Label>
             );
           })}
-        </Grid>
+        </LabelBox>
       </ChartBox>
     </React.Fragment>
   );
@@ -191,11 +185,16 @@ const Xaxis = styled.hr`
   bottom: 42px;
   background-color: black;
 `;
+const LabelBox = styled.div`
+display:flex;
+justify-content:space-around;
+padding:0 1px 0 10px;
+`;
 
-const Lable = styled.div`
+const Label = styled.div`
   height: 30px;
   width: 85px;
-  margin: 0;
+  
   text-align: center;
   padding: 0 3px;
   box-sizing: border-box;

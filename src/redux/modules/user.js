@@ -73,7 +73,6 @@ const loginDB = (id, pwd) => {
             nickname: res.data.nickname,
             userTodayId:res.data.userTodayId,
             studySetTime:res.data.studySetTime,
-            setTime:res.data.studySetTime,
             startTime:res.data.studyTime,
           };
           dispatch(setUser(userInfo));
@@ -121,7 +120,7 @@ const setTimeDB = (startTime, targetTime)=>{
               nickname: nickname,
               userTodayId:res.data.userTodayId,
               startTime:res.data.studyTime,
-              setTime:targetTime,
+              studySetTime:targetTime,
             };
             dispatch(setUser(userInfo));
             setCookie("_study", JSON.stringify(userInfo), 24 - new Date().getHours());
