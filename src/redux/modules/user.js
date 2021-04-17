@@ -76,7 +76,6 @@ const loginDB = (id, pwd) => {
             setTime:res.data.studySetTime,
             startTime:res.data.studyTime,
           };
-          console.log(res.data, userInfo);
           dispatch(setUser(userInfo));
           setCookie("token", res.data.token, 24 - new Date().getHours());
           setCookie("_study", JSON.stringify(userInfo), 24 - new Date().getHours());
@@ -111,7 +110,6 @@ const setTimeDB = (startTime, targetTime)=>{
               studySetTime:targetTime
           },
       }).then((res)=>{
-          console.log(res.data);
           if(res.data.msg==="fail"){
               Swal.fire({
                   text: `이미 설정된 시간이 있습니다.`,
@@ -119,7 +117,6 @@ const setTimeDB = (startTime, targetTime)=>{
                 });
                 return;
           }else{
-            console.log(res.data);
             const userInfo = {
               nickname: nickname,
               userTodayId:res.data.userTodayId,
@@ -127,7 +124,6 @@ const setTimeDB = (startTime, targetTime)=>{
               setTime:targetTime,
             };
             dispatch(setUser(userInfo));
-            console.log(userInfo, typeof userInfo);
             setCookie("_study", JSON.stringify(userInfo), 24 - new Date().getHours());
                 Swal.fire({
                 title:`${nickname}님이라면 할 수 있어요`,
@@ -148,7 +144,6 @@ const loginCheckDB = () => {
 //  const nickname = getState().user.user.nickname;
  const token = getCookie('token');
  const _userInfo = getCookie('_study');
-console.log(typeof _userInfo,token);
  axios.defaults.headers.common[
   "authorization"
 ] = `Bearer ${token}`; //Bearer
@@ -156,14 +151,11 @@ console.log(typeof _userInfo,token);
    if(!token||!_userInfo){
     history.push("/");
    }else{
-
       const userInfo = JSON.parse(_userInfo);
-      console.log(userInfo);
       dispatch(
         setUser(userInfo)
       );
       history.push("/mypage");
-
    }
   };
 };

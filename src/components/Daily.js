@@ -6,7 +6,7 @@ import '../scss/class.scss';
 import { useDispatch, useSelector } from "react-redux";
 
 const Daily = (props) => {
-    
+
   //서버 연동 전..
   const questList = useSelector((state)=> state.quest.monthQuest);
   const today = questList.find((q) => q.day === props.date);

@@ -6,17 +6,29 @@ import styled from "styled-components";
 import moment from "moment";
 
 const Chart = (props) => {
-  const { day, questRate, studyTime, studySetTime } = props;
-  const questList = useSelector((state) => state.quest.monthQuest);
-  //그래프로 표현할 날짜 범위 저장
-  const range = [];
-  for (let i = 1; i < 6; i++) {
-    const _day = moment().subtract(i, "d").format("YYYY/MM/DD");
-    const day = questList.find((q) => q.day === _day);
-    if (day) range.push(day);
-  }
 
-  const rangeLabel = questList.map((day) => {
+  const dayInfo = useSelector((state) => state.quest.monthQuest);
+  let range = [];
+
+console.log(dayInfo);
+
+//그래프로 보여줄 범위는 최대 5일이다.
+//5일치 미만이면 오늘날짜를 포함하여 보여준다.
+if(dayInfo.length>5){
+  dayInfo.filter((q,idx)=>{
+    if(idx<4){
+      range.push(q);
+    }})}else{
+      range = dayInfo;
+    }
+  // for(let i = 1; i < 6; i++){
+  //   const _day = moment().subtract(i, "d").format("YYYY/MM/DD");
+  //    const day = dayInfo.find((q) => q.day === _day);
+  //    if (day) range.push(day);}
+
+  console.log(range);
+
+  const rangeLabel = range.map((day) => {
     if (day.studySetTime && day.questRate > 30) {
       return day.studySetTime + "시간동안 " + day.questRate + "%달성!";
     } else if (day.studySetTime && day.questRate > 0) {
@@ -25,19 +37,9 @@ const Chart = (props) => {
       return "달성률이 아쉬워요. 다음에 더 잘할 수 있어요!";
     }
   });
-  const rangeData = questList.map((day) => {
+  const rangeData = range.map((day) => {
     return day.studySetTime;
   });
-
-  const getDateStr = (date) => {
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    return month + "월 " + day + "일";
-  };
-
-  const getGraphRange = () => {};
-
-  React.useEffect(() => {}, []);
 
   const data = {
     labels: rangeLabel,
@@ -67,6 +69,9 @@ const Chart = (props) => {
           "rgb(255,97,120)",
           "rgb(139,117,215)",
         ],
+        // barPercentage: 0.5,
+        // barThickness: 10,
+        maxBarThickness: 40,
         data: rangeData,
       },
     ],
@@ -116,7 +121,7 @@ const Chart = (props) => {
                     padding: 0,
                     fontSize: 17,
                   },
-                  barPercentage: 0.6,
+                  barPercentage: 0.8,
                 },
               ],
               yAxes: [
@@ -149,7 +154,7 @@ const Chart = (props) => {
         <Xaxis />
         <Grid is_flex padding="0 1px 0 10px">
           {/* day기준 map으로 data 채워넣기 */}
-          {questList.map((day, idx) => {
+          {dayInfo.map((day, idx) => {
             const date = day.day.split("/");
             return (
               <Lable key={idx}>
@@ -157,7 +162,7 @@ const Chart = (props) => {
                   {date[1] + "월" + date[2] + "일 " + day.studySetTime}시간
                   <br />
                   {day.questRate ? (
-                    <Point>목표달성률 {day.questRate}%</Point>
+                    <Point>목표달성률 {parseInt(day.questRate)}%</Point>
                   ) : (
                     <Point>0%</Point>
                   )}

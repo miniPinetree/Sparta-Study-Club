@@ -19,19 +19,18 @@ const MyPage = (props) => {
   const user = useSelector((state) => state.user.user);
   const dayQuest = useSelector((state) => state.quest.dayQuest);
   const monthQuest = useSelector((state) => state.quest.monthQuest);
+
   const today = moment().format('YYYY/MM/DD');
   const todayList = monthQuest.find((m) => m.day === today);
   let dayRate = todayList ? Math.floor(todayList.questRate) : 0;
   
-  //let dayRate = Math.round((dayQuest.filter((q) => q.questYn === true).length / dayQuest.length) * 100);
-
   const chatOnOff = useSelector((state) => state.quest.chat);
   const loading = useSelector((state) => state.quest.isLoading);
   React.useEffect(() => {
     //두개로..
     let date = moment().format('YYYYM');
     dispatch(questActions.getMonthQuestDB(date));
-  }, []);
+  }, [user]);
 
   //회원에게 랜덤으로 보이는 멘트.
   const greeting = () => {
@@ -96,17 +95,19 @@ const MyPage = (props) => {
           <ItemBox>
             {user?.setTime ? (
               <React.Fragment>
-          <Mentbox>
-            <Image src="data:image/png;base64,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" width="40px" height="40px" />
-            <div>
-              <Text size="18px" margin="-1px 0px 0px 7px" bold><Point>'{user?.nickname}님'</Point> {greeting()}</Text>
-              <Text size="12px" margin="0px 0px 0px 11px">{user?.setTime}시간 준비, 땅!</Text>
-            </div>
-          </Mentbox>
-          <ProgressBox>
-            <Progress />
-          </ProgressBox>
-        </React.Fragment>
+
+                <Mentbox>
+                <Image src="data:image/png;base64,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" width="40px" height="40px"/>
+                <div>
+                <Text size="18px" margin="-1px 0px 0px 7px" bold><Point>'{user?.nickname}님'</Point> {greeting()}</Text>
+                <Text size="12px" margin="0px 0px 0px 11px">{user?.setTime}시간 준비, 땅!</Text>
+                </div>
+            </Mentbox>
+              <ProgressBox>
+                <Progress/>
+              </ProgressBox>
+              </React.Fragment>
+
             ) : (
               <React.Fragment>
           <Mentbox>
@@ -182,7 +183,6 @@ export default MyPage;
 const ContainerBox = styled.div`
   box-sizing: border-box;
   width: 100%;
-
 `;
 
 const QuestListBox = styled.div`
@@ -252,7 +252,6 @@ const TimeBtn = styled.button`
         color:#ffd042;
     }
     :disabled{
-
     }
   
 `;

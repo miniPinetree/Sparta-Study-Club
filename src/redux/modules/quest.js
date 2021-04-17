@@ -13,6 +13,7 @@ const UPDATE_QUEST = 'UPDATE_QUEST';
 const SET_MONTH_QUEST = 'SET_MONTH_QUEST';
 const LOADING = 'LOADING';
 const CHATTING = 'CHATTING';
+const SET_CALENDAR = 'SET_CALENDAR';
 
 const setQuest = createAction(SET_QUEST, (dayQuest) => ({ dayQuest }));
 const addQuest = createAction(ADD_QUEST, (quest,questRate,monthQuest) => ({ quest,questRate,monthQuest }));
@@ -21,6 +22,7 @@ const updateQuest = createAction(UPDATE_QUEST, (questId,questYn,questRate,monthQ
 const setMonthQuest = createAction(SET_MONTH_QUEST, (monthQuest) => ({monthQuest}));
 const loading = createAction(LOADING, (isLoading) => ({ isLoading }));
 const setChatting = createAction(CHATTING, (on_off) => ({ on_off }));
+const setCalendar = createAction(SET_CALENDAR, (month) => ({month}));
 
 const initialState = {
  
@@ -133,35 +135,38 @@ const initialState = {
 
  ],
  isLoading: false,
- chat : true,
+ chat: true,
+ calendar: null,
 }
 
-//월 리스트가 없을 때 빈 리스트로 오는지 null로 오는지?
-const getMonthQuestDB = (date = null) => {
+const getMonthQuestDB = (date = null,move=null) => {
   return function (dispatch, getState, { history }) {
   
-  const token = getCookie('token');
   if (!date) {
     return;
   }
+  
   let year = date.substring(0,4);
-  let month = date.substring(date.length - 1, date.length);
+  let month; 
   
-  let today = moment();
-  console.log(year, month,today);
-  
-  dispatch(loading(true));
+  if (date.length === 5) {
+    month = date.substring(date.length - 1, date.length);
+  } else {
+    month = date.substring(date.length - 2, date.length);
+  }
+
+    dispatch(loading(true));
+   
   axios({
     method: 'get',
-    headers: {
-      "authorization":`Bearer ${token}`,
-    },
     url: `${config.api}/quest/calendar?year=${year}&month=${month}`,
   }).then((res) => {
 
     if (res.data.msg === 'success') {
       
       const _data = res.data.data;
+      console.log(year,month);
+      console.log(_data);
       //날짜만 뽑아서 중복 제거.
       const _day = _data.map((d) => d.day);
       const day = _day.filter((d, idx) => {
@@ -206,12 +211,54 @@ const getMonthQuestDB = (date = null) => {
         dispatch(setQuest(_dayQuest.quest));
       }
       
-    } else {
-      console.log(res.data.msg);
-      Swal.fire({
-      html:'<br>퀘스트를 조회하지 못했습니다.😪<br>',
-      confirmButtonColor: '#E3344E',
-    });    
+      let thisMonth;
+      let moveMonth;
+      let moveYear;
+      // 다음 월 버튼 클릭
+      if (move === 'add') {
+       
+        //년도와 월 비교.
+        moveYear = Number(year) - Number(moment().format('YYYY'));
+        moveMonth = Number(month) - Number(moment().format('M'));
+
+        //이번년도에서 벗어나지 않을 때.
+        if (moveYear === 0) {
+          //요청하는 월이 이번달이라면.
+          if (moment().format('M') === month) {
+            dispatch(setCalendar(moment()));
+            return false;
+          }
+          thisMonth = moment().add(moveMonth, 'month');
+          dispatch(setCalendar(thisMonth));
+        } else {
+          //다음 년도들..
+          thisMonth = moment().add(moveYear, 'year').add(moveMonth, 'month');
+          dispatch(setCalendar(thisMonth));
+          return false;
+        }
+        //이전 월 버튼 클릭
+      } else if (move === 'subtract') {
+        
+        moveYear = Number(moment().format('YYYY')) - Number(year);
+        moveMonth = Number(moment().format('M')) - Number(month);
+        //이번년도에서 벗어나지 않을 때. 
+        if (moveYear === 0) {
+          //요청하는 월이 이번달이라면.
+          if (moment().format('M') === month) {
+            dispatch(setCalendar(moment()));
+            return false;
+          }
+          thisMonth = moment().subtract(moveMonth, 'month');
+          dispatch(setCalendar(thisMonth));
+        } else {
+          //이전 년도들.. 
+          thisMonth = moment().subtract(moveYear, 'year').subtract(moveMonth, 'month');
+          dispatch(setCalendar(thisMonth));
+        }
+        //처음 요청. move가 들어오지 않았을 때.
+      } else {
+        dispatch(setCalendar(moment()));
+      }
     }
   }).catch(err => console.log(err));
  }
@@ -219,10 +266,11 @@ const getMonthQuestDB = (date = null) => {
 
 
 
+
 const addQuestDB = (questContents =null) => {
  return function (dispacth, getState, { history }) {
-
   const userTodayId = getState().user.user.userTodayId;
+
   if (!questContents) {
    Swal.fire({
     text: '내용을 입력해주세요!✏️',
@@ -230,7 +278,6 @@ const addQuestDB = (questContents =null) => {
    });
    return false;
    }
-
   axios({
    method: 'post',
    url: `${config.api}/quest`,
@@ -245,7 +292,6 @@ const addQuestDB = (questContents =null) => {
      questContents: res.data.questContents,
      questYn : false,
     }
-
      const _monthQuest = getState().quest.monthQuest;
      const user = getState().user.user;
      const today = moment().format('YYYY/MM/DD');
@@ -400,7 +446,7 @@ const updateQuestDB = (questId= null) => {
 export default handleActions({
  [SET_QUEST]: (state, action) => produce(state, (draft) => {
    draft.dayQuest = action.payload.dayQuest;
-  
+   
  }),
  [ADD_QUEST]: (state, action) => produce(state, (draft) => {
    draft.dayQuest.push(action.payload.quest);
@@ -451,6 +497,10 @@ export default handleActions({
  [CHATTING]: (state, action) => produce(state, (draft) => {
   draft.chat = action.payload.on_off;
  }),
+  [SET_CALENDAR]: (state, action) => produce(state, (draft) => {
+    draft.calendar = action.payload.month;
+  }),
+
 }, initialState);
 
 const actionCreators = {

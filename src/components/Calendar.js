@@ -7,20 +7,34 @@ import {Grid} from '../elements';
 import moment from 'moment';
 import { useState } from 'react';
 import Daily from './Daily';
-import { useDispatch } from "react-redux";
-import { actionCreators as questActions } from "../redux/modules/quest";
+import { useDispatch,useSelector } from "react-redux";
+import quest, { actionCreators as questActions } from "../redux/modules/quest";
 
 const Calendar = (props) => {
  
- const [getMoment, setMoment] = useState(moment());
- const today = getMoment;
+  const thisMonth = useSelector((state) => state.quest.calendar);
+  const today = thisMonth?thisMonth:moment();
+  
+  
  //오늘이 들어간 시작하는 이번달 주가 1년중에서 몇번째 주인지.
  const firstWeek = today.clone().startOf('month').week(); //시작하는 week() 주.
   //끝나는 주가 1이면 53주로. 아니라면 이번달 끝나는 주로 바로 사용.
  const lastweek = today.clone().endOf('month').week() === 1 ? 53 : today.clone().endOf('month').week();//끝나는 week()주
  const dispatch = useDispatch();
  
-  
+  const changeMonth = (move) => {
+    
+    if (move === -1) {
+       let _date = today.clone().subtract(1, 'month').format('YYYYM');
+       dispatch(questActions.getMonthQuestDB(_date,'subtract'));
+    }
+
+    if (move === 1) {
+      let _date = today.clone().add(1, 'month').format('YYYYM');
+      dispatch(questActions.getMonthQuestDB(_date,'add'));
+    }
+
+  }
   
   
  const calendarArr = () => {
@@ -59,18 +73,10 @@ const Calendar = (props) => {
    <Grid>
     {/*subtract 두번째 인자단위로 빼기. add 더하기*/ }
     <FontAwesomeIcon icon={faChevronCircleLeft} size="1x" className="month-btn"
-         onClick={() => {
-           setMoment(getMoment.clone().subtract(1, 'month'));
-           let _date = getMoment.clone().subtract(1, 'month').format('YYYYM');
-          // dispatch(questActions.getMonthQuestDB(_date));
-         }} style={{ cursor: 'pointer' }} />
-     <Month>{today.format('MMMM YYYY')}</Month>
+         onClick={()=>changeMonth(-1)} style={{ cursor: 'pointer' }} />
+     <Month>{thisMonth?.format('MMMM YYYY')}</Month>
      <FontAwesomeIcon icon={faChevronCircleRight} size="1x" className="month-btn"
-         onClick={() => {
-           setMoment(getMoment.clone().add(1, 'month'));
-           let _date = getMoment.clone().add(1, 'month').format('YYYYM');
-           //dispatch(questActions.getMonthQuestDB(_date));
-         }} style={{ cursor: 'pointer' }} />
+         onClick={()=>changeMonth(1)} style={{ cursor: 'pointer' }} />
    </Grid>
    <CalendarBox>
     <WeekBox>
@@ -110,7 +116,6 @@ const WeekBox = styled.div`
 display: grid;
 grid-template-columns: repeat(7,1fr);
 align-items:center;
-
 & .sun{
     color:#E3302E;
   }
@@ -131,7 +136,6 @@ const CalendarInnerBox = styled.div`
 const DayBox = styled.div`
  display: grid;
  padding:3px 0px 2px 3px;
-
 `
 
 const NotThisMonth = styled.div`
