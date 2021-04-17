@@ -1,5 +1,8 @@
 # 스파르타 스터디 클럽 !!!
 
+![image](https://user-images.githubusercontent.com/68773118/115099567-b1eaad80-9f71-11eb-953d-48ea6a5cadbe.png)
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
