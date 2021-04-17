@@ -15,7 +15,9 @@
     "chart.js": "2.9.4",
     "classnames": "^2.3.1",
     "connected-react-router": "6.8.0",
+    "express": "^4.17.1",
     "history": "4.10.1",
+    "http": "^0.0.1-security",
     "immer": "^9.0.1",
     "moment": "^2.29.1",
     "node-sass": "4.14.1",
@@ -32,9 +34,12 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "sass-loader": "^11.0.1",
+    "socket.io": "^4.0.1",
+    "socket.io-client": "^4.0.1",
     "styled-components": "^5.2.3",
     "sweetalert2": "^10.16.0",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^1.0.1",
+    "ws": "^7.4.4"
   },
   "scripts": {
     "start": "react-scripts start",

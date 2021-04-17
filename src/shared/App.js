@@ -6,6 +6,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 import LogIn from "../pages/LogIn";
 import SignUp from "../pages/SignUp";
 import MyPage from "../pages/MyPage";
+import GroupList from "../pages/GroupList";
 
 //리덕스 스토어의 history를 사용하기 위함.
 import {history} from "../redux/configStore";
@@ -20,21 +21,21 @@ function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
 
-React.useEffect(()=>{
+// React.useEffect(()=>{
  
- if(!user&&window.location.pathname !== "/signup"){
-  dispatch(userActions.loginCheckDB());
-  }
+//  if(!user&&window.location.pathname !== "/signup"){
+//   dispatch(userActions.loginCheckDB());
+//   }
   
-}, []);
+// }, []);
   return (
     <React.Fragment>
     <ConnectedRouter history={history}>
         <Route path="/" exact component={LogIn} />
         <Route path="/signup" exact component={SignUp}/>
-        <Route path="/mypage" exact component={MyPage} />
-        <Route path="/create" exact component={GroupCreate}/>
-      </ConnectedRouter>
+        <Route path="/mypage" exact component={MyPage}/>
+        <Route path="/group" exact component={GroupList}/>
+    </ConnectedRouter>
     </React.Fragment>
   );
 }

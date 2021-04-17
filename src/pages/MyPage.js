@@ -18,6 +18,7 @@ const MyPage = (props) => {
   //리덕스 내 데이터가 변경되면 리렌더링된다.
   const user = useSelector((state) => state.user.user);
   const dayQuest = useSelector((state) => state.quest.dayQuest);
+
   const monthQuest = useSelector((state) => state.quest.monthQuest);
 
   const today = moment().format('YYYY/MM/DD');
@@ -47,7 +48,6 @@ const MyPage = (props) => {
   //목표 시간 설정 함수
   const setTargetTime = (e) => {
     const btnVal = Number(e.target.innerText.slice(0, 1));
-    console.log(btnVal);
     //자정이 되기까지 남은 시간 (분까지 반영하기 위해 -1함).
     let remainTime = 24 - new Date().getHours() - 1;
     if (remainTime < btnVal) {
@@ -59,7 +59,7 @@ const MyPage = (props) => {
       });
 
     } else {
-      console.log(new Date().getTime(), btnVal);
+      console.log(new Date().getTime(), btnVal, "저장시켜");
       dispatch(userActions.setTimeDB(new Date().getTime(), btnVal));
     }
   };
@@ -93,7 +93,7 @@ const MyPage = (props) => {
           
           <ContentBox>
           <ItemBox>
-            {user?.setTime ? (
+            {user?.studySetTime ? (
               <React.Fragment>
 
                 <Mentbox>
