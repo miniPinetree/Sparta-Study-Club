@@ -10,7 +10,7 @@ const LastQuest = (props) => {
  
 
   //지정한 퀘스트 없을 때..
-  if (!questList) {
+  if (!questList || questList.length === 0) {
     return (
       <Text margin='0px 0px 0px -10px'>지정한 퀘스트가 없습니다!</Text>
     )

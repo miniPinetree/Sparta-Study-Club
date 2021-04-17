@@ -19,6 +19,7 @@ import user from "../redux/modules/user";
 const Chat = (props) => {
   
   const dispatch = useDispatch();
+
   const user = useSelector((state) => state.user.user);
 
   const [message, setMessage] = React.useState([]);

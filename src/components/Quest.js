@@ -24,7 +24,7 @@ const changeChecked = () => {
     <Checkbox color="secondary"
      inputProps={{ 'aria-label': 'secondary checkbox' }}
      onClick={changeChecked} checked={checked}/>
-     <Text margin='9px 0px 0px 0px' size="15px">
+     <Text size="15px">
      {quest.questContents}
        <FontAwesomeIcon icon={faTimes} size='1x' color={'#000'} className="Delete-btn"
          onClick={() => {

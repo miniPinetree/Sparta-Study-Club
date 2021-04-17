@@ -19,24 +19,19 @@ const MyPage = (props) => {
   const user = useSelector((state) => state.user.user);
   const dayQuest = useSelector((state) => state.quest.dayQuest);
 
-// const monthQuest = useSelector((state) => state.quest.monthQuest);
-
-
   const monthQuest = useSelector((state) => state.quest.monthQuest);
 
   const today = moment().format('YYYY/MM/DD');
   const todayList = monthQuest.find((m) => m.day === today);
   let dayRate = todayList ? Math.floor(todayList.questRate) : 0;
   
-  //let dayRate = Math.round((dayQuest.filter((q) => q.questYn === true).length / dayQuest.length) * 100);
-
   const chatOnOff = useSelector((state) => state.quest.chat);
   const loading = useSelector((state) => state.quest.isLoading);
   React.useEffect(() => {
     //두개로..
     let date = moment().format('YYYYM');
     dispatch(questActions.getMonthQuestDB(date));
-  }, []);
+  }, [user]);
 
   //회원에게 랜덤으로 보이는 멘트.
   const greeting = () => {
@@ -188,7 +183,6 @@ export default MyPage;
 const ContainerBox = styled.div`
   box-sizing: border-box;
   width: 100%;
-
 `;
 
 
@@ -240,7 +234,6 @@ const TimeBtn = styled.button`
         color:#ffd042;
     }
     :disabled{
-
     }
   
 `;

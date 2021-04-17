@@ -17,6 +17,7 @@ import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
 import { useDispatch, useSelector } from "react-redux";
 import {actionCreators as userActions} from "../redux/modules/user"; 
+import GroupCreate from '../pages/GroupCreate';
 
 function App() {
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ function App() {
   return (
     <React.Fragment>
     <ConnectedRouter history={history}>
-        <Route path="/" exact component={LogIn}/>
+        <Route path="/" exact component={LogIn} />
         <Route path="/signup" exact component={SignUp}/>
         <Route path="/mypage" exact component={MyPage}/>
         <Route path="/group" exact component={GroupList}/>
