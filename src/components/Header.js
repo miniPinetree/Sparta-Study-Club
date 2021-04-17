@@ -32,7 +32,9 @@ const Header = (props) => {
                 }}/>
               </IconInnerBox>
               <IconInnerBox >
-                <FontAwesomeIcon icon={faBook} size='2x' color={'white'} />
+                <FontAwesomeIcon icon={faBook} size='2x' color={'white'} onClick={()=>{
+                  history.push('/group')
+                }}/>
               </IconInnerBox>
               <IconInnerBox >
                 <FontAwesomeIcon icon={faComments} size='2x' color={'white'} onClick={() => {

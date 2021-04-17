@@ -4,13 +4,29 @@ import Swal from "sweetalert2";
 import styled from "styled-components";
 import { Grid, Button, Text, Image } from "../elements";
 import { Header, Chat } from "../components";
-import Rtan from "../images/rtan.png";
+import {history} from "../redux/configStore";
+import Runtan from "../images/runtan.gif";
+import Cheer from "../images/cheer.png";
+import Fire from "../images/fire.png";
 import Spinner from "../shared/Spinner";
 import "../scss/class.scss";
+import AddToPhotosIcon from "@material-ui/icons/AddToPhotos";
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import GroupCreate from "../components/GroupCreate";
 
 const GroupList = (props) => {
   const chatOnOff = useSelector((state) => state.quest.chat);
   const loading = useSelector((state) => state.quest.isLoading);
+
+  const [modalOpen, setModalOpen] = React.useState(false);
+  const openModal = () => {
+    console.log(modalOpen);
+    setModalOpen(true);
+  };
+  const closeModal = () => {
+    console.log(modalOpen);
+    setModalOpen(false);
+  };
 
   return (
     <React.Fragment>
@@ -21,40 +37,126 @@ const GroupList = (props) => {
           <Spinner />
         ) : (
           <ContentBox>
-              <ItemBox>
-            <QuestBox className="questlist">
-              <Text bold>
-                오늘의 퀘스트! 현재 달성률: <Point>%</Point>
+            <ListBox>
+              {/* 버튼 스타일
+            <GroupBox className="questlist">
+            <TextBox>
+              <Text size="15px" bold>
+                그룹이름
               </Text>
-              <TodoInput
-                placeholder={"목표 시간을 선택해주세요 !"}
-                onKeyPress={(e) => {
-                  if (e.key === "Enter") {
-                    Swal.fire({
-                      html: "<br>목표 시간을 먼저 선택해주세요!🚩<br>",
-                      confirmButtonColor: "#E3344E",
-                    });
-                  }
-                }}
-              />
-              {/* 퀘스트 내역에 따라 조건부 렌더링*/}
-              <QuestListBox>
-                <Text size="15px" margin="80px 0px 0px 0px" color="#BBBBBB">
-                  등록된 오늘의 목표가 없습니다!
-                </Text>
-              </QuestListBox>
-            </QuestBox>
-            </ItemBox>
+              <Text size="12px" margin="1px 3px 0px 0">
+                여기는 파이썬으로 알고리즘을 푸는 방이예요(30자 제한)
+              </Text>
+              </TextBox>
+              <Button size="11px" width="38px" radius="0 10px 10px 0 ">></Button>
+            </GroupBox> */}
+              <BoxTitle>마이 클럽</BoxTitle>
+              <GroupBox>
+                <TextBox>
+                  <Text size="15px" bold title>
+                    그룹이름
+                  </Text>
+                  <Text size="12px" margin="1px 3px 0px 0">
+                    여기는 파이썬으로 알고리즘을 푸는 방이예요(30자 제한)
+                  </Text>
+                </TextBox>
+                <BtnBox>
+                  <Image src={Fire} width="50px" height="45px" contain />
+                  <Button size="11px" padding="2px 0px" 
+                  _onClick={()=>{history.push('/group/detail')}}>
+                    입장하기
+                  </Button>
+                </BtnBox>
+              </GroupBox>
+            </ListBox>
 
-            <ItemBox>
-              <Grid margin="0px 0px 35px 0px"></Grid>
-              <Grid>
-                <QuestBox></QuestBox>
-                <RtanBox>
-                  <Image src={Rtan} width="70px" height="70px" />
-                </RtanBox>
-              </Grid>
-            </ItemBox>
+            <ListBox>
+              <BoxTitle>전체 보기
+                
+              </BoxTitle>
+              <GroupBox>
+                {" "}
+                <TextBox>
+                  <Text size="15px" bold title>
+                    그룹이름
+                  </Text>
+                  <Text size="12px" margin="1px 3px 0px 0">
+                    여기는 파이썬으로 알고리즘을 푸는 방이예요(30자 제한)
+                  </Text>
+                </TextBox>
+                <BtnBox>
+                  <Image src={Cheer} width="50px" height="45px" contain />
+                  <Button size="11px" padding="2px 0px">
+                    가입하기
+                  </Button>
+                </BtnBox>
+              </GroupBox>
+              <GroupBox>
+                {" "}
+                <TextBox>
+                  <Text size="15px" bold title>
+                    그룹이름
+                  </Text>
+                  <Text size="12px" margin="1px 3px 0px 0">
+                    여기는 파이썬으로 알고리즘을 푸는 방이예요(30자 제한)
+                  </Text>
+                </TextBox>
+                <BtnBox>
+                  <Image src={Cheer} width="50px" height="45px" contain />
+                  <Button size="11px" padding="2px 0px">
+                    가입하기
+                  </Button>
+                </BtnBox>
+              </GroupBox>
+              <GroupBox>
+                {" "}
+                <TextBox>
+                  <Text size="15px" bold title>
+                    여섯자까지만합시다
+                  </Text>
+                  <Text size="12px" margin="1px 3px 0px 0">
+                    여기는 파이썬으로 알고리즘을 푸는 방이예요(30자 제한)
+                  </Text>
+                </TextBox>
+                <BtnBox>
+                  <Image src={Cheer} width="50px" height="45px" contain />
+                  <Button size="11px" padding="2px 0px">
+                    가입하기
+                  </Button>
+                </BtnBox>
+              </GroupBox>
+              <GroupBox>
+                {" "}
+                <TextBox>
+                  <Text size="15px" bold title>
+                    그룹이름
+                  </Text>
+                  <Text size="12px" margin="1px 3px 0px 0">
+                    여기는 파이썬으로 알고리즘을 푸는 방이예요(30자 제한)
+                  </Text>
+                </TextBox>
+                <BtnBox>
+                  <Image src={Cheer} width="50px" height="45px" contain />
+                  <Button size="11px" padding="2px 0px">
+                    가입하기
+                  </Button>
+                </BtnBox>
+              </GroupBox>
+              <MoreBtn><ArrowForwardIosIcon
+              style={{ color: "white", fontSize: 30 }}
+              /></MoreBtn>
+             
+            </ListBox>
+            <IconBox>
+              <AddToPhotosIcon
+                style={{ color: "#e3344e", fontSize: 45 }}
+                onClick={openModal}
+              ></AddToPhotosIcon>
+            </IconBox>
+
+            <GroupCreate open={modalOpen} close={closeModal}>
+              <main></main>
+            </GroupCreate>
           </ContentBox>
         )}
       </ContainerBox>
@@ -68,78 +170,21 @@ const ContainerBox = styled.div`
   width: 100%;
 `;
 
-const QuestListBox = styled.div`
-  margin-top: 18px;
-  max-height: 515px;
-  overflow-y: scroll;
-  &::-webkit-scrollbar {
-    width: 17px;
-    height: 100vh;
-    background: transparent;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: transparent;
-    border-radius: 20px;
-    height: 50px;
-    background-clip: padding-box;
-    border: 4px solid transparent;
-  }
-`;
-
 const ContentBox = styled.div`
-  margin: 100px auto 0px auto;
-  width: 900px;
+  margin: 60px auto 0px auto;
+  padding: 0px 100px 0 130px;
+  width: 85%;
   gap: 35px;
 `;
-
-const ItemBox = styled.div`
-  padding: 15px;
-`;
-const Mentbox = styled.div`
-  display: flex;
+const BoxTitle = styled.div`
+  color: #9b9b9b;
+  font-size: 24px;
   font-family: "GmarketSansBold";
+  letter-spacing: 1.2px;
+  position: absolute;
+  top: -23px;
 `;
-const Point = styled.span`
-  color: #e3344e;
-`;
-const BtnBox = styled.div`
-  display: flex;
-  margin: 20px 0px 25px 0px;
-
-  & :first-child {
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-  }
-  & :last-child {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-  }
-`;
-
-const ProgressBox = styled.div`
-  margin: 20px 0px 25px 0px;
-`;
-
-const TimeBtn = styled.button`
-  cursor: pointer;
-  padding: 10px 18.6px;
-  border: 1px solid #000;
-  font-weight: 800;
-  background-color: #000;
-  color: #ffffff;
-  outline: none;
-  font-size: 12px;
-  &:hover {
-    color: #ffd042;
-  }
-  :disabled {
-  }
-`;
-
-const QuestBox = styled.div`
-  width: 425px;
-  min-height: 200px;
+const ListBox = styled.div`
   background-color: rgb(255, 255, 255, 0.4);
   border-radius: 10px;
   box-shadow: 0px 1px 8px #dfdbdb;
@@ -147,21 +192,60 @@ const QuestBox = styled.div`
   padding: 20px;
   box-sizing: border-box;
   font-size: 17px;
+  margin-bottom: 30px;
+  display: flex;
+  & :last-child {
+    margin: 0px;
+  }
+  position: relative;
+`;
+
+const Point = styled.span`
+  color: #e3344e;
+`;
+const GroupBox = styled.div`
+  width: 212px;
+  min-width: 185px;
+  height: 130px;
+  overflow: hidden;
+  background-color: rgb(255, 255, 255, 0.4);
+  border-radius: 10px;
+  box-shadow: 0px 1px 8px #dfdbdb;
+  text-align: center;
+  align-items: center;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  font-size: 17px;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 10px 0 0;
+`;
+
+const TextBox = styled.div`
+  min-width: 80px;
+  box-sizing: border-box;
+  padding: 0 5px 0 0;
+`;
+
+const BtnBox = styled.div`
+  margin: auto 0px;
+`;
+
+const MoreBtn = styled.div`
+width:30px;
+ height:170px;
+ position:absolute;
+ background-color:#e3344e;
+ right:0px;
+ top:0px;
+ border-radius:0 10px 10px 0;
+ display:flex;
+ align-items:center;
+ justify-content:center;
   
 `;
-const TodoInput = styled.input`
-  background-color: transparent;
-  border: none;
-  border-bottom: 1px solid #000;
-  width: 255px;
-  outline: none;
-  text-align: center;
-  padding: 7px;
-  margin-top: 7px;
-`;
-const RtanBox = styled.div`
-  position: relative;
-  z-index: 30;
-  top: -50px;
-  left: 365px;
+const IconBox = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
 `;

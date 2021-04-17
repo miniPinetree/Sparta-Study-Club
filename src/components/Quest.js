@@ -8,8 +8,7 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from 'react-redux';
 import '../scss/class.scss';
 const Quest = (props) => {
-  console.log("할일");
-
+ 
  const { quest } = props;
  let checked = quest.questYn;
 const dispatch = useDispatch();

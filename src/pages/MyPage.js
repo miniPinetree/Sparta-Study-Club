@@ -191,24 +191,6 @@ const ContainerBox = styled.div`
 
 `;
 
-const QuestListBox = styled.div`
-  margin-top: 18px;
-  max-height: 515px;
-  overflow-y: scroll;
-  &::-webkit-scrollbar {
-  width:17px;
-  height: 100vh;
-  background: transparent;
-  }
- 
- &::-webkit-scrollbar-thumb{
-  background-color:transparent;
-  border-radius: 20px;
-  height: 50px;
-  background-clip: padding-box;
-  border: 4px solid transparent;
-  }
-`;
 
 const ContentBox = styled.div`
   margin: 100px auto 0px auto;
@@ -277,6 +259,27 @@ const QuestBox = styled.div`
     margin-left: 3px;
   }
 `;
+
+
+const QuestListBox = styled.div`
+  margin-top: 18px;
+  max-height: 515px;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+  width:17px;
+  height: 100vh;
+  background: transparent;
+  }
+ 
+ &::-webkit-scrollbar-thumb{
+  background-color:transparent;
+  border-radius: 20px;
+  height: 50px;
+  background-clip: padding-box;
+  border: 4px solid transparent;
+  }
+`;
+
 const TodoInput = styled.input`
   background-color: transparent;
   border: none;

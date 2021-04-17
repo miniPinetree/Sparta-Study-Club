@@ -7,6 +7,8 @@ import LogIn from "../pages/LogIn";
 import SignUp from "../pages/SignUp";
 import MyPage from "../pages/MyPage";
 import GroupList from "../pages/GroupList";
+import GroupDetail from "../pages/GroupDetail";
+
 
 //리덕스 스토어의 history를 사용하기 위함.
 import {history} from "../redux/configStore";
@@ -34,6 +36,7 @@ function App() {
         <Route path="/signup" exact component={SignUp}/>
         <Route path="/mypage" exact component={MyPage}/>
         <Route path="/group" exact component={GroupList}/>
+        <Route path="/group/detail" exact component={GroupDetail}/>
       </ConnectedRouter>
     </React.Fragment>
   );

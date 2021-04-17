@@ -4,7 +4,7 @@ import { Text, Grid } from "./index";
 
 const Input = forwardRef((props, ref) => {
   
-  const { label, bg, border, radius, placeholder, _onChange,type, width,margin,padding,_onClick } =  props ;
+  const { multiLine, label, bg, border, radius, placeholder, _onChange,type, width,margin,padding,_onClick } =  props ;
   const styles = {
     width: width,
     margin: margin,
@@ -12,6 +12,8 @@ const Input = forwardRef((props, ref) => {
     border:border,
     radius:radius,
     bg: bg,
+    multiLine:multiLine,
+
   }
   
 
