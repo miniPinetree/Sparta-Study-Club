@@ -52,7 +52,7 @@ const initialState = {
 
  ],
  isLoading: false,
- chat: true,
+ chat: false,
  calendar: null,
 }
 
@@ -214,7 +214,7 @@ const addQuestDB = (questContents =null) => {
      const today = moment().format('YYYY/MM/DD');
      const todayMonthQuest = _monthQuest.find((m)=> m.day === today);
      //monthQuest에 오늘 날짜가 없다면.
-     if (!todayMonthQuest) {
+     if (!todayMonthQuest && user.studyTime) {
        console.log("없다?")
        let monthQuest = {
          day: today,

@@ -23,13 +23,13 @@ function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
 
-// React.useEffect(()=>{
+React.useEffect(()=>{
  
-//  if(!user&&window.location.pathname !== "/signup"){
-//   dispatch(userActions.loginCheckDB());
-//   }
+ if(!user&&window.location.pathname !== "/signup"){
+  dispatch(userActions.loginCheckDB());
+  }
   
-// }, []);
+}, []);
   return (
     <React.Fragment>
     <ConnectedRouter history={history}>

@@ -21,6 +21,7 @@ const Chat = (props) => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.user.user);
+  const chatOnOff = useSelector((state) => state.quest.chat);
 
   const [message, setMessage] = React.useState([]);
   const [messages, setMessages] = React.useState([]);
@@ -38,59 +39,62 @@ const Chat = (props) => {
   };
 
   React.useEffect(() => {
-    const socket = new WebSocket('ws://3.34.198.18:8080');
-    socket.onopen = function() {
-      console.log('Connected');
-      socket.send(
-        JSON.stringify({
-          
-          event: "send_msg",
-          data: {
-           nickname:'nick',
-           message:'msg',
-           date: new Date().toISOString(),
-          },
-        }),
-      );
-      socket.onmessage = function(data) {
-        console.log(data);
-        console.log(data.data);
+    if(chatOnOff){
+      const socket = new WebSocket('ws://3.34.198.18:8080');
+      socket.onopen = function() {
+        console.log('Connected');
+        socket.send(
+          JSON.stringify({
+            
+            event: "send_msg",
+            data: {
+             nickname:'nick',
+             message:'msg',
+             date: new Date().toISOString(),
+            },
+          }),
+        );
+        socket.onmessage = function(data) {
+          console.log(data);
+          console.log(data.data);
+        };
       };
-    };
-    // socket.on("connect", () => {
-    //   // either with send()
-    //   socket.send("Hello!");
-    
-    //   // or with emit() and custom event names
-    //   socket.emit("salutations", "Hello!", { "mr": "john" }, Uint8Array.from([1, 2, 3, 4]));
-    // });
-    
-    // // handle the event sent with socket.send()
-    // socket.on("message", data => {
-    //   console.log(data);
-    // });
-
-    // ws.onopen = () => {
-    //   ws.send("Hello!");
-    //   console.log("WebSocket Connected", new Date());
-    // };
-
-    // //서버에서 수신한 메세지
-    // ws.onmessage = (e) => {
-    //   const message = JSON.parse(e.data);
-    //   setMessages([message, ...messages]);
-    // };
-
-    // ws.onerror = (error) => {
-    //   console.log(`WebSocket error: ${error}`);
-    // };
-
-    // return () => {
-    //   ws.onclose = () => {
-    //     console.log("WebSocket Disconnected", new Date());
-    //     setWs(new WebSocket(URL));
-    //   };
-    // };
+      // socket.on("connect", () => {
+      //   // either with send()
+      //   socket.send("Hello!");
+      
+      //   // or with emit() and custom event names
+      //   socket.emit("salutations", "Hello!", { "mr": "john" }, Uint8Array.from([1, 2, 3, 4]));
+      // });
+      
+      // // handle the event sent with socket.send()
+      // socket.on("message", data => {
+      //   console.log(data);
+      // });
+  
+      // ws.onopen = () => {
+      //   ws.send("Hello!");
+      //   console.log("WebSocket Connected", new Date());
+      // };
+  
+      // //서버에서 수신한 메세지
+      // ws.onmessage = (e) => {
+      //   const message = JSON.parse(e.data);
+      //   setMessages([message, ...messages]);
+      // };
+  
+      // ws.onerror = (error) => {
+      //   console.log(`WebSocket error: ${error}`);
+      // };
+  
+      // return () => {
+      //   ws.onclose = () => {
+      //     console.log("WebSocket Disconnected", new Date());
+      //     setWs(new WebSocket(URL));
+      //   };
+      // };
+    }
+   
   },[]);
   // }, [ws.onmessage, ws.onopen, ws.onclose, messages]);
 

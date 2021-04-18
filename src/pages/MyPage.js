@@ -59,8 +59,8 @@ const MyPage = (props) => {
       });
 
     } else {
-      console.log(new Date().getTime(), btnVal, "저장시켜");
-      dispatch(userActions.setTimeDB(new Date().getTime(), btnVal));
+      console.log( btnVal, "저장시켜");
+      dispatch(userActions.setTimeDB(btnVal));
     }
   };
   const getTargetTime = () => {

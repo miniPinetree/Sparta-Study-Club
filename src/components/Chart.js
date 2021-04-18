@@ -19,8 +19,9 @@ if(dayInfo.length>5){
     }})}else{
       range = dayInfo;
     }
-
+    console.log(dayInfo);
     console.log(range);
+    console.log(user);
 
   const rangeLabel = range.map((day) => {
     if (day.studySetTime && day.questRate > 30) {
