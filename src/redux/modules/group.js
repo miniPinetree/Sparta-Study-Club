@@ -13,9 +13,9 @@ const DELETE_MEMBER = "DELETE_MEMBER";
 
 const getGroup = createAction(GET_GROUP, (group_list)=>({group_list}));
 const addGroup = createAction(ADD_GROUP, (group)=>({group}));
-const deleteGroup = createAction(DELETE_GROUP, (groupId)=>({groupId}));
-const addMember = createAction(ADD_MEMBER, (groupId)=>({groupId}));
-const deleteMember = createAction(DELETE_MEMBER, (groupId)=>({groupId}));
+const deleteGroup = createAction(DELETE_GROUP, (group)=>({group}));
+const addMember = createAction(ADD_MEMBER, (group)=>({group}));
+const deleteMember = createAction(DELETE_MEMBER, (group)=>({group}));
 
 const initialState={
     group_list: {
@@ -37,12 +37,7 @@ const initialState={
             groupName:"자바스크립트포에버",
             groupDesc:"일이삼사오일이삼사오일이삼사오일이삼사오",
         },
-        {
-            groupId:4,
-            nickname:"르탄이",
-            groupName:"리액트사랑해",
-            groupDesc:"미운 놈 떡 하나 더 줍시다",
-        },
+    
        ],
     
     },
@@ -68,6 +63,18 @@ const getGroupDB = ()=>{
     }
 };
 
+const getRankDB = (groupId) =>{
+    return function (dispatch, getState, { history }) {
+        axios({
+            method:'get',
+            url: `${config.api}/group/:${groupId}/rank`,
+        }).then((res)=>{
+            console.log("랭크",res.data);
+            // dispatch(getGroup(res.data));
+        }).catch(err=> console.log(err));
+    }
+};
+
 const addGroupDB=(groupName, groupDesc)=>{
     return function(dispatch, getState, {history}){
 
@@ -86,7 +93,7 @@ const addGroupDB=(groupName, groupDesc)=>{
     }
 };
 
-const deleteGroupDB=(groupId)=>{
+const deleteGroupDB=(group)=>{
     return function(dispatch, getState, {history}){
 
         const token = getCookie('token');
@@ -94,7 +101,7 @@ const deleteGroupDB=(groupId)=>{
          "authorization"
        ] = `Bearer ${token}`; //Bearer
 
-       console.log(groupId);
+       console.log(group.groupId);
 
        Swal.fire({
         icon: 'warning',
@@ -103,12 +110,13 @@ const deleteGroupDB=(groupId)=>{
         confirmButtonColor: "rgb(118, 118, 118)",
         confirmButtonText: '삭제',
         cancelButtonText:"취소",
+        cancelButtonColor:"#E2344E",
       }).then((result)=>{
         if (result.isConfirmed) {
 
             axios({
                 method:'DELETE',
-                url: `${config.api}/group/:${groupId}`,
+                url: `${config.api}/group/:${group.groupId}`,
             }).then((res)=>{
                 if(res.data.msg==="fail"){
                     Swal.fire({
@@ -116,7 +124,7 @@ const deleteGroupDB=(groupId)=>{
                         confirmButtonColor: "rgb(118, 118, 118)",
                       });
                 }else{
-                    dispatch(deleteGroup(groupId));
+                    dispatch(deleteGroup(group));
                     Swal.fire(
                       '삭제 완료!',
                       '클럽이 삭제되었습니다.',
@@ -131,36 +139,92 @@ const deleteGroupDB=(groupId)=>{
     }
 };
   
-const addMemberDB = (groupId) =>{
+const addMemberDB = (group) =>{
     return function(dispatch, getState, {history}){
+
+        const token = getCookie('token');
+        axios.defaults.headers.common[
+         "authorization"
+       ] = `Bearer ${token}`; //Bearer
+
         axios({
             method:'post',
-            url: `${config.api}/group/:${groupId}`,
-           
-        }).then((res)=>{ //not_login
+            url: `${config.api}/group/:${group.groupId}`,
+        }).then((res)=>{ 
             console.log(res.data);
-            // dispatch(addGroup(groupInfo));
-        }).catch(err=> console.log(err)); //소문자 author
+            if(res.data.msg==="fail"){
+                Swal.fire({
+                    text: "잠시 후 다시 시도해주세요.",
+                    confirmButtonColor: "rgb(118, 118, 118)",
+                  });
+
+            }else{
+                dispatch(addMember(group));
+                Swal.fire("가입 완료!","success");
+            }
+        }).catch(err=> console.log(err)); 
     }
 }
+
+const deleteMemberDB=(group)=>{
+    return function(dispatch, getState, {history}){
+        const token = getCookie('token');
+        axios.defaults.headers.common[
+         "authorization"
+       ] = `Bearer ${token}`; //Bearer
+
+       console.log(group);
+
+       Swal.fire({
+        icon: 'warning',
+        title: "정말 클럽을 탈퇴하시겠어요?",
+        showCancelButton: true,
+        confirmButtonColor: "rgb(118, 118, 118)",
+        confirmButtonText: '탈퇴;',
+        cancelButtonText:"취소",
+        cancelButtonColor:"#E2344E",
+      }).then((result)=>{
+        if (result.isConfirmed) {
+
+            axios({
+                method:'DELETE',
+                url: `${config.api}/group/:${group.groupId}`,
+            }).then((res)=>{
+                if(res.data.msg==="fail"){
+                    Swal.fire({
+                        text: "잠시 후 다시 시도해주세요.",
+                        confirmButtonColor: "rgb(118, 118, 118)",
+                      });
+                }else{
+                    dispatch(deleteGroup(group));
+                    Swal.fire(
+                      '탈퇴 완료!',
+                      'success'
+                    )
+                    
+                }
+          }).catch(err=> console.log(err));
+      }});
+    }
+};
 
 export default handleActions({
     [GET_GROUP]: (state, action)=> produce(state, (draft)=>{
      draft.group_list = action.payload.group_list;
     }),
     [ADD_GROUP]: (state, action)=> produce(state, (draft)=>{
-        draft.group_list.unshift(action.payload.group);
+        draft.group_list.joined.unshift(action.payload.group);
     }),
     [DELETE_GROUP]: (state, action)=> produce(state, (draft)=>{
-        draft.group_list = draft.group_list.filter((group)=>group.groupId !== action.payload.groupId);
+        draft.group_list.joined = draft.group_list.joined.filter((group)=>group.groupId !== action.payload.group.groupId);
     }),
     [ADD_MEMBER]: (state, action)=> produce(state, (draft)=>{
-    //     let crr_group = group_list.find((group)=>group.groupId === action.payload.groupId);
-    // crr_group.member.push(action.payload.user);
-        draft.groupId = action.payload.groupId;
+        draft.group_list.joined.unshift(action.payload.group);
+        draft.group_list.unjoined =  draft.group_list.unjoined.filter((group)=>group.groupId !== action.payload.group.groupId);
     }),
     [DELETE_MEMBER]: (state, action)=> produce(state, (draft)=>{
-        draft.groupId = action.payload.groupId;
+        draft.group_list.joined = draft.group_list.joined.filter((group)=>group.groupId !== action.payload.group.groupId);
+        draft.group_list.unjoined.unshift(action.payload.group)
     }),
 }, initialState);
 
@@ -174,6 +238,8 @@ getGroupDB,
 addGroupDB,
 deleteGroupDB,
 addMemberDB,
+getRankDB,
+deleteMemberDB,
 };
 
 export {actionCreators};

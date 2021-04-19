@@ -4,25 +4,24 @@ import Swal from "sweetalert2";
 import styled from "styled-components";
 import { Grid, Button, Text, Image } from "../elements";
 import { Header, Chat } from "../components";
-import {history} from "../redux/configStore";
+import { history } from "../redux/configStore";
 import Runtan from "../images/runtan.gif";
 import Cheer from "../images/cheer.png";
 import Fire from "../images/fire.png";
 import Spinner from "../shared/Spinner";
 import "../scss/class.scss";
 import AddToPhotosIcon from "@material-ui/icons/AddToPhotos";
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import GroupCreate from "../components/GroupCreate";
-import {actionCreators as groupActions} from "../redux/modules/group";
+import { actionCreators as groupActions } from "../redux/modules/group";
 
 const GroupList = (props) => {
   const dispatch = useDispatch();
 
-  const group_list = useSelector((state)=>state.group.group_list);
+  const group_list = useSelector((state) => state.group.group_list);
 
   const chatOnOff = useSelector((state) => state.quest.chat);
   const loading = useSelector((state) => state.quest.isLoading);
-
 
   const [modalOpen, setModalOpen] = React.useState(false);
   const openModal = () => {
@@ -34,28 +33,30 @@ const GroupList = (props) => {
     setModalOpen(false);
   };
 
-  const joinClub = ()=>{
+  const joinClub = (group) => {
+    if(group_list.joined.length>6){
+      Swal.fire({
+        text: "클럽은 5개까지만 가입할 수 있어요 🤓",
+        confirmButtonColor: "rgb(118, 118, 118)",
+      });
+    }
     Swal.fire({
       title: "클럽에 가입하시겠어요?",
       showCancelButton: true,
-      confirmButtonColor: "rgb(118, 118, 118)",
-      confirmButtonText: '삭제',
-      cancelButtonText:"취소",
-    }).then((result)=>{
+      confirmButtonColor: "#E2344E",
+      confirmButtonText: "가입",
+      cancelButtonText: "취소",
+    }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(groupActions.addMemberDB(group.groupId));
-          Swal.fire(
-            '삭제 완료!',
-            '클럽이 삭제되었습니다.',
-            'success'
-          )
-        }
-  }
+        dispatch(groupActions.addMemberDB(group));
+      }
+    });
+  };
 
-  React.useEffect(()=>{
-    console.log("DB에서 받아온 정보")
-dispatch(groupActions.getGroupDB());
-  }, [])
+  React.useEffect(() => {
+    console.log("DB에서 받아온 정보");
+    dispatch(groupActions.getGroupDB());
+  }, []);
 
   return (
     <React.Fragment>
@@ -67,63 +68,66 @@ dispatch(groupActions.getGroupDB());
         ) : (
           <ContentBox>
             <ListBox>
-            <BoxTitle>마이 클럽</BoxTitle>
-              {group_list.joined.map((group, idx)=>{
-                 return(
+              <BoxTitle>마이 클럽</BoxTitle>
+              {group_list.joined.map((group, idx) => {
+                return (
                   <GroupBox key={group.groupId}>
-                  <TextBox>
-                    <Text size="15px" bold title>
-                      {group.groupName}
-                    </Text>
-                    <Text size="12px" margin="1px 3px 0px 0">
-                      {group.groupDesc}
-                    </Text>
-                  </TextBox>
-                  <BtnBox>
-                    <Image src={Fire} width="50px" height="45px" contain />
-                    <Button size="11px" padding="2px 0px" 
-                    _onClick={()=>{history.push(`/group/detail/${group.groupId}`)}}>
-                      입장하기
-                    </Button>
-                  </BtnBox>
-                </GroupBox>
-                 );
+                    <TextBox>
+                      <Text size="15px" bold title>
+                        {group.groupName}
+                      </Text>
+                      <Text size="12px" margin="1px 3px 0px 0">
+                        {group.groupDesc}
+                      </Text>
+                    </TextBox>
+                    <BtnBox>
+                      <Image src={Fire} width="50px" height="45px" contain />
+                      <Button
+                        size="11px"
+                        padding="2px 0px"
+                        _onClick={() => {
+                          history.push(`/group/detail/${group.groupId}`);
+                        }}
+                      >
+                        입장하기
+                      </Button>
+                    </BtnBox>
+                  </GroupBox>
+                );
               })}
-              
-            
             </ListBox>
 
             <ListBox>
-              <BoxTitle>전체 보기
-                
-              </BoxTitle>
-              {group_list.unjoined.map((group, idx)=>{
-                 return(
+              <BoxTitle>전체 보기</BoxTitle>
+              {group_list.unjoined.map((group, idx) => {
+                return (
                   <GroupBox key={group.groupId}>
-                  <TextBox>
-                    <Text size="15px" bold title>
-                      {group.groupName}
-                    </Text>
-                    <Text size="12px" margin="1px 3px 0px 0">
-                      {group.groupDesc}
-                    </Text>
-                  </TextBox>
-                  <BtnBox>
-                    <Image src={Cheer} width="50px" height="45px" contain />
-                    <Button size="11px" padding="2px 0px" 
-                    _onClick={()=>{
-                     
-                    }}>
-                      가입하기
-                    </Button>
-                  </BtnBox>
-                </GroupBox>
-                 );
+                    <TextBox>
+                      <Text size="15px" bold title>
+                        {group.groupName}
+                      </Text>
+                      <Text size="12px" margin="1px 3px 0px 0">
+                        {group.groupDesc}
+                      </Text>
+                    </TextBox>
+                    <BtnBox>
+                      <Image src={Cheer} width="50px" height="45px" contain />
+                      <Button
+                        size="11px"
+                        padding="2px 0px"
+                        _onClick={() => {
+                          joinClub(group);
+                        }}
+                      >
+                        가입하기
+                      </Button>
+                    </BtnBox>
+                  </GroupBox>
+                );
               })}
-              <MoreBtn><ArrowForwardIosIcon
-              style={{ color: "white", fontSize: 30 }}
-              /></MoreBtn>
-             
+              <MoreBtn>
+                <ArrowForwardIosIcon style={{ color: "white", fontSize: 30 }} />
+              </MoreBtn>
             </ListBox>
             <IconBox>
               <AddToPhotosIcon
@@ -163,14 +167,13 @@ const BoxTitle = styled.div`
   top: -23px;
 `;
 const ListBox = styled.div`
-
   background-color: rgb(255, 255, 255, 0.4);
   border-radius: 10px;
   box-shadow: 0px 1px 8px #dfdbdb;
   text-align: center;
   padding: 20px;
   box-sizing: border-box;
-  min-height:170px;
+  min-height: 170px;
   font-size: 17px;
   margin-bottom: 30px;
   display: flex;
@@ -212,17 +215,16 @@ const BtnBox = styled.div`
 `;
 
 const MoreBtn = styled.div`
-width:30px;
- height:170px;
- position:absolute;
- background-color:#e3344e;
- right:0px;
- top:0px;
- border-radius:0 10px 10px 0;
- display:flex;
- align-items:center;
- justify-content:center;
-  
+  width: 30px;
+  height: 170px;
+  position: absolute;
+  background-color: #e3344e;
+  right: 0px;
+  top: 0px;
+  border-radius: 0 10px 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 const IconBox = styled.div`
   display: flex;

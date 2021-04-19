@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 const MenuListComposition = (props) => {
   const dispatch = useDispatch();
-  const { open, handleClose, founder, groupId } = props;
+  const { open, handleClose, founder, group } = props;
   const user = useSelector((state) => state.user.user);
   const is_founder = founder === user.nickname;
   const classes = useStyles();
@@ -36,7 +36,7 @@ const MenuListComposition = (props) => {
                 <MenuItem onClick={handleClose}>클럽 관리</MenuItem>
                 <MenuItem
                   onClick={() => {
-                    dispatch(groupActions.deleteGroupDB(groupId));
+                    dispatch(groupActions.deleteGroupDB(group));
                   }}
                 >
                   클럽 삭제
@@ -44,7 +44,9 @@ const MenuListComposition = (props) => {
               </MenuList>
             ) : (
               <MenuList autoFocusItem={open} id="menu-list-grow">
-                <MenuItem onClick={handleClose}>클럽 탈퇴</MenuItem>
+                <MenuItem onClick={()=>{
+                    dispatch(groupActions.deleteMemberDB(group));
+                }}>클럽 탈퇴</MenuItem>
               </MenuList>
             )}
           </ClickAwayListener>

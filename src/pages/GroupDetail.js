@@ -42,6 +42,7 @@ const dispatch = useDispatch();
       return;
     }
     dispatch(groupActions.getGroupDB());
+    dispatch(groupActions.getRankDB());
   },[])
 
   return (
@@ -67,7 +68,7 @@ const dispatch = useDispatch();
                   open={open}
                   handleClose={handleClose}
                   founder={group.nickname}
-                  groupId={group.groupId}
+                  group={group}
                 />
                 <MoreHorizIcon />
               </TopMenu>
