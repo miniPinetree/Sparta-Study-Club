@@ -99,7 +99,7 @@ const loginDB = (id, pwd) => {
 //목표시간을 유저 정보에 업데이트
 //studySetTime만 보내면 됨. (study Time백엔드에서 자동생성.. => 받아옴)
 //userTodayId userinfo 세팅해서 할 일 추가할 때 보내기.
-const setTimeDB = (startTime, targetTime)=>{
+const setTimeDB = (targetTime)=>{
   return function (dispatch, getState, { history }) {
     const nickname = getState().user.user.nickname;
       axios({
@@ -123,6 +123,7 @@ const setTimeDB = (startTime, targetTime)=>{
               studySetTime:targetTime,
             };
             dispatch(setUser(userInfo));
+            console.log("setUser한 정보 : "userInfo)
             setCookie("_study", JSON.stringify(userInfo), 24 - new Date().getHours());
                 Swal.fire({
                 title:`${nickname}님이라면 할 수 있어요`,
