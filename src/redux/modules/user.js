@@ -75,9 +75,10 @@ const loginDB = (id, pwd) => {
             studySetTime:res.data.studySetTime,
             startTime:res.data.studyTime,
           };
+          // 24- new Date().getHours()-1)
           dispatch(setUser(userInfo));
-          setCookie("token", res.data.token, 24 - new Date().getHours());
-          setCookie("_study", JSON.stringify(userInfo), 24 - new Date().getHours());
+          setCookie("token", res.data.token);
+          setCookie("_study", JSON.stringify(userInfo));
           //토큰을 헤더 기본값으로 설정
           axios.defaults.headers.common[
             "authorization"
@@ -123,13 +124,17 @@ const setTimeDB = (targetTime)=>{
               studySetTime:targetTime,
             };
             dispatch(setUser(userInfo));
-            console.log("setUser한 정보 : "userInfo)
             setCookie("_study", JSON.stringify(userInfo), 24 - new Date().getHours());
+            history.go(0);
                 Swal.fire({
                 title:`${nickname}님이라면 할 수 있어요`,
                 text: `목표를 정해 ${targetTime}시간 내에 완수해봐요 🐱‍🏍
                 `,
                 confirmButtonColor: "#E3344E",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  // history.go(0);
+                }
               });
           }
           }).catch((err) => {
@@ -137,6 +142,8 @@ const setTimeDB = (targetTime)=>{
         });
   };
 };
+
+
 //로그인 유지, mypage렌더링 과정에서 토큰을 검증하므로
 //여기서는 클라이언트에 저장되어 있는 정보로만 1차 확인한다.
 const loginCheckDB = () => {
@@ -154,8 +161,11 @@ const loginCheckDB = () => {
       const userInfo = JSON.parse(_userInfo);
       dispatch(
         setUser(userInfo)
+        
       );
-      history.push("/mypage");
+      if(window.location.pathname === "/"){
+        history.push("/mypage");
+      }
    }
   };
 };

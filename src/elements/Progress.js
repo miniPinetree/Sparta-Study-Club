@@ -5,7 +5,7 @@ import { getCookie } from '../shared/Cookie';
 //목표시간과 경과시간 기준 진행률
 const Progress = (props) => {
   const user = useSelector((state) => state.user.user);
-  const targetTime=user.setTime;
+  const targetTime=user.studySetTime;
   //경과시간 계산
   const calProgress = () => {
     // if (progressTime<targetTime||!progressTime){}

@@ -213,9 +213,9 @@ const addQuestDB = (questContents =null) => {
      const user = getState().user.user;
      const today = moment().format('YYYY/MM/DD');
      const todayMonthQuest = _monthQuest.find((m)=> m.day === today);
+     console.log(_monthQuest, todayMonthQuest);
      //monthQuest에 오늘 날짜가 없다면.
-     if (!todayMonthQuest && user.studyTime) {
-       console.log("없다?")
+     if (!todayMonthQuest ) {
        let monthQuest = {
          day: today,
          questRate: 0,
@@ -229,7 +229,6 @@ const addQuestDB = (questContents =null) => {
        dispacth(addQuest(_quest, res.data.questRate, monthQuest));
        return false;
      }
-     console.log("있다?")
      let copyQuest = todayMonthQuest.quest.filter(() => true);
      copyQuest = [...copyQuest, _quest];
     
@@ -366,7 +365,7 @@ export default handleActions({
    
  }),
  [ADD_QUEST]: (state, action) => produce(state, (draft) => {
-   draft.dayQuest.push(action.payload.quest);
+   draft.dayQuest.unshift(action.payload.quest);
    let today = moment().format('YYYY/MM/DD');
    let idx = draft.monthQuest.findIndex((m) => m.day === today);
    if (idx !== -1) {

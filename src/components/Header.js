@@ -42,7 +42,9 @@ const Header = (props) => {
                 }}/>
               </IconInnerBox>    
               <IconInnerBox className='pick-page'>
-                  <FontAwesomeIcon icon={faUser} size='2x' color={'white'}/>
+                  <FontAwesomeIcon icon={faUser} size='2x' color={'white'} onClick={()=>{
+                  history.push('/mypage')
+                }}/>
               </IconInnerBox>
           </IconBox>
       </HeaderBox>

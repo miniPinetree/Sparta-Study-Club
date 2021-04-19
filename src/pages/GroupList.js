@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import styled from "styled-components";
 import { Grid, Button, Text, Image } from "../elements";
@@ -13,10 +13,16 @@ import "../scss/class.scss";
 import AddToPhotosIcon from "@material-ui/icons/AddToPhotos";
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import GroupCreate from "../components/GroupCreate";
+import {actionCreators as groupActions} from "../redux/modules/group";
 
 const GroupList = (props) => {
+  const dispatch = useDispatch();
+
+  const group_list = useSelector((state)=>state.group.group_list);
+
   const chatOnOff = useSelector((state) => state.quest.chat);
   const loading = useSelector((state) => state.quest.isLoading);
+
 
   const [modalOpen, setModalOpen] = React.useState(false);
   const openModal = () => {
@@ -28,6 +34,29 @@ const GroupList = (props) => {
     setModalOpen(false);
   };
 
+  const joinClub = ()=>{
+    Swal.fire({
+      title: "클럽에 가입하시겠어요?",
+      showCancelButton: true,
+      confirmButtonColor: "rgb(118, 118, 118)",
+      confirmButtonText: '삭제',
+      cancelButtonText:"취소",
+    }).then((result)=>{
+      if (result.isConfirmed) {
+        dispatch(groupActions.addMemberDB(group.groupId));
+          Swal.fire(
+            '삭제 완료!',
+            '클럽이 삭제되었습니다.',
+            'success'
+          )
+        }
+  }
+
+  React.useEffect(()=>{
+    console.log("DB에서 받아온 정보")
+dispatch(groupActions.getGroupDB());
+  }, [])
+
   return (
     <React.Fragment>
       <ContainerBox style={chatOnOff ? { paddingLeft: "230px" } : {}}>
@@ -38,110 +67,59 @@ const GroupList = (props) => {
         ) : (
           <ContentBox>
             <ListBox>
-              {/* 버튼 스타일
-            <GroupBox className="questlist">
-            <TextBox>
-              <Text size="15px" bold>
-                그룹이름
-              </Text>
-              <Text size="12px" margin="1px 3px 0px 0">
-                여기는 파이썬으로 알고리즘을 푸는 방이예요(30자 제한)
-              </Text>
-              </TextBox>
-              <Button size="11px" width="38px" radius="0 10px 10px 0 ">></Button>
-            </GroupBox> */}
-              <BoxTitle>마이 클럽</BoxTitle>
-              <GroupBox>
-                <TextBox>
-                  <Text size="15px" bold title>
-                    그룹이름
-                  </Text>
-                  <Text size="12px" margin="1px 3px 0px 0">
-                    여기는 파이썬으로 알고리즘을 푸는 방이예요(30자 제한)
-                  </Text>
-                </TextBox>
-                <BtnBox>
-                  <Image src={Fire} width="50px" height="45px" contain />
-                  <Button size="11px" padding="2px 0px" 
-                  _onClick={()=>{history.push('/group/detail')}}>
-                    입장하기
-                  </Button>
-                </BtnBox>
-              </GroupBox>
+            <BoxTitle>마이 클럽</BoxTitle>
+              {group_list.joined.map((group, idx)=>{
+                 return(
+                  <GroupBox key={group.groupId}>
+                  <TextBox>
+                    <Text size="15px" bold title>
+                      {group.groupName}
+                    </Text>
+                    <Text size="12px" margin="1px 3px 0px 0">
+                      {group.groupDesc}
+                    </Text>
+                  </TextBox>
+                  <BtnBox>
+                    <Image src={Fire} width="50px" height="45px" contain />
+                    <Button size="11px" padding="2px 0px" 
+                    _onClick={()=>{history.push(`/group/detail/${group.groupId}`)}}>
+                      입장하기
+                    </Button>
+                  </BtnBox>
+                </GroupBox>
+                 );
+              })}
+              
+            
             </ListBox>
 
             <ListBox>
               <BoxTitle>전체 보기
                 
               </BoxTitle>
-              <GroupBox>
-                {" "}
-                <TextBox>
-                  <Text size="15px" bold title>
-                    그룹이름
-                  </Text>
-                  <Text size="12px" margin="1px 3px 0px 0">
-                    여기는 파이썬으로 알고리즘을 푸는 방이예요(30자 제한)
-                  </Text>
-                </TextBox>
-                <BtnBox>
-                  <Image src={Cheer} width="50px" height="45px" contain />
-                  <Button size="11px" padding="2px 0px">
-                    가입하기
-                  </Button>
-                </BtnBox>
-              </GroupBox>
-              <GroupBox>
-                {" "}
-                <TextBox>
-                  <Text size="15px" bold title>
-                    그룹이름
-                  </Text>
-                  <Text size="12px" margin="1px 3px 0px 0">
-                    여기는 파이썬으로 알고리즘을 푸는 방이예요(30자 제한)
-                  </Text>
-                </TextBox>
-                <BtnBox>
-                  <Image src={Cheer} width="50px" height="45px" contain />
-                  <Button size="11px" padding="2px 0px">
-                    가입하기
-                  </Button>
-                </BtnBox>
-              </GroupBox>
-              <GroupBox>
-                {" "}
-                <TextBox>
-                  <Text size="15px" bold title>
-                    여섯자까지만합시다
-                  </Text>
-                  <Text size="12px" margin="1px 3px 0px 0">
-                    여기는 파이썬으로 알고리즘을 푸는 방이예요(30자 제한)
-                  </Text>
-                </TextBox>
-                <BtnBox>
-                  <Image src={Cheer} width="50px" height="45px" contain />
-                  <Button size="11px" padding="2px 0px">
-                    가입하기
-                  </Button>
-                </BtnBox>
-              </GroupBox>
-              <GroupBox>
-                {" "}
-                <TextBox>
-                  <Text size="15px" bold title>
-                    그룹이름
-                  </Text>
-                  <Text size="12px" margin="1px 3px 0px 0">
-                    여기는 파이썬으로 알고리즘을 푸는 방이예요(30자 제한)
-                  </Text>
-                </TextBox>
-                <BtnBox>
-                  <Image src={Cheer} width="50px" height="45px" contain />
-                  <Button size="11px" padding="2px 0px">
-                    가입하기
-                  </Button>
-                </BtnBox>
-              </GroupBox>
+              {group_list.unjoined.map((group, idx)=>{
+                 return(
+                  <GroupBox key={group.groupId}>
+                  <TextBox>
+                    <Text size="15px" bold title>
+                      {group.groupName}
+                    </Text>
+                    <Text size="12px" margin="1px 3px 0px 0">
+                      {group.groupDesc}
+                    </Text>
+                  </TextBox>
+                  <BtnBox>
+                    <Image src={Cheer} width="50px" height="45px" contain />
+                    <Button size="11px" padding="2px 0px" 
+                    _onClick={()=>{
+                     
+                    }}>
+                      가입하기
+                    </Button>
+                  </BtnBox>
+                </GroupBox>
+                 );
+              })}
               <MoreBtn><ArrowForwardIosIcon
               style={{ color: "white", fontSize: 30 }}
               /></MoreBtn>
@@ -185,12 +163,14 @@ const BoxTitle = styled.div`
   top: -23px;
 `;
 const ListBox = styled.div`
+
   background-color: rgb(255, 255, 255, 0.4);
   border-radius: 10px;
   box-shadow: 0px 1px 8px #dfdbdb;
   text-align: center;
   padding: 20px;
   box-sizing: border-box;
+  min-height:170px;
   font-size: 17px;
   margin-bottom: 30px;
   display: flex;
@@ -205,7 +185,7 @@ const Point = styled.span`
 `;
 const GroupBox = styled.div`
   width: 212px;
-  min-width: 185px;
+  min-width: 201.4px;
   height: 130px;
   overflow: hidden;
   background-color: rgb(255, 255, 255, 0.4);

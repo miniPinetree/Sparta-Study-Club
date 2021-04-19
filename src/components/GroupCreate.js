@@ -1,34 +1,40 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import {actionCreators as groupActions} from "../redux/modules/group";
 import Swal from "sweetalert2";
 import "../scss/modal.scss";
 import styled from "styled-components";
 import { Grid, Button, Text, Image, Input } from "../elements";
-import { Header, Chat } from ".";
-import Runtan from "../images/runtan.gif";
-import Friends from "../images/friends.jpg";
 import Community from "../images/Community.png";
-import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1),
-      width: '25ch',
-    },
-  },
-}));
-
 const GroupCreate=(props)=>{
+const dispatch = useDispatch();
+  const user = useSelector(state=>state.user.user);
     const { open, close, header,rate } = props;
-    const [value, setValue] = React.useState('Controlled');
 
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
+    const [name, setName] = React.useState();
+    const [desc, setDesc] = React.useState();
 
+    const checkLength=(e, maxlength)=>{
+      let inputVal = e.target.value;
+      if(inputVal.length>maxlength){
+        inputVal = inputVal.substr(0,maxlength)
+      }
+    }
+
+    const addNewGroup = ()=>{
+    if(name.length>8 || desc.length>20){
+      Swal.fire({
+        text: "입력 가능한 글자 수를 초과하였습니다.",
+        confirmButtonColor: "#E3344E",
+      });
+    }else if(name && desc){
+      dispatch(groupActions.addGroupDB(name, desc));
+      window.location.reload();
+    }
+    }
 
     return (
       
@@ -51,12 +57,28 @@ const GroupCreate=(props)=>{
                         <InputBox>
                     <TextField
           id="outlined-textarea"
-          label="클럽 이름(12자 이내)"
+          label="클럽 이름(8자 이내)"
           multiline
           fullWidth 
           variant="outlined"
           color="secondary"
+          onChange={(e)=>{
+            setName(e.target.value);
+          }}
+         
         />
+<AlertText>
+         {name?.length > 8 ? (
+                <Text color="#E2344E" size="11px" margin="0">
+                  8자 이내로 입력해주세요.
+                </Text>
+              ) : name?.length>0 && name?.length<=8? (
+                <Text color="#E2344E" size="11px" margin="0">
+                  {name?.length}/8
+                </Text>)
+                : ""
+              }
+</AlertText>
                         <TextField
           id="outlined-multiline-static"
           label="클럽 소개(20자 이내)"
@@ -65,11 +87,27 @@ const GroupCreate=(props)=>{
           rows={3}
           variant="outlined"
           color="secondary"
+          onChange={(e)=>{
+            setDesc(e.target.value);
+          }}
+          
+
         />
+        <AlertText>
+        {desc && desc.length > 20 ? (
+                <Text color="#E2344E" size="11px" margin="0">
+                  20자 이내로 입력해주세요.
+                </Text>
+              ) : desc?.length>0 && desc?.length<=20? (
+                <Text color="#E2344E" size="11px" margin="0">
+                  {desc?.length}/20
+                </Text>)
+                : ""}
+              </AlertText>
         </InputBox>
                     </main>
                     <footer>
-                    <button className="close" onClick={close}> 저장 </button>
+                    <button className="close" onClick={addNewGroup}> 저장 </button>
                     </footer>
                 </section>
             ) : null }
@@ -92,4 +130,10 @@ justify-content:space-around;
 width:350px;
 height:200px;
 
+`;
+
+const AlertText = styled.div`
+width:100%;
+display:flex;
+justify-content:flex-end;
 `;

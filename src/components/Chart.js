@@ -19,14 +19,11 @@ if(dayInfo.length>5){
     }})}else{
       range = dayInfo;
     }
-    console.log(dayInfo);
-    console.log(range);
-    console.log(user);
 
   const rangeLabel = range.map((day) => {
     if (day.studySetTime && day.questRate > 30) {
       return day.studySetTime + "시간동안 " + day.questRate + "%달성!";
-    } else if (day.studySetTime && day.questRate > 0) {
+    } else if (day.studySetTime && day.questRate >= 0) {
       return "달성률" + day.questRate + "% 생산성을 높여야해요!";
     } else {
       return "달성률이 아쉬워요. 다음에 더 잘할 수 있어요!";

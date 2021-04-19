@@ -17,7 +17,6 @@ import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
 import { useDispatch, useSelector } from "react-redux";
 import {actionCreators as userActions} from "../redux/modules/user"; 
-import GroupCreate from '../pages/GroupCreate';
 
 function App() {
   const dispatch = useDispatch();
@@ -25,7 +24,8 @@ function App() {
 
 React.useEffect(()=>{
  
- if(!user&&window.location.pathname !== "/signup"){
+ if(!user&&window.location.pathname !== "/signup"
+){
   dispatch(userActions.loginCheckDB());
   }
   
@@ -37,7 +37,7 @@ React.useEffect(()=>{
         <Route path="/signup" exact component={SignUp}/>
         <Route path="/mypage" exact component={MyPage}/>
         <Route path="/group" exact component={GroupList}/>
-        <Route path="/group/detail" exact component={GroupDetail}/>
+        <Route path="/group/detail/:id" exact component={GroupDetail}/>
       </ConnectedRouter>
     </React.Fragment>
   );

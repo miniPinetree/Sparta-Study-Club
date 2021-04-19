@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import styled from "styled-components";
 import { Grid, Button, Text, Image } from "../elements";
@@ -13,47 +13,72 @@ import Trophy from "../images/trophy.png";
 import Spinner from "../shared/Spinner";
 import Quest from "../components/Quest";
 import Comment from "../components/Comment";
-import moment from 'moment';
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import MenuListComposition from "../components/MenuList";
+import {actionCreators as groupActions} from "../redux/modules/group";
+import moment from "moment";
 
 const GroupDetail = (props) => {
+const dispatch = useDispatch();
+
+  const group_list = useSelector((state) => state.group.group_list.joined);
+  const id = props.match.params.id;
+  const group = group_list.find((group) => group.groupId === id);
+  const user = useSelector((state) => state.user.user);
   const chatOnOff = useSelector((state) => state.quest.chat);
   const loading = useSelector((state) => state.quest.isLoading);
+  const [open, setOpen] = React.useState(false);
+
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleClose = (event) => {
+    setOpen(false);
+  };
+
+  React.useEffect(()=>{
+    if(group){
+      return;
+    }
+    dispatch(groupActions.getGroupDB());
+  },[])
 
   return (
     <React.Fragment>
       <ContainerBox style={chatOnOff ? { paddingLeft: "230px" } : {}}>
         <Header />
         <Chat chat={chatOnOff} />
-        {loading ? (
+        {!group ? (
           <Spinner />
         ) : (
           <ContentBox>
             <ListBox>
-              {/* 버튼 스타일
-              <GroupBox className="questlist">
-              <TextBox>
-                <Text size="15px" bold>
-                  그룹이름
-                </Text>
-                <Text size="12px" margin="1px 3px 0px 0">
-                  여기는 파이썬으로 알고리즘을 푸는 방이예요(30자 제한)
-                </Text>
-                </TextBox>
-                <Button size="11px" width="38px" radius="0 10px 10px 0 ">></Button>
-              </GroupBox> */}
               <BoxTitle>
                 <Image src={Runtan} width="50px" height="50px" contain />
-                
+                <Text size="11px">
+                  클럽장
+                  <br /> {group.nickname}
+                </Text>
               </BoxTitle>
+
+              <TopMenu onClick={handleToggle}>
+                <MenuListComposition
+                  open={open}
+                  handleClose={handleClose}
+                  founder={group.nickname}
+                  groupId={group.groupId}
+                />
+                <MoreHorizIcon />
+              </TopMenu>
+
               <GroupBox>
-                <Text bold margin="0 0 10px 0">
-                알고보면 알기쉬운 알고리즘
+                <Text bold margin="0 0 2px 0">
+                  {group.groupName}
                 </Text>
-                <Text size="14px">
-               💪 네카라쿠배 코테 대비반 🏋️‍♂️
-                </Text>
+                <Text size="14px">{group.groupDesc}</Text>
                 <TodoInput
-                  placeholder={`미송님! 각오 한 마디 남겨주세요!`}
+                  placeholder={`${user.nickname}님! 각오 한 마디 남겨주세요!`}
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
                     }
@@ -61,11 +86,17 @@ const GroupDetail = (props) => {
                 />
               </GroupBox>
               <CmtList>
-                  <Comment user={"알고왕"} cmt={"🔥🔥 알고리즘 갖고말겠어"} />
-                  <Comment user={"해시브라운"} cmt={"1일 1알고리즘이 목표예요"} />
-                  <Comment user={"삐약이"} cmt={"오늘 가입했어요 잘 부탁드려욧!"} />
-                  <Comment user={"우따따"} cmt={"저 오늘 백준 골드 티어 됐어요 🤩 축하해주세요"} />
-                </CmtList>
+                <Comment user={"알고왕"} cmt={"🔥🔥 알고리즘 갖고말겠어"} />
+                <Comment user={"해시브라운"} cmt={"1일 1알고리즘이 목표예요"} />
+                <Comment
+                  user={"삐약이"}
+                  cmt={"오늘 가입했어요 잘 부탁드려욧!"}
+                />
+                <Comment
+                  user={"우따따"}
+                  cmt={"저 오늘 백준 골드 티어 됐어요 🤩 축하해주세요"}
+                />
+              </CmtList>
             </ListBox>
 
             <RankList>
@@ -122,7 +153,13 @@ const GroupDetail = (props) => {
                   </Text>
                 </Rank>
               </Grid>
-              <Image src={Dino} width="220px" height="80px" margin="30px 0 0 0" contain />
+              <Image
+                src={Dino}
+                width="220px"
+                height="80px"
+                margin="30px 0 0 0"
+                contain
+              />
             </RankList>
           </ContentBox>
         )}
@@ -156,6 +193,20 @@ const BoxTitle = styled.div`
   top: -23px;
   display: flex;
 `;
+
+const TopMenu = styled.div`
+  /* color: #9A9A9A; */
+  font-size: 24px;
+  font-family: "GmarketSansBold";
+  letter-spacing: 1.2px;
+  position: absolute;
+  top: 20px;
+  right: 28px;
+  display: flex;
+  cursor: pointer;
+  :hover {
+  }
+`;
 const ListBox = styled.div`
   background-color: rgb(255, 255, 255, 0.4);
   border-radius: 10px;
@@ -165,7 +216,7 @@ const ListBox = styled.div`
   box-sizing: border-box;
   font-size: 17px;
   margin-bottom: 30px;
-  
+
   & :last-child {
     margin: 0px;
   }
@@ -185,9 +236,9 @@ const GroupBox = styled.div`
   box-sizing: border-box;
   font-size: 17px;
   margin-bottom: 20px;
-  justify-content:space-between;
-  display:flex;
-  flex-direction:column;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
 `;
 
 const RankList = styled.div`
