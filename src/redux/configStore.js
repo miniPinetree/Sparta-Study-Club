@@ -5,6 +5,7 @@ import { connectRouter } from "connected-react-router";
 import User from './modules/user';
 import Quest from './modules/quest';
 import Group from "./modules/group";
+import Comment from "./modules/comment";
 
 export const history = createBrowserHistory();
 
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   user: User,
   quest:Quest,
   group:Group,
+  comment:Comment,
   router: connectRouter(history),
 });
 

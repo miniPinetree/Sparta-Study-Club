@@ -62,7 +62,7 @@ const MyPage = (props) => {
     }
   };
 
-  const addDayQeust = (e) => {
+  const addDayQuest = (e) => {
     if (e.target.value.length === 0) {
       Swal.fire({
         html: '<br> 내용을 입력해주세요!✏️<br>',
@@ -137,7 +137,7 @@ const MyPage = (props) => {
                     confirmButtonColor: '#E3344E',
                   })
                 } else {
-                  addDayQeust(e);
+                  addDayQuest(e);
                   
                 }
               }

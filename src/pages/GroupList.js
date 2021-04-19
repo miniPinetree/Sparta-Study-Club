@@ -174,6 +174,7 @@ const ListBox = styled.div`
   padding: 20px;
   box-sizing: border-box;
   min-height: 170px;
+  max-height: 170px;
   font-size: 17px;
   margin-bottom: 30px;
   display: flex;

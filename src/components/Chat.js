@@ -45,7 +45,6 @@ const Chat = (props) => {
         console.log('Connected');
         socket.send(
           JSON.stringify({
-            
             event: "send_msg",
             data: {
              nickname:'nick',

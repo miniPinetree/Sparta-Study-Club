@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import Swal from "sweetalert2";
 import Grow from "@material-ui/core/Grow";
 import Paper from "@material-ui/core/Paper";
 import Popper from "@material-ui/core/Popper";
@@ -26,6 +27,13 @@ const MenuListComposition = (props) => {
   const is_founder = founder === user.nickname;
   const classes = useStyles();
 
+  const alert=()=>{
+    Swal.fire({
+      text: "준비 중 입니다. ",
+      confirmButtonColor: "rgb(118, 118, 118)",
+    });
+  }
+
   return (
     <React.Fragment>
       {open ? (
@@ -33,7 +41,7 @@ const MenuListComposition = (props) => {
           <ClickAwayListener onClickAway={handleClose}>
             {is_founder ? (
               <MenuList autoFocusItem={open} id="menu-list-grow">
-                <MenuItem onClick={handleClose}>클럽 관리</MenuItem>
+                <MenuItem onClick={alert}>클럽 관리</MenuItem>
                 <MenuItem
                   onClick={() => {
                     dispatch(groupActions.deleteGroupDB(group));

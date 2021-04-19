@@ -65,13 +65,14 @@ const getGroupDB = ()=>{
 
 const getRankDB = (groupId) =>{
     return function (dispatch, getState, { history }) {
+        
         axios({
             method:'get',
             url: `${config.api}/group/:${groupId}/rank`,
         }).then((res)=>{
             console.log("랭크",res.data);
             // dispatch(getGroup(res.data));
-        }).catch(err=> console.log(err));
+        }).catch(err=> console.log("rank오류", err));
     }
 };
 

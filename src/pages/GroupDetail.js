@@ -16,6 +16,7 @@ import Comment from "../components/Comment";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import MenuListComposition from "../components/MenuList";
 import {actionCreators as groupActions} from "../redux/modules/group";
+import {actionCreators as cmtActions} from "../redux/modules/comment";
 import moment from "moment";
 
 const GroupDetail = (props) => {
@@ -25,8 +26,9 @@ const dispatch = useDispatch();
   const id = props.match.params.id;
   const group = group_list.find((group) => group.groupId === id);
   const user = useSelector((state) => state.user.user);
+  const cmt_list = useSelector((state)=> state.comment.cmt_list);
+console.log(cmt_list);
   const chatOnOff = useSelector((state) => state.quest.chat);
-  const loading = useSelector((state) => state.quest.isLoading);
   const [open, setOpen] = React.useState(false);
 
   const handleToggle = () => {
@@ -39,11 +41,12 @@ const dispatch = useDispatch();
 
   React.useEffect(()=>{
     if(group){
+      dispatch(groupActions.getRankDB(group.groupId));
+      dispatch(cmtActions.setCmtDB(group.groupId));
       return;
     }
     dispatch(groupActions.getGroupDB());
-    dispatch(groupActions.getRankDB());
-  },[])
+  },[group]);
 
   return (
     <React.Fragment>
@@ -81,22 +84,17 @@ const dispatch = useDispatch();
                 <TodoInput
                   placeholder={`${user.nickname}님! 각오 한 마디 남겨주세요!`}
                   onKeyPress={(e) => {
-                    if (e.key === "Enter") {
+                    if (e.key === "Enter" && e.target.value) {
+                      console.log(group.groupId, e.target.value);
+                      dispatch(cmtActions.addCmtDB(group.groupId, e.target.value));
                     }
                   }}
                 />
               </GroupBox>
               <CmtList>
-                <Comment user={"알고왕"} cmt={"🔥🔥 알고리즘 갖고말겠어"} />
-                <Comment user={"해시브라운"} cmt={"1일 1알고리즘이 목표예요"} />
-                <Comment
-                  user={"삐약이"}
-                  cmt={"오늘 가입했어요 잘 부탁드려욧!"}
-                />
-                <Comment
-                  user={"우따따"}
-                  cmt={"저 오늘 백준 골드 티어 됐어요 🤩 축하해주세요"}
-                />
+                {cmt_list.map((cmt, idx)=>
+ <Comment key={cmt.cmtId} cmt={cmt} />
+                )}
               </CmtList>
             </ListBox>
 
@@ -276,7 +274,7 @@ const Point = styled.span`
 const CmtList = styled.div`
   margin-top: 18px;
   max-height: 515px;
-  overflow-y: scroll;
+  overflow-y: auto;
   &::-webkit-scrollbar {
     width: 17px;
     height: 100vh;
