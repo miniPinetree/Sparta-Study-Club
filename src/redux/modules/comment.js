@@ -58,11 +58,11 @@ const setCmtDB = (groupId) => {
 
     axios({
       method: "get",
-      url: `${config.api}/group/:${groupId}/comment`,
+      url: `${config.api}/group/${groupId}/comment`,
     })
       .then((res) => {
         console.log(res.data);
-        dispatch(setCmt(res.data));
+        dispatch(setCmt(res.data.data));
       })
       .catch((err) => console.log(err));
   };
@@ -79,7 +79,7 @@ const addCmtDB = (groupId, cmtContents) => {
     }
     axios({
       method: "post",
-      url: `${config.api}/comment/:${groupId}`,
+      url: `${config.api}/comment/${groupId}`,
       data: {
         cmtContents: cmtContents,
       },
@@ -91,11 +91,13 @@ const addCmtDB = (groupId, cmtContents) => {
             confirmButtonColor: "#E3344E",
           });
         } else {
+          let data = res.data.data;
+          console.log(data, data[0].nickname);
           let cmt = {
-            cmtId: res.data.cmtId,
-            nickname: res.data.nickname,
-            cmtContents: res.data.cmtContents,
-            createdDt: res.data.createdDt,
+            cmtId: data[0].cmtId,
+            nickname: data[0].nickname,
+            cmtContents: data[0].cmtContents,
+            createdDt: data[0].createdDt,
           };
           console.log(cmt);
           dispatch(addCmt(cmt));
@@ -119,7 +121,7 @@ const deleteCmtDB = (cmtId) => {
       if (result.isConfirmed) {
         axios({
           method: "DELETE",
-          url: `${config.api}/comment/:${cmtId}`,
+          url: `${config.api}/comment/${cmtId}`,
         })
           .then((res) => {
             if (res.data.msg === "fail") {

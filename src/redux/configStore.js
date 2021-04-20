@@ -6,6 +6,7 @@ import User from './modules/user';
 import Quest from './modules/quest';
 import Group from "./modules/group";
 import Comment from "./modules/comment";
+import Chat from "./modules/chat";
 
 export const history = createBrowserHistory();
 
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   quest:Quest,
   group:Group,
   comment:Comment,
+  chat:Chat,
   router: connectRouter(history),
 });
 

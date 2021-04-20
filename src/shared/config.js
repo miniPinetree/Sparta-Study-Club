@@ -3,5 +3,6 @@
 
 const config={
     api:"http://3.34.198.18:3030",
+    ws:"ws://3.34.198.18:81",
 };
 export{config};

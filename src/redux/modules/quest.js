@@ -100,8 +100,6 @@ const getMonthQuestDB = (date = null, move = null) => {
       .then((res) => {
         if (res.data.msg === "success") {
           const _data = res.data.data;
-          console.log(year, month);
-          console.log(_data);
           //날짜만 뽑아서 중복 제거.
           const _day = _data.map((d) => d.day);
           const day = _day.filter((d, idx) => {

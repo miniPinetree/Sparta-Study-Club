@@ -8,9 +8,10 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const Comment=(props)=>{
     const {cmt} = props;
+ 
+
     const dispatch = useDispatch();
     const user = useSelector((state)=>state.user.user);
-console.log(cmt);
 
     return(
         <React.Fragment>
@@ -23,19 +24,15 @@ console.log(cmt);
        </UserContent>
 
        <Grid is_flex width="60px">
-       <Text size="10px" center>{cmt.createdDt}</Text>
-       <FontAwesomeIcon icon={faTimes} size='1x' color={'#000'} className="Delete-btn"
-        onClick={() => {
-          dispatch(cmtActions.deleteCmtDB(cmt.cmtId));
-        }}/>
-       {/* {user.nickname===cmt.nickname?
+       <Text size="10px" center>{cmt.createdDt.slice(2,10)}</Text>
+       {user.nickname===cmt.nickname?
         <FontAwesomeIcon icon={faTimes} size='0.3x' color={'#000'} className="Delete-btn"
         onClick={() => {
           dispatch(cmtActions.deleteCmtDB(cmt.cmtId));
         }}/>
         :
         null
-       } */}
+       }
       
          </Grid>
          </Grid>

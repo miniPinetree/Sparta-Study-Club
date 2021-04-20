@@ -17,6 +17,8 @@ import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import MenuListComposition from "../components/MenuList";
 import {actionCreators as groupActions} from "../redux/modules/group";
 import {actionCreators as cmtActions} from "../redux/modules/comment";
+import {config} from "../shared/config";
+import axios from "axios";
 import moment from "moment";
 
 const GroupDetail = (props) => {
@@ -27,7 +29,6 @@ const dispatch = useDispatch();
   const group = group_list.find((group) => group.groupId === id);
   const user = useSelector((state) => state.user.user);
   const cmt_list = useSelector((state)=> state.comment.cmt_list);
-console.log(cmt_list);
   const chatOnOff = useSelector((state) => state.quest.chat);
   const [open, setOpen] = React.useState(false);
 
@@ -39,9 +40,18 @@ console.log(cmt_list);
     setOpen(false);
   };
 
+  const getRankDB = (groupId) =>{
+        axios({
+            method:'get',
+            url: `${config.api}/group/${groupId}/rank`,
+        }).then((res)=>{
+            console.log("랭크",res.data);
+        }).catch(err=> console.log("랭킹 불러오기", err));
+};
+
   React.useEffect(()=>{
     if(group){
-      dispatch(groupActions.getRankDB(group.groupId));
+      getRankDB(group.groupId);
       dispatch(cmtActions.setCmtDB(group.groupId));
       return;
     }
@@ -53,7 +63,7 @@ console.log(cmt_list);
       <ContainerBox style={chatOnOff ? { paddingLeft: "230px" } : {}}>
         <Header />
         <Chat chat={chatOnOff} />
-        {!group ? (
+        {!group || !cmt_list ? (
           <Spinner />
         ) : (
           <ContentBox>

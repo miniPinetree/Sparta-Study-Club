@@ -63,18 +63,7 @@ const getGroupDB = ()=>{
     }
 };
 
-const getRankDB = (groupId) =>{
-    return function (dispatch, getState, { history }) {
-        
-        axios({
-            method:'get',
-            url: `${config.api}/group/:${groupId}/rank`,
-        }).then((res)=>{
-            console.log("랭크",res.data);
-            // dispatch(getGroup(res.data));
-        }).catch(err=> console.log("rank오류", err));
-    }
-};
+
 
 const addGroupDB=(groupName, groupDesc)=>{
     return function(dispatch, getState, {history}){
@@ -117,7 +106,7 @@ const deleteGroupDB=(group)=>{
 
             axios({
                 method:'DELETE',
-                url: `${config.api}/group/:${group.groupId}`,
+                url: `${config.api}/group/${group.groupId}`,
             }).then((res)=>{
                 if(res.data.msg==="fail"){
                     Swal.fire({
@@ -130,7 +119,8 @@ const deleteGroupDB=(group)=>{
                       '삭제 완료!',
                       '클럽이 삭제되었습니다.',
                       'success'
-                    )
+                    );
+                    history.replace("/group");
                     
                 }
 
@@ -150,7 +140,7 @@ const addMemberDB = (group) =>{
 
         axios({
             method:'post',
-            url: `${config.api}/group/:${group.groupId}`,
+            url: `${config.api}/group/${group.groupId}`,
         }).then((res)=>{ 
             console.log(res.data);
             if(res.data.msg==="fail"){
@@ -169,6 +159,7 @@ const addMemberDB = (group) =>{
 
 const deleteMemberDB=(group)=>{
     return function(dispatch, getState, {history}){
+        
         const token = getCookie('token');
         axios.defaults.headers.common[
          "authorization"
@@ -181,7 +172,7 @@ const deleteMemberDB=(group)=>{
         title: "정말 클럽을 탈퇴하시겠어요?",
         showCancelButton: true,
         confirmButtonColor: "rgb(118, 118, 118)",
-        confirmButtonText: '탈퇴;',
+        confirmButtonText: '탈퇴',
         cancelButtonText:"취소",
         cancelButtonColor:"#E2344E",
       }).then((result)=>{
@@ -189,7 +180,7 @@ const deleteMemberDB=(group)=>{
 
             axios({
                 method:'DELETE',
-                url: `${config.api}/group/:${group.groupId}`,
+                url: `${config.api}/group/${group.groupId}`,
             }).then((res)=>{
                 if(res.data.msg==="fail"){
                     Swal.fire({
@@ -201,7 +192,8 @@ const deleteMemberDB=(group)=>{
                     Swal.fire(
                       '탈퇴 완료!',
                       'success'
-                    )
+                    );
+                    history.replace("/group");
                     
                 }
           }).catch(err=> console.log(err));
@@ -239,7 +231,6 @@ getGroupDB,
 addGroupDB,
 deleteGroupDB,
 addMemberDB,
-getRankDB,
 deleteMemberDB,
 };
 
