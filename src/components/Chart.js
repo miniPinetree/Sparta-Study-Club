@@ -10,7 +10,7 @@ const Chart = (props) => {
   const dayInfo = useSelector((state) => state.quest.monthQuest);
   const user = useSelector((state)=>state.user.user);
   let range = [];
-
+console.log(dayInfo);
 //그래프로 보여줄 범위는 최대 5일
 if(dayInfo.length>5){
   dayInfo.filter((q,idx)=>{
@@ -19,7 +19,8 @@ if(dayInfo.length>5){
     }})}else{
       range = dayInfo;
     }
-
+console.log(range);
+// console.log(range);
   const rangeLabel = range.map((day) => {
     if (day.studySetTime && day.questRate > 30) {
       return day.studySetTime + "시간동안 " + day.questRate + "%달성!";

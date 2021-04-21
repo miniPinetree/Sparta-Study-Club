@@ -53,7 +53,7 @@ const MenuListComposition = (props) => {
             ) : (
               <MenuList autoFocusItem={open} id="menu-list-grow">
                 <MenuItem onClick={()=>{
-                    dispatch(groupActions.deleteMemberDB(group));
+                    dispatch(groupActions.deleteGroupDB(group));
                 }}>클럽 탈퇴</MenuItem>
               </MenuList>
             )}

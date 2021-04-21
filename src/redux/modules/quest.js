@@ -42,26 +42,7 @@ const setCalendar = createAction(SET_CALENDAR, (month) => ({ month }));
 
 const initialState = {
   dayQuest: [],
-  monthQuest: [
-    {
-      day: "2021/04/12",
-      questRate: 50,
-      studyTime: String(new Date(2021, 3, 11, 19, 0, 40, 30).getTime()),
-      studySetTime: 3,
-      quest: [
-        {
-          questId: 11,
-          questContents: "밥먹기",
-          questYn: true,
-        },
-        {
-          questId: 12,
-          questContents: "잠자기",
-          questYn: false,
-        },
-      ],
-    },
-  ],
+  monthQuest: [],
   isLoading: false,
   chat: false,
   calendar: null,
@@ -374,7 +355,7 @@ export default handleActions(
         );
 
         if (_idx === -1) {
-          draft.monthQuest = [...draft.monthQuest, action.payload.monthQuest];
+          draft.monthQuest = [action.payload.monthQuest, ...draft.monthQuest];
         } else {
           draft.monthQuest[_idx] = action.payload.monthQuest;
           draft.monthQuest[_idx].questRate = action.payload.questRate;

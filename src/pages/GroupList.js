@@ -14,15 +14,16 @@ import AddToPhotosIcon from "@material-ui/icons/AddToPhotos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import GroupCreate from "../components/GroupCreate";
 import { actionCreators as groupActions } from "../redux/modules/group";
+import Slider from "react-slick";
+import "../../node_modules/slick-carousel/slick/slick.css";
+import "../../node_modules/slick-carousel/slick/slick-theme.css";
 
 const GroupList = (props) => {
   const dispatch = useDispatch();
 
   const group_list = useSelector((state) => state.group.group_list);
-
   const chatOnOff = useSelector((state) => state.quest.chat);
-  const loading = useSelector((state) => state.quest.isLoading);
-
+  const loading = useSelector((state) => state.group.isLoading);
   const [modalOpen, setModalOpen] = React.useState(false);
   const openModal = () => {
     console.log(modalOpen);
@@ -32,31 +33,77 @@ const GroupList = (props) => {
     console.log(modalOpen);
     setModalOpen(false);
   };
-
+  console.log(group_list, typeof group_list.joined.length);
   const joinClub = (group) => {
-    if(group_list.joined.length>6){
+    if (group_list.joined.length > 6) {
       Swal.fire({
-        text: "클럽은 5개까지만 가입할 수 있어요 🤓",
+        html: `원활한 활동을 위해<br/>클럽은 동시에 4곳만 가입할 수 있어요 😸`,
         confirmButtonColor: "rgb(118, 118, 118)",
       });
+    } else {
+      Swal.fire({
+        title: "클럽에 가입하시겠어요?",
+        showCancelButton: true,
+        confirmButtonColor: "#E2344E",
+        confirmButtonText: "가입",
+        cancelButtonText: "취소",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          dispatch(groupActions.addMemberDB(group));
+        }
+      });
     }
-    Swal.fire({
-      title: "클럽에 가입하시겠어요?",
-      showCancelButton: true,
-      confirmButtonColor: "#E2344E",
-      confirmButtonText: "가입",
-      cancelButtonText: "취소",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        dispatch(groupActions.addMemberDB(group));
-      }
-    });
   };
 
   React.useEffect(() => {
     console.log("DB에서 받아온 정보");
     dispatch(groupActions.getGroupDB());
   }, []);
+
+  const settings = {
+    dots: false,
+    arrows: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 5,
+    slidesToScroll: 5,
+    autoplay: false,
+    pauseOnHover: true,
+    responsive: [ // 반응형 웹 구현 옵션
+      {  
+        breakpoint: 1412, //화면 사이즈 960px
+        settings: {
+          //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
+          slidesToShow:4,
+          slidesToScroll: 4,
+        } 
+      },
+      { 
+        breakpoint: 1149, //화면 사이즈 768px
+        settings: {	
+          //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
+          slidesToShow:3,
+          slidesToScroll: 3,
+        } 
+      },
+      { 
+        breakpoint: 811, //화면 사이즈 768px
+        settings: {	
+          //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
+          slidesToShow:2,
+          slidesToScroll: 2,
+        } 
+      },
+      { 
+        breakpoint: 545, //화면 사이즈 768px
+        settings: {	
+          //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
+          slidesToShow:1,
+          slidesToScroll: 1,
+        }
+      }
+    ]
+  };
 
   return (
     <React.Fragment>
@@ -97,38 +144,47 @@ const GroupList = (props) => {
               })}
             </ListBox>
 
-            <ListBox>
-              <BoxTitle>전체 보기</BoxTitle>
-              {group_list.unjoined.map((group, idx) => {
-                return (
-                  <GroupBox key={group.groupId}>
-                    <TextBox>
-                      <Text size="15px" bold title>
-                        {group.groupName}
-                      </Text>
-                      <Text size="12px" margin="1px 3px 0px 0">
-                        {group.groupDesc}
-                      </Text>
-                    </TextBox>
-                    <BtnBox>
-                      <Image src={Cheer} width="50px" height="45px" contain />
-                      <Button
-                        size="11px"
-                        padding="2px 0px"
-                        _onClick={() => {
-                          joinClub(group);
-                        }}
-                      >
-                        가입하기
-                      </Button>
-                    </BtnBox>
-                  </GroupBox>
-                );
-              })}
-              <MoreBtn>
-                <ArrowForwardIosIcon style={{ color: "white", fontSize: 30 }} />
-              </MoreBtn>
-            </ListBox>
+          
+            <SlideBox>
+            <BoxTitle>전체 보기</BoxTitle>
+            <Slider {...settings}>
+
+            {group_list.unjoined.map((group, idx) => {
+                  return (
+                    <div  key={group.groupId}>
+                    <GroupBox
+                     
+                    
+                    >
+                      <TextBox>
+                        <Text size="15px" bold title>
+                          {group.groupName}
+                        </Text>
+                        <Text size="12px" margin="1px 3px 0px 0">
+                          {group.groupDesc}
+                        </Text>
+                      </TextBox>
+                      <BtnBox>
+                        <Image src={Cheer} width="50px" height="45px" contain />
+                        <Button
+                          size="11px"
+                          padding="2px 0px"
+                          _onClick={() => {
+                            joinClub(group);
+                          }}
+                        >
+                          가입하기
+                        </Button>
+                      </BtnBox>
+                    </GroupBox>
+                    </div>
+                  );
+                })}
+            
+              </Slider>
+            
+              </SlideBox>
+
             <IconBox>
               <AddToPhotosIcon
                 style={{ color: "#e3344e", fontSize: 45 }}
@@ -145,6 +201,7 @@ const GroupList = (props) => {
     </React.Fragment>
   );
 };
+
 export default GroupList;
 
 const ContainerBox = styled.div`
@@ -184,11 +241,28 @@ const ListBox = styled.div`
   position: relative;
 `;
 
+const SlideBox = styled.div`
+  background-color: rgb(255, 255, 255, 0.4);
+  border-radius: 10px;
+  box-shadow: 0px 1px 8px #dfdbdb;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+  min-height: 170px;
+  max-height: 170px;
+  font-size: 17px;
+  margin-bottom: 30px;
+  position: relative;
+  & :last-child {
+    margin: 0px;
+  }
+`;
+
 const Point = styled.span`
   color: #e3344e;
 `;
 const GroupBox = styled.div`
-  width: 212px;
+  max-width: 220px;
   min-width: 201.4px;
   height: 130px;
   overflow: hidden;
