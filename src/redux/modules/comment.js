@@ -61,7 +61,6 @@ const setCmtDB = (groupId) => {
       url: `${config.api}/group/${groupId}/comment`,
     })
       .then((res) => {
-        console.log(res.data);
         dispatch(setCmt(res.data.data));
       })
       .catch((err) => console.log(err));
@@ -99,7 +98,6 @@ const addCmtDB = (groupId, cmtContents) => {
             cmtContents: data[0].cmtContents,
             createdDt: data[0].createdDt,
           };
-          console.log(cmt);
           dispatch(addCmt(cmt));
         }
       })

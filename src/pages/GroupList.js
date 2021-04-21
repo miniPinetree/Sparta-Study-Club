@@ -25,6 +25,7 @@ const GroupList = (props) => {
   const chatOnOff = useSelector((state) => state.quest.chat);
   const loading = useSelector((state) => state.group.isLoading);
   const [modalOpen, setModalOpen] = React.useState(false);
+  console.log(group_list);
   const openModal = () => {
     console.log(modalOpen);
     setModalOpen(true);
@@ -33,9 +34,9 @@ const GroupList = (props) => {
     console.log(modalOpen);
     setModalOpen(false);
   };
-  console.log(group_list, typeof group_list.joined.length);
+
   const joinClub = (group) => {
-    if (group_list.joined.length > 6) {
+    if (group_list.joined.length > 4) {
       Swal.fire({
         html: `원활한 활동을 위해<br/>클럽은 동시에 4곳만 가입할 수 있어요 😸`,
         confirmButtonColor: "rgb(118, 118, 118)",
@@ -56,7 +57,7 @@ const GroupList = (props) => {
   };
 
   React.useEffect(() => {
-    console.log("DB에서 받아온 정보");
+    console.log("DB에서 받아온 정보", group_list);
     dispatch(groupActions.getGroupDB());
   }, []);
 
@@ -69,40 +70,41 @@ const GroupList = (props) => {
     slidesToScroll: 5,
     autoplay: false,
     pauseOnHover: true,
-    responsive: [ // 반응형 웹 구현 옵션
-      {  
+    responsive: [
+      // 반응형 웹 구현 옵션
+      {
         breakpoint: 1412, //화면 사이즈 960px
         settings: {
           //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
-          slidesToShow:4,
+          slidesToShow: 4,
           slidesToScroll: 4,
-        } 
+        },
       },
-      { 
+      {
         breakpoint: 1149, //화면 사이즈 768px
-        settings: {	
+        settings: {
           //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
-          slidesToShow:3,
+          slidesToShow: 3,
           slidesToScroll: 3,
-        } 
+        },
       },
-      { 
+      {
         breakpoint: 811, //화면 사이즈 768px
-        settings: {	
+        settings: {
           //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
-          slidesToShow:2,
+          slidesToShow: 2,
           slidesToScroll: 2,
-        } 
+        },
       },
-      { 
+      {
         breakpoint: 545, //화면 사이즈 768px
-        settings: {	
+        settings: {
           //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
-          slidesToShow:1,
+          slidesToShow: 1,
           slidesToScroll: 1,
-        }
-      }
-    ]
+        },
+      },
+    ],
   };
 
   return (
@@ -144,12 +146,10 @@ const GroupList = (props) => {
               })}
             </ListBox>
 
-          
             <SlideBox>
-            <BoxTitle>전체 보기</BoxTitle>
-            <Slider {...settings}>
-
-            {group_list.unjoined.map((group, idx) => {
+              <BoxTitle>전체 보기</BoxTitle>
+              <Slider {...settings}>
+                {group_list.unjoined.map((group, idx) => {
                   return (
                     <div  key={group.groupId}>
                     <GroupBox
@@ -180,10 +180,8 @@ const GroupList = (props) => {
                     </div>
                   );
                 })}
-            
               </Slider>
-            
-              </SlideBox>
+            </SlideBox>
 
             <IconBox>
               <AddToPhotosIcon

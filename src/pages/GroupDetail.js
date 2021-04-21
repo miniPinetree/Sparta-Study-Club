@@ -17,9 +17,6 @@ import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import MenuListComposition from "../components/MenuList";
 import {actionCreators as groupActions} from "../redux/modules/group";
 import {actionCreators as cmtActions} from "../redux/modules/comment";
-import {config} from "../shared/config";
-import axios from "axios";
-import moment from "moment";
 
 const GroupDetail = (props) => {
 const dispatch = useDispatch();
@@ -28,10 +25,15 @@ const dispatch = useDispatch();
   const id = props.match.params.id;
   const group = group_list.find((group) => group.groupId === id);
   const user = useSelector((state) => state.user.user);
+  const rank = useSelector((state)=>state.group.rank);
+  const isLoading = useSelector((state)=>state.group.isLoading);
   const cmt_list = useSelector((state)=> state.comment.cmt_list);
   const chatOnOff = useSelector((state) => state.quest.chat);
   const [open, setOpen] = React.useState(false);
-
+  const [msg, setMsg] = React.useState("");
+rank.map((r)=>{
+  console.log(r.nickname)
+})
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
@@ -40,30 +42,20 @@ const dispatch = useDispatch();
     setOpen(false);
   };
 
-  const getRankDB = (groupId) =>{
-        axios({
-            method:'get',
-            url: `${config.api}/group/${groupId}/rank`,
-        }).then((res)=>{
-            console.log("랭크",res.data);
-        }).catch(err=> console.log("랭킹 불러오기", err));
-};
-
   React.useEffect(()=>{
     if(group){
-      getRankDB(group.groupId);
+      dispatch(groupActions.getRankDB(group.groupId));
       dispatch(cmtActions.setCmtDB(group.groupId));
       return;
     }
     dispatch(groupActions.getGroupDB());
   },[group]);
-
   return (
     <React.Fragment>
       <ContainerBox style={chatOnOff ? { paddingLeft: "230px" } : {}}>
         <Header />
         <Chat chat={chatOnOff} />
-        {!group || !cmt_list ? (
+        {!cmt_list || !group || isLoading ? (
           <Spinner />
         ) : (
           <ContentBox>
@@ -92,11 +84,15 @@ const dispatch = useDispatch();
                 </Text>
                 <Text size="14px">{group.groupDesc}</Text>
                 <TodoInput
+                value={msg}
+                onChange={(e)=>{
+                  setMsg(e.target.value);
+                }}
                   placeholder={`${user.nickname}님! 각오 한 마디 남겨주세요!`}
                   onKeyPress={(e) => {
-                    if (e.key === "Enter" && e.target.value) {
-                      console.log(group.groupId, e.target.value);
-                      dispatch(cmtActions.addCmtDB(group.groupId, e.target.value));
+                    if (e.key === "Enter" && msg) {
+                      dispatch(cmtActions.addCmtDB(group.groupId, msg));
+                      setMsg("");
                     }
                   }}
                 />
@@ -111,56 +107,31 @@ const dispatch = useDispatch();
             <RankList>
               <BoxTitle>명예의 전당</BoxTitle>
               <Grid>
-                <Rank className="first">
-                  <Image src={Trophy} width="27px" height="40px" contain />
+               {rank.map((r,idx)=>{
+                 return (idx==0 ?
+                    <Rank className="first">
+                    <Image src={Trophy} width="27px" height="40px" contain />
+                    <Text bold title>
+                      {r.nickname}
+                    </Text>
+                    <Text size="8px" center title>
+                      6시간 <br />
+                      <Point>{Math.round(r.questRate)}%</Point>
+                    </Text>
+                  </Rank>
+                  :
+                  <Rank>
+                  <Image src={idx<3? Jump:Fire} width="30px" height="40px" contain />
                   <Text bold title>
-                    르탄이
+                  {r.nickname}
                   </Text>
                   <Text size="8px" center title>
                     6시간 <br />
-                    <Point>100%</Point>
+                    <Point>{Math.round(r.questRate)}%</Point>
                   </Text>
                 </Rank>
-                <Rank>
-                  <Image src={Jump} width="30px" height="40px" contain />
-                  <Text bold title>
-                    르탄이
-                  </Text>
-                  <Text size="8px" center title>
-                    6시간 <br />
-                    <Point>100%</Point>
-                  </Text>
-                </Rank>
-                <Rank>
-                  <Image src={Jump} width="30px" height="40px" contain />
-                  <Text bold title>
-                    르탄이
-                  </Text>
-                  <Text size="8px" center title>
-                    6시간 <br />
-                    <Point>100%</Point>
-                  </Text>
-                </Rank>
-                <Rank>
-                  <Image src={Fire} width="30px" height="40px" contain />
-                  <Text bold title>
-                    르탄이
-                  </Text>
-                  <Text size="8px" center title>
-                    6시간 <br />
-                    <Point>100%</Point>
-                  </Text>
-                </Rank>
-                <Rank>
-                  <Image src={Fire} width="30px" height="40px" contain />
-                  <Text bold title>
-                    르탄이
-                  </Text>
-                  <Text size="8px" center title>
-                    6시간 <br />
-                    <Point>100%</Point>
-                  </Text>
-                </Rank>
+                  );
+                })}
               </Grid>
               <Image
                 src={Dino}
