@@ -1,7 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
 import {produce} from 'immer';
 import {config} from "../../shared/config";
-import axios from "axios";
 
 //actions
 const GET_MSG = 'GET_MSG';
@@ -18,23 +17,19 @@ const initialState = {
     chat_list: [],
     is_loading: false,
   };
-
   const socket = new WebSocket(config.ws);
-
   //middleware
   const getChatList = (prevChat)=>{
     return function(dispatch, getState, {history}){
         dispatch(getMsg(prevChat));
     };
   };
-
 const addChatList = (msg)=>{
     return function(dispatch, getState, {history}){
         dispatch(setMsg(msg));
 
     };
 };
-
   //reducer
 export default handleActions({
     [GET_MSG]:(state,action)=>

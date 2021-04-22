@@ -1,11 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import quest, { actionCreators as questActions } from "../redux/modules/quest";
+import { actionCreators as questActions } from "../redux/modules/quest";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { faChevronCircleRight } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch,useSelector } from "react-redux";
-import { useState } from 'react';
 import {Grid} from '../elements';
 import moment from 'moment';
 import Daily from './Daily';

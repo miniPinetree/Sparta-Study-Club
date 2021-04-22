@@ -7,7 +7,7 @@ import bgImg from "./images/bg.png";
 import { Text, Grid, Input, Button, Image } from "../elements";
 
 import { emailCheck } from "../shared/common";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { config } from "../shared/config";
 

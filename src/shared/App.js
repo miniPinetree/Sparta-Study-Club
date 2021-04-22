@@ -2,7 +2,7 @@ import React from "react";
 import './App.css';
 import '../scss/main.scss';
 import { ConnectedRouter } from "connected-react-router";
-import { BrowserRouter, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import LogIn from "../pages/LogIn";
 import SignUp from "../pages/SignUp";
 import MyPage from "../pages/MyPage";
@@ -10,9 +10,6 @@ import GroupList from "../pages/GroupList";
 import GroupDetail from "../pages/GroupDetail";
 //리덕스 스토어의 history를 사용하기 위함.
 import {history} from "../redux/configStore";
-
-import { connect } from 'react-redux';
-import {bindActionCreators} from 'redux';
 import { useDispatch, useSelector } from "react-redux";
 import {actionCreators as userActions} from "../redux/modules/user"; 
 

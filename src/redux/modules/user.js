@@ -15,27 +15,21 @@ const setUser = createAction(SET_USER, (user) => ({ user }));
 const getUser = createAction(GET_USER, (user) => ({ user }));
 
 const initialState = {
-  user:null,
+  user: null,
 };
-//middleware actions
-      //다르게 적어보기
-      // const data={
-      //   email:id,
-      //   password:pwd,
-      //   nickname:nick,
-      // }
-      // axios.post(`${config.api}/user`,data)
+//middleware
+
 //회원가입 API
 const signupDB = (id, pwd, nick) => {
-  return function (dispatch, getState, { history }) {
+  return function ({ history }) {
     const data = {
       email: id,
-        password: pwd,
-        nickname: nick,
-    }
-      axios
-    .post(`${config.api}/user`, data)
-    .then((res) => {
+      password: pwd,
+      nickname: nick,
+    };
+    axios
+      .post(`${config.api}/user`, data)
+      .then((res) => {
         if (res.data.msg === "success") {
           Swal.fire({
             text: "가입이 완료되었습니다!",
@@ -58,18 +52,19 @@ const signupDB = (id, pwd, nick) => {
 //로그인 API
 const loginDB = (id, pwd) => {
   return function (dispatch, getState, { history }) {
-    const data= {
+    const data = {
       email: id,
       password: pwd,
-    }
-    axios.post(`${config.api}/user/auth`, data)
+    };
+    axios
+      .post(`${config.api}/user/auth`, data)
       .then((res) => {
         if (res.data.msg === "success") {
           const userInfo = {
             nickname: res.data.nickname,
-            userTodayId:res.data.userTodayId,
-            studySetTime:res.data.studySetTime,
-            startTime:res.data.studyTime,
+            userTodayId: res.data.userTodayId,
+            studySetTime: res.data.studySetTime,
+            startTime: res.data.studyTime,
           };
           // 24- new Date().getHours()-1)
           dispatch(setUser(userInfo));
@@ -94,49 +89,50 @@ const loginDB = (id, pwd) => {
 };
 //시간추가 API
 //목표시간을 유저 정보에 업데이트
-//studySetTime만 보내면 됨. (study Time백엔드에서 자동생성.. => 받아옴)
-//userTodayId userinfo 세팅해서 할 일 추가할 때 보내기.
-const setTimeDB = (targetTime)=>{
+const setTimeDB = (targetTime) => {
   return function (dispatch, getState, { history }) {
     const nickname = getState().user.user.nickname;
-    console.log(nickname);
-      axios({
-          method:"post",
-          url: `${config.api}/quest/time`,
-          data:{
-              studySetTime:targetTime
-          },
-      }).then((res)=>{
-          if(res.data.msg==="fail"){
-              Swal.fire({
-                  text: `이미 설정된 시간이 있습니다.`,
-                  confirmButtonColor: "#E3344E",
-                });
-                return;
-          }else{
-            const userInfo = {
-              nickname: nickname,
-              userTodayId:res.data.userTodayId,
-              startTime:res.data.studyTime,
-              studySetTime:targetTime,
-            };
-            dispatch(setUser(userInfo));
-            setCookie("_study", JSON.stringify(userInfo), 24 - new Date().getHours());
-            history.go(0);
-                Swal.fire({
-                title:`${nickname}님이라면 할 수 있어요`,
-                text: `목표를 정해 ${targetTime}시간 내에 완수해봐요 🐱‍🏍
+    const data = {
+      studySetTime: targetTime,
+    };
+    axios
+      .post(`${config.api}/quest/time`, data)
+      .then((res) => {
+        if (res.data.msg === "fail") {
+          Swal.fire({
+            text: `이미 설정된 시간이 있습니다.`,
+            confirmButtonColor: "#E3344E",
+          });
+          return;
+        } else {
+          const userInfo = {
+            nickname: nickname,
+            userTodayId: res.data.userTodayId,
+            startTime: res.data.studyTime,
+            studySetTime: targetTime,
+          };
+          dispatch(setUser(userInfo));
+          setCookie(
+            "_study",
+            JSON.stringify(userInfo),
+            24 - new Date().getHours()
+          );
+          history.go(0);
+          Swal.fire({
+            title: `${nickname}님이라면 할 수 있어요`,
+            text: `목표를 정해 ${targetTime}시간 내에 완수해봐요 🐱‍🏍
                 `,
-                confirmButtonColor: "#E3344E",
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  // history.go(0);
-                }
-              });
-          }
-          }).catch((err) => {
-          console.log(err);
-        });
+            confirmButtonColor: "#E3344E",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // history.go(0);
+            }
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 };
 
@@ -144,22 +140,18 @@ const setTimeDB = (targetTime)=>{
 //여기서는 클라이언트에 저장되어 있는 정보로만 1차 확인한다.
 const loginCheckDB = () => {
   return function (dispatch, getState, { history }) {
-//  const nickname = getState().user.user.nickname;
- const token = getCookie('sss_token');
- const _userInfo = getCookie('_study');
- axios.defaults.headers.common[
-  "authorization"
-] = `Bearer ${token}`; //Bearer
-   if(!token|| !_userInfo){
-      history.replace('/')
-   }else{
+    const token = getCookie("sss_token");
+    const _userInfo = getCookie("_study");
+    axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
+    if (!token || !_userInfo) {
+      history.replace("/");
+    } else {
       const userInfo = JSON.parse(_userInfo);
-      dispatch(
-        setUser(userInfo)
-      );
-      if(window.location.pathname === "/"){
+      dispatch(setUser(userInfo));
+      if (window.location.pathname === "/") {
         history.push("/mypage");
-      }}
+      }
+    }
   };
 };
 
@@ -170,14 +162,15 @@ const logoutDB = () => {
     dispatch(logOut());
     axios.defaults.headers.common["Authorization"] = null;
     delete axios.defaults.headers.common["Authorization"];
-    history.push ('/'); 
-    if(window.location.pathname !== "/"){
+    history.push("/");
+    if (window.location.pathname !== "/") {
       //로그인 만료 후 뒤로가기 방지
-    window.onpopstate = () => {
+      window.onpopstate = () => {
         history.go(1);
-      }
+      };
     }
-};};
+  };
+};
 
 export default handleActions(
   {
@@ -203,7 +196,7 @@ const actionCreators = {
   loginDB,
   loginCheckDB,
   logoutDB,
-  setTimeDB
+  setTimeDB,
 };
 
 export { actionCreators };

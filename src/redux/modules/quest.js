@@ -5,6 +5,7 @@ import { config } from "../../shared/config";
 import moment from "moment";
 import Swal from "sweetalert2";
 
+//actions
 const SET_QUEST = "SET_QUEST";
 const ADD_QUEST = "ADD_QUEST";
 const DELETE_QUEST = "DELETE_QUEST";
@@ -14,6 +15,7 @@ const LOADING = "LOADING";
 const CHATTING = "CHATTING";
 const SET_CALENDAR = "SET_CALENDAR";
 
+//action creators
 const setQuest = createAction(SET_QUEST, (dayQuest) => ({ dayQuest }));
 const addQuest = createAction(ADD_QUEST, (quest, questRate, monthQuest) => ({
   quest,
@@ -48,7 +50,7 @@ const initialState = {
   calendar: null,
 };
 
-//채팅방 클릭 on/off
+//채팅방 on/off 여부
 const onOffChat = () => {
   return function (dispacth, getState, { history }) {
     let _chat = getState().quest.chat;
@@ -56,24 +58,20 @@ const onOffChat = () => {
     dispacth(setChatting(_chat));
   };
 };
-
+//캘린더 data 불러오기
 const getMonthQuestDB = (date = null, move = null) => {
   return function (dispatch, getState, { history }) {
     if (!date) {
       return;
     }
-
     let year = date.substring(0, 4);
     let month;
-
     if (date.length === 5) {
       month = date.substring(date.length - 1, date.length);
     } else {
       month = date.substring(date.length - 2, date.length);
     }
-
     dispatch(loading(true));
-
     axios({
       method: "get",
       url: `${config.api}/quest/calendar?year=${year}&month=${month}`,
@@ -81,7 +79,6 @@ const getMonthQuestDB = (date = null, move = null) => {
       .then((res) => {
         if (res.data.msg === "success") {
           const _data = res.data.data;
-          //날짜만 뽑아서 중복 제거.
           const _day = _data.map((d) => d.day);
           const day = _day.filter((d, idx) => {
             return _day.indexOf(d) === idx;
@@ -91,9 +88,7 @@ const getMonthQuestDB = (date = null, move = null) => {
             let keyDay = { day: d };
             _monthQuest.push(keyDay);
           });
-
           _monthQuest.forEach((d, idx) => {
-            //처음나오는 날로 기본 세팅.
             const findData = _data.find((_d) => _d.day === d.day);
             const basicSetting = {
               studyTime: findData.studyTimeStamp,
@@ -102,9 +97,8 @@ const getMonthQuestDB = (date = null, move = null) => {
               quest: [],
             };
             _monthQuest[idx] = { ..._monthQuest[idx], ...basicSetting };
-
             _data.forEach((_d) => {
-              //퀘스트 날짜별로 추가.
+              //일자별 퀘스트 분류
               if (d.day === _d.day) {
                 let _quest = {
                   questId: _d.questId,
@@ -115,28 +109,22 @@ const getMonthQuestDB = (date = null, move = null) => {
               }
             });
           });
-
           dispatch(setMonthQuest(_monthQuest));
-
           let today = moment().format("YYYY/MM/DD");
           let _dayQuest = _monthQuest.find((m) => m.day === today);
-          //시간 설정이 되어 오늘 정보가 있다면..
+          //당일에 이미 추가해둔 퀘스트가 존재하는 경우
           if (_dayQuest) {
             dispatch(setQuest(_dayQuest.quest));
           }
-
           let thisMonth;
           let moveMonth;
           let moveYear;
-          // 다음 월 버튼 클릭
+          // 월 이동 이벤트
           if (move === "add") {
-            //년도와 월 비교.
+            //연,월을 비교하여 캘린더 정보 세팅
             moveYear = Number(year) - Number(moment().format("YYYY"));
             moveMonth = Number(month) - Number(moment().format("M"));
-
-            //이번년도에서 벗어나지 않을 때.
             if (moveYear === 0) {
-              //요청하는 월이 이번달이라면.
               if (moment().format("M") === month) {
                 dispatch(setCalendar(moment()));
                 return false;
@@ -151,13 +139,10 @@ const getMonthQuestDB = (date = null, move = null) => {
               dispatch(setCalendar(thisMonth));
               return false;
             }
-            //이전 월 버튼 클릭
           } else if (move === "subtract") {
             moveYear = Number(moment().format("YYYY")) - Number(year);
             moveMonth = Number(moment().format("M")) - Number(month);
-            //이번년도에서 벗어나지 않을 때.
             if (moveYear === 0) {
-              //요청하는 월이 이번달이라면.
               if (moment().format("M") === month) {
                 dispatch(setCalendar(moment()));
                 return false;
@@ -171,7 +156,7 @@ const getMonthQuestDB = (date = null, move = null) => {
                 .subtract(moveMonth, "month");
               dispatch(setCalendar(thisMonth));
             }
-            //처음 요청. move가 들어오지 않았을 때.
+           //월 이동 이벤트가 발생하지 않은 초기 상태
           } else {
             dispatch(setCalendar(moment()));
           }
@@ -180,11 +165,9 @@ const getMonthQuestDB = (date = null, move = null) => {
       .catch((err) => console.log(err));
   };
 };
-
 const addQuestDB = (questContents = null) => {
   return function (dispacth, getState, { history }) {
     const userTodayId = getState().user.user.userTodayId;
-
     if (!questContents) {
       Swal.fire({
         text: "내용을 입력해주세요!✏️",
@@ -192,15 +175,12 @@ const addQuestDB = (questContents = null) => {
       });
       return false;
     }
-    axios({
-      method: "post",
-      url: `${config.api}/quest`,
-      data: {
-        questContents: questContents,
-        userTodayId: userTodayId,
-      },
-    })
-      .then((res) => {
+    const data = {
+      questContents: questContents,
+      userTodayId: userTodayId,
+    }
+    axios.post(`${config.api}/quest`,data)
+  .then((res) => {
         if (res.data.msg === "success") {
           let _quest = {
             questId: res.data.questId,
@@ -212,7 +192,7 @@ const addQuestDB = (questContents = null) => {
           const today = moment().format("YYYY/MM/DD");
           const todayMonthQuest = _monthQuest.find((m) => m.day === today);
           console.log(_monthQuest, todayMonthQuest);
-          //monthQuest에 오늘 날짜가 없다면.
+          //monthQuest에 오늘 날짜가 없다면 새로 추가
           if (!todayMonthQuest) {
             let monthQuest = {
               day: today,
@@ -221,18 +201,14 @@ const addQuestDB = (questContents = null) => {
               studySetTime: user.studySetTime,
               quest: [],
             };
-
             monthQuest.quest.push(_quest);
-            console.log(monthQuest);
             dispacth(addQuest(_quest, res.data.questRate, monthQuest));
             return false;
           }
           let copyQuest = todayMonthQuest.quest.filter(() => true);
           copyQuest = [...copyQuest, _quest];
-
           let _todayMonthQuest = Object.assign({}, todayMonthQuest);
           _todayMonthQuest.quest = copyQuest;
-
           dispacth(addQuest(_quest, res.data.questRate, _todayMonthQuest));
         } else {
           Swal.fire({
@@ -244,18 +220,15 @@ const addQuestDB = (questContents = null) => {
       .catch((err) => console.log(err));
   };
 };
-
-//userTodayId body에 같이 실어서 보내기 추가만.
 const deleteQuestDB = (questId = null) => {
   return function (dispacth, getState, { history }) {
     const userTodayId = getState().user.user.userTodayId;
-    console.log(`userToday: ${userTodayId} questId: ${questId}`);
     if (!questId || !userTodayId) {
       console.log("questId 혹은 userTodayId가 없습니다.");
       return false;
     }
-
-    axios({
+    axios
+    ({
       method: "delete",
       url: `${config.api}/quest`,
 
@@ -296,12 +269,8 @@ const updateQuestDB = (questId = null) => {
       console.log("questId 혹은 userTodayId가 없습니다.");
       return false;
     }
-
     const quest = getState().quest.dayQuest.find((q) => q.questId === questId);
     let questYn = quest.questYn ? false : true;
-    //서버 연동시 밑에 활성화
-    //dispacth(updateQuest(questId,questYn))
-
     axios({
       method: "patch",
       url: `${config.api}/quest`,

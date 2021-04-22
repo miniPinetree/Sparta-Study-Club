@@ -1,29 +1,30 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Bar } from "react-chartjs-2";
-import { Grid, Text } from "../elements";
+import { Text } from "../elements";
 import styled from "styled-components";
-import moment from "moment";
 
 const Chart = (props) => {
-
   const dayInfo = useSelector((state) => state.quest.monthQuest);
-  const user = useSelector((state)=>state.user.user);
   let range = [];
-console.log(dayInfo);
-//그래프 표기 범위 설정
-if(dayInfo.length>5){
-  dayInfo.filter((q,idx)=>{
-    if(idx<5){
-      range.push(q);
-    }})}else{
-      range = dayInfo;
-    }
-console.log(range);
-// console.log(range);
+  console.log(dayInfo);
+  //그래프 표기 범위 설정
+  if (dayInfo.length > 5) {
+    dayInfo.filter((q, idx) => {
+      if (idx < 5) {
+        range.push(q);
+      }
+    });
+  } else {
+    range = dayInfo;
+  }
+  console.log(range);
+  // console.log(range);
   const rangeLabel = range.map((day) => {
     if (day.studySetTime && day.questRate > 30) {
-      return day.studySetTime + "시간동안 " + Math.round(day.questRate) + "%달성!";
+      return (
+        day.studySetTime + "시간동안 " + Math.round(day.questRate) + "%달성!"
+      );
     } else if (day.studySetTime && day.questRate >= 0) {
       return "달성률" + day.questRate + "% 생산성을 높여야해요!";
     } else {
@@ -62,8 +63,6 @@ console.log(range);
           "rgb(255,97,120)",
           "rgb(139,117,215)",
         ],
-        // barPercentage: 0.5,
-        // barThickness: 10,
         maxBarThickness: 40,
         data: rangeData,
       },
@@ -149,7 +148,7 @@ console.log(range);
           {range.map((day, idx) => {
             const date = day.day.split("/");
             return (
-              <Label key={idx} >
+              <Label key={idx}>
                 <Text size="10px" bold>
                   {date[1] + "월" + date[2] + "일 " + day.studySetTime}시간
                   <br />
@@ -170,12 +169,13 @@ console.log(range);
 
 const ChartBox = styled.div`
   width: 100%;
-  min-width:352px;
+  min-width: 352px;
   height: 87%;
   box-sizing: border-box;
   position: relative;
-  @media all and (max-width:767px)
-  {min-width:280px;}
+  @media all and (max-width: 767px) {
+    min-width: 280px;
+  }
 `;
 const Xaxis = styled.hr`
   width: 100%;
@@ -187,24 +187,25 @@ const Xaxis = styled.hr`
   background-color: black;
 `;
 const LabelBox = styled.div`
-display:flex;
-justify-content:space-around;
-padding:0 1px 0 10px;
+  display: flex;
+  justify-content: space-around;
+  padding: 0 1px 0 10px;
 `;
 
 const Label = styled.div`
-  height: 33px;
+  height: 1px;
   width: 20%;
-  min-width:69.7px;
+  min-width: 69.7px;
   text-align: center;
   padding: 0 3px;
   box-sizing: border-box;
-  @media all and (max-width:1105px)
- {max-height:45px;
- overflow:hidden;}
- @media all and (max-width:767px)
-  {display:none;}
-
+  @media all and (max-width: 1105px) {
+    height: 1px;
+    overflow: hidden;
+  }
+  @media all and (max-width: 767px) {
+    display: none;
+  }
 `;
 const Point = styled.span`
   color: #e3344e;

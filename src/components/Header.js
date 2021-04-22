@@ -11,7 +11,7 @@ import Logo from '../images/MypageLogo.png'
 import { history } from "../redux/configStore";
 import { actionCreators as questActions } from "../redux/modules/quest";
 import {actionCreators as userActions} from "../redux/modules/user";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 
 

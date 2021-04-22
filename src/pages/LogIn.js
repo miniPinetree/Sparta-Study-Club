@@ -3,11 +3,10 @@ import Swal from "sweetalert2";
 import styled from "styled-components";
 import '../scss/main.scss';
 import bgImg from "./images/bg.png";
-import {history} from "../redux/configStore";
 import { Text, Grid, Input, Button, Image } from "../elements";
 
 import { emailCheck } from "../shared/common";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {actionCreators as userActions} from "../redux/modules/user";
 
 const LogIn = (props) => {
