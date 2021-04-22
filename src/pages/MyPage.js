@@ -26,6 +26,7 @@ const MyPage = (props) => {
   
   const chatOnOff = useSelector((state) => state.quest.chat);
   const loading = useSelector((state) => state.quest.isLoading);
+  console.log(monthQuest, dayRate,loading);
   React.useEffect(() => {
     //두개로..
     let date = moment().format('YYYYM');
@@ -178,13 +179,33 @@ const ContainerBox = styled.div`
   box-sizing: border-box;
   width: 100%;
 `;
-
-
 const ContentBox = styled.div`
   margin: 100px auto 0px auto;
-  width: 900px;
+  padding-left:180px;
+  width: 93%;
   display: flex;
+  justify-content:center;
   gap: 35px;
+
+   /* 테블릿 세로 (해상도 768px ~ 1023px)*/
+ @media all and (min-width:768px) and (max-width:1023px)
+ { /*스타일입력*/} 
+
+  /* PC , 테블릿 가로 (해상도 768px ~ 1023px)*/
+@media all and (min-width:480px) and (max-width:834px) 
+{width: 200px;
+    min-height: 141px;
+    padding: 8px;
+    font-size: 17px;}
+
+/* 모바일 가로, 테블릿 세로 (해상도 480px ~ 767px)*/ 
+@media all and (min-width:480px) and (max-width:767px)
+ { /*스타일입력*/} 
+/* 모바일 가로, 테블릿 세로 (해상도 ~ 479px)*/ 
+@media all and (max-width:479px)
+ { /*스타일입력*/}
+
+  
 `;
 
 const ItemBox = styled.div`
@@ -245,6 +266,13 @@ const QuestBox = styled.div`
   &.questlist {
     margin-left: 3px;
   }
+  @media all and (min-width:938px) and (max-width:1023px)
+ {width: 350px;
+    min-height: 300px}
+
+  @media all and (min-width:480px) and (max-width:834px) 
+{width: 200px;
+    min-height: 141px;
 `;
 
 

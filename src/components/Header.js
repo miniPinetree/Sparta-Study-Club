@@ -19,10 +19,15 @@ const Header = (props) => {
 
     const dispatch = useDispatch();
 
+    const clickLogo = ()=>{
+      
+    }
+
   return (
     <React.Fragment>
           <HeaderBox>
-              <IconBox style={{margin:'0px'}} onClick={() => {history.push('/')}}>
+              <IconBox style={{margin:'0px'}} onClick={() => {
+                history.push('/mypage')}}>
             <Image src={Logo} width="55px" height="30px" margin="10px 0px"/>
              </IconBox>
                 <IconBox>

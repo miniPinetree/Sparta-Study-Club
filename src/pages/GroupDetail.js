@@ -15,25 +15,24 @@ import Quest from "../components/Quest";
 import Comment from "../components/Comment";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import MenuListComposition from "../components/MenuList";
-import {actionCreators as groupActions} from "../redux/modules/group";
-import {actionCreators as cmtActions} from "../redux/modules/comment";
+import { actionCreators as groupActions } from "../redux/modules/group";
+import { actionCreators as cmtActions } from "../redux/modules/comment";
 
 const GroupDetail = (props) => {
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const group_list = useSelector((state) => state.group.group_list.joined);
   const id = props.match.params.id;
   const group = group_list.find((group) => group.groupId === id);
   const user = useSelector((state) => state.user.user);
-  const rank = useSelector((state)=>state.group.rank);
-  const isLoading = useSelector((state)=>state.group.isLoading);
-  const cmt_list = useSelector((state)=> state.comment.cmt_list);
+  const rank = useSelector((state) => state.group.rank);
+  const isLoading = useSelector((state) => state.group.isLoading);
+  const cmt_list = useSelector((state) => state.comment.cmt_list);
   const chatOnOff = useSelector((state) => state.quest.chat);
   const [open, setOpen] = React.useState(false);
   const [msg, setMsg] = React.useState("");
-rank.map((r)=>{
-  console.log(r.nickname)
-})
+  console.log(group, isLoading, cmt_list);
+
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
@@ -42,14 +41,15 @@ rank.map((r)=>{
     setOpen(false);
   };
 
-  React.useEffect(()=>{
-    if(group){
-      dispatch(groupActions.getRankDB(group.groupId));
-      dispatch(cmtActions.setCmtDB(group.groupId));
+  React.useEffect(() => {
+    if (group) {
+      dispatch(groupActions.getRankDB(id));
+      dispatch(cmtActions.setCmtDB(id));
       return;
     }
     dispatch(groupActions.getGroupDB());
-  },[group]);
+  }, [group]);
+  
   return (
     <React.Fragment>
       <ContainerBox style={chatOnOff ? { paddingLeft: "230px" } : {}}>
@@ -67,7 +67,7 @@ rank.map((r)=>{
                   <br /> {group.nickname}
                 </Text>
               </BoxTitle>
-
+              {/* 토글메뉴 */}
               <TopMenu onClick={handleToggle}>
                 <MenuListComposition
                   open={open}
@@ -84,10 +84,10 @@ rank.map((r)=>{
                 </Text>
                 <Text size="14px">{group.groupDesc}</Text>
                 <TodoInput
-                value={msg}
-                onChange={(e)=>{
-                  setMsg(e.target.value);
-                }}
+                  value={msg}
+                  onChange={(e) => {
+                    setMsg(e.target.value);
+                  }}
                   placeholder={`${user.nickname}님! 각오 한 마디 남겨주세요!`}
                   onKeyPress={(e) => {
                     if (e.key === "Enter" && msg) {
@@ -98,39 +98,51 @@ rank.map((r)=>{
                 />
               </GroupBox>
               <CmtList>
-                {cmt_list.map((cmt, idx)=>
- <Comment key={cmt.cmtId} cmt={cmt} />
-                )}
+                {cmt_list.map((cmt) => (
+                  <Comment key={cmt.cmtId} cmt={cmt} />
+                ))}
               </CmtList>
             </ListBox>
 
             <RankList>
               <BoxTitle>명예의 전당</BoxTitle>
               <Grid>
-               {rank.map((r,idx)=>{
-                 return (idx==0 ?
-                    <Rank className="first">
-                    <Image src={Trophy} width="27px" height="40px" contain />
-                    <Text bold title>
-                      {r.nickname}
-                    </Text>
-                    <Text size="8px" center title>
-                      6시간 <br />
-                      <Point>{Math.round(r.questRate)}%</Point>
-                    </Text>
-                  </Rank>
-                  :
-                  <Rank>
-                  <Image src={idx<3? Jump:Fire} width="30px" height="40px" contain />
-                  <Text bold title>
-                  {r.nickname}
-                  </Text>
-                  <Text size="8px" center title>
-                    6시간 <br />
-                    <Point>{Math.round(r.questRate)}%</Point>
-                  </Text>
-                </Rank>
-                  );
+                {rank.map((r, idx) => {
+                  return idx < 5 ? (
+                    idx == 0 ? (
+                      <Rank className="first">
+                        <Image
+                          src={Trophy}
+                          width="27px"
+                          height="40px"
+                          contain
+                        />
+                        <Text bold title>
+                          {r.nickname}
+                        </Text>
+                        <Text size="8px" center title>
+                          6시간 <br />
+                          <Point>{Math.round(r.questRate)}%</Point>
+                        </Text>
+                      </Rank>
+                    ) : (
+                      <Rank>
+                        <Image
+                          src={idx < 3 ? Jump : Fire}
+                          width="30px"
+                          height="40px"
+                          contain
+                        />
+                        <Text bold title>
+                          {r.nickname}
+                        </Text>
+                        <Text size="8px" center title>
+                          6시간 <br />
+                          <Point>{Math.round(r.questRate)}%</Point>
+                        </Text>
+                      </Rank>
+                    )
+                  ) : null;
                 })}
               </Grid>
               <Image
@@ -175,7 +187,6 @@ const BoxTitle = styled.div`
 `;
 
 const TopMenu = styled.div`
-  /* color: #9A9A9A; */
   font-size: 24px;
   font-family: "GmarketSansBold";
   letter-spacing: 1.2px;

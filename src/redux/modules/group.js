@@ -9,7 +9,6 @@ const GET_GROUP = "GET_GROUP";
 const ADD_GROUP = "ADD_GROUP";
 const DELETE_GROUP = "DELETE_GROUP";
 const ADD_MEMBER = "ADD_MEMBER";
-const DELETE_MEMBER = "DELETE_MEMBER";
 const LOADING = "LOADING";
 const GET_RANK = "GET_RANK";
 
@@ -17,34 +16,13 @@ const getGroup = createAction(GET_GROUP, (group_list) => ({ group_list }));
 const addGroup = createAction(ADD_GROUP, (group) => ({ group }));
 const deleteGroup = createAction(DELETE_GROUP, (group) => ({ group }));
 const addMember = createAction(ADD_MEMBER, (group) => ({ group }));
-const deleteMember = createAction(DELETE_MEMBER, (group) => ({ group }));
 const loading = createAction(LOADING, (isLoading) => ({ isLoading }));
 const getRank = createAction(GET_RANK, (rank) => ({ rank }));
 
 const initialState = {
   group_list: {
-    joined: [
-      {
-        groupId: 1,
-        nickname: "르탄이",
-        groupName: "클린코드",
-        groupDesc: "리팩토링 함께 고민해요",
-      },
-      {
-        groupId: 2,
-        nickname: "르탄이",
-        groupName: "킹고리즘",
-        groupDesc: "알고리즘을 정복할 스파르타 군대",
-      },
-    ],
-    unjoined: [
-      {
-        groupId: 3,
-        nickname: "르탄이",
-        groupName: "자바스크립트포에버",
-        groupDesc: "일이삼사오일이삼사오일이삼사오일이삼사오",
-      },
-    ],
+    joined: [],
+    unjoined: [],
   },
   groupId: null,
   rank: [],
@@ -52,83 +30,131 @@ const initialState = {
 };
 
 const getGroupDB = () => {
-  return function (dispatch, getState, { history }) {
+  return function (dispatch, { history }) {
     dispatch(loading(true));
-    const token = getCookie("token");
-    axios.defaults.headers.common["authorization"] = `Bearer ${token}`; //Bearer
-    axios({
-      method: "get",
-      url: `${config.api}/group`,
-    })
+    const token = getCookie("sss_token");
+    axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
+    axios
+      .get(`${config.api}/group`)
       .then((res) => {
-        dispatch(getGroup(res.data));
+        switch (res.data.msg) {
+          case "success":
+            dispatch(getGroup(res.data));
+            break;
+          case "not_login":
+            history.push("/");
+            Swal.fire({
+              text: "로그인 만료되었습니다.",
+              confirmButtonColor: "rgb(118, 118, 118)",
+            });
+            break;
+          default:
+            Swal.fire({
+              text: "클럽 불러오기에 실패했습니다. ",
+              confirmButtonColor: "#E3344E",
+            });
+            break;
+        }
       })
       .catch((err) => console.log(err));
   };
 };
 
 const getRankDB = (groupId) => {
-  return function (dispatch, getState, { history }) {
+  return function (dispatch, { history }) {
     dispatch(loading(true));
-    axios({
-      method: "get",
-      url: `${config.api}/group/${groupId}/rank`,
-    })
+    axios
+      .get(`${config.api}/group/${groupId}/rank`)
       .then((res) => {
-        dispatch(getRank(res.data.data));
+        switch (res.data.msg) {
+          case "success":
+            dispatch(getRank(res.data.data));
+            break;
+          case "not_login":
+            Swal.fire({
+              text: "로그인 만료되었습니다.",
+              confirmButtonColor: "rgb(118, 118, 118)",
+            });
+            history.push("/");
+            break;
+          default:
+            Swal.fire({
+              text: "랭킹 불러오기에 실패했습니다. ",
+              confirmButtonColor: "#E3344E",
+            });
+            break;
+        }
       })
-      .catch((err) => console.log("랭킹 불러오기", err));
+      .catch((err) => console.log(err));
   };
 };
 
 const addGroupDB = (groupName, groupDesc) => {
-  return function (dispatch, getState, { history }) {
+  return function (dispatch, { history }) {
     let groupInfo = {
       groupName: groupName,
       groupDesc: groupDesc,
     };
-
-    axios({
-      method: "post",
-      url: `${config.api}/group`,
-      data: groupInfo,
-    })
+    axios
+      .post(`${config.api}/group`, groupInfo)
       .then((res) => {
-        dispatch(addGroup(groupInfo));
+        switch (res.data.msg) {
+          case "success":
+            dispatch(addGroup(groupInfo));
+            break;
+          case "not_login":
+            Swal.fire({
+              text: "로그인 만료되었습니다.",
+              confirmButtonColor: "rgb(118, 118, 118)",
+            });
+            history.push("/");
+            break;
+          default:
+            Swal.fire({
+              text: "클럽 생성에 실패했습니다. ",
+              confirmButtonColor: "#E3344E",
+            });
+            break;
+        }
       })
       .catch((err) => console.log(err));
   };
 };
 
 const deleteGroupDB = (group) => {
-  return function (dispatch, getState, { history }) {
-    const token = getCookie("token");
-    axios.defaults.headers.common["authorization"] = `Bearer ${token}`; //Bearer
-
+  return function (dispatch, { history }) {
     Swal.fire({
       icon: "warning",
       title: "정말 클럽을 삭제하시겠어요?",
       showCancelButton: true,
-      confirmButtonColor: "rgb(118, 118, 118)",
+      confirmButtonColor: "#E2344E",
       confirmButtonText: "삭제",
       cancelButtonText: "취소",
-      cancelButtonColor: "#E2344E",
+      cancelButtonColor: "rgb(118, 118, 118)",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios({
-          method: "DELETE",
-          url: `${config.api}/group/${group.groupId}`,
-        })
+        axios
+          .delete(`${config.api}/group/${group.groupId}`)
           .then((res) => {
-            if (res.data.msg === "fail") {
-              Swal.fire({
-                text: "잠시 후 다시 시도해주세요.",
-                confirmButtonColor: "rgb(118, 118, 118)",
-              });
-            } else {
-              dispatch(deleteGroup(group));
-              Swal.fire("삭제 완료!", "클럽이 삭제되었습니다.", "success");
-              history.replace("/group");
+            switch (res.data.msg) {
+              case "success":
+                dispatch(deleteGroup(group));
+                Swal.fire("삭제 완료!", "클럽이 삭제되었습니다.", "success");
+                history.replace("/group");
+                break;
+              case "not_login":
+                Swal.fire({
+                  text: "로그인 만료되었습니다.",
+                  confirmButtonColor: "rgb(118, 118, 118)",
+                });
+                history.push("/");
+                break;
+              default:
+                Swal.fire({
+                  text: "클럽 삭제에 실패했습니다. ",
+                  confirmButtonColor: "#E3344E",
+                });
+                break;
             }
           })
           .catch((err) => console.log(err));
@@ -138,73 +164,33 @@ const deleteGroupDB = (group) => {
 };
 
 const addMemberDB = (group) => {
-  return function (dispatch, getState, { history }) {
-    const token = getCookie("token");
-    axios.defaults.headers.common["authorization"] = `Bearer ${token}`; //Bearer
-
-    axios({
-      method: "post",
-      url: `${config.api}/group/${group.groupId}`,
-    })
+  return function (dispatch, { history }) {
+    axios
+      .post(`${config.api}/group/${group.groupId}`)
       .then((res) => {
-        console.log(res.data);
-        if (res.data.msg === "fail") {
-          Swal.fire({
-            text: "잠시 후 다시 시도해주세요.",
-            confirmButtonColor: "rgb(118, 118, 118)",
-          });
-        } else {
-          dispatch(addMember(group));
-          Swal.fire("가입 완료!", "success");
+        switch (res.data.msg) {
+          case "success":
+            dispatch(addMember(group));
+            Swal.fire("가입 완료!");
+            break;
+          case "not_login":
+            Swal.fire({
+              text: "로그인 만료되었습니다.",
+              confirmButtonColor: "rgb(118, 118, 118)",
+            });
+            history.push("/");
+            break;
+          default:
+            Swal.fire({
+              text: "가입에 실패했습니다. ",
+              confirmButtonColor: "#E3344E",
+            });
+            break;
         }
       })
       .catch((err) => console.log(err));
   };
 };
-//API통합
-// const deleteMemberDB=(group)=>{
-//     return function(dispatch, getState, {history}){
-
-//         const token = getCookie('token');
-//         axios.defaults.headers.common[
-//          "authorization"
-//        ] = `Bearer ${token}`; //Bearer
-
-//        console.log(group);
-
-//        Swal.fire({
-//         icon: 'warning',
-//         title: "정말 클럽을 탈퇴하시겠어요?",
-//         showCancelButton: true,
-//         confirmButtonColor: "rgb(118, 118, 118)",
-//         confirmButtonText: '탈퇴',
-//         cancelButtonText:"취소",
-//         cancelButtonColor:"#E2344E",
-//       }).then((result)=>{
-//         if (result.isConfirmed) {
-
-//             axios({
-//                 method:'DELETE',
-//                 url: `${config.api}/group/${group.groupId}`,
-//             }).then((res)=>{
-//                 if(res.data.msg==="fail"){
-//                     Swal.fire({
-//                         text: "잠시 후 다시 시도해주세요.",
-//                         confirmButtonColor: "rgb(118, 118, 118)",
-//                       });
-//                 }else{
-//                     dispatch(deleteGroup(group));
-//                     Swal.fire(
-//                       '탈퇴 완료!',
-//                       'success'
-//                     );
-//                     history.replace("/group");
-
-//                 }
-//           }).catch(err=> console.log(err));
-//       }});
-//     }
-// };
 
 export default handleActions(
   {
@@ -230,13 +216,6 @@ export default handleActions(
           (group) => group.groupId !== action.payload.group.groupId
         );
       }),
-    [DELETE_MEMBER]: (state, action) =>
-      produce(state, (draft) => {
-        draft.group_list.joined = draft.group_list.joined.filter(
-          (group) => group.groupId !== action.payload.group.groupId
-        );
-        draft.group_list.unjoined.unshift(action.payload.group);
-      }),
     [LOADING]: (state, action) =>
       produce(state, (draft) => {
         draft.isLoading = action.payload.isLoading;
@@ -255,14 +234,12 @@ const actionCreators = {
   addGroup,
   deleteGroup,
   addMember,
-  deleteMember,
   getGroupDB,
   addGroupDB,
   deleteGroupDB,
   addMemberDB,
   loading,
   getRankDB,
-  // deleteMemberDB,
 };
 
 export { actionCreators };

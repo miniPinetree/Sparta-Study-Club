@@ -59,14 +59,11 @@ const signupDB = (id, pwd, nick) => {
 //로그인 API
 const loginDB = (id, pwd) => {
   return function (dispatch, getState, { history }) {
-    axios({
-      method: "post",
-      url: `${config.api}/user/auth`,
-      data: {
-        email: id,
-        password: pwd,
-      },
-    })
+    const data= {
+      email: id,
+      password: pwd,
+    }
+    axios.post(`${config.api}/user/auth`, data)
       .then((res) => {
         if (res.data.msg === "success") {
           const userInfo = {
@@ -77,12 +74,12 @@ const loginDB = (id, pwd) => {
           };
           // 24- new Date().getHours()-1)
           dispatch(setUser(userInfo));
-          setCookie("token", res.data.token);
+          setCookie("sss_token", res.data.token);
           setCookie("_study", JSON.stringify(userInfo));
           //토큰을 헤더 기본값으로 설정
           axios.defaults.headers.common[
             "authorization"
-          ] = `Bearer ${res.data.token}`; //Bearer
+          ] = `Bearer ${res.data.token}`;
           history.push("/mypage");
         } else {
           Swal.fire({
@@ -103,6 +100,7 @@ const loginDB = (id, pwd) => {
 const setTimeDB = (targetTime)=>{
   return function (dispatch, getState, { history }) {
     const nickname = getState().user.user.nickname;
+    console.log(nickname);
       axios({
           method:"post",
           url: `${config.api}/quest/time`,
@@ -143,43 +141,50 @@ const setTimeDB = (targetTime)=>{
   };
 };
 
-
 //로그인 유지, mypage렌더링 과정에서 토큰을 검증하므로
 //여기서는 클라이언트에 저장되어 있는 정보로만 1차 확인한다.
 const loginCheckDB = () => {
   return function (dispatch, getState, { history }) {
 //  const nickname = getState().user.user.nickname;
- const token = getCookie('token');
+console.log('로그인체크함수실행');
+ const token = getCookie('sss_token');
  const _userInfo = getCookie('_study');
  axios.defaults.headers.common[
   "authorization"
 ] = `Bearer ${token}`; //Bearer
-
-   if(!token||!_userInfo){
-    history.push("/");
+   if(!token|| !_userInfo){
+      history.replace('/')
+      
    }else{
+    Swal.fire({
+      text: "로그인 체크.",
+      confirmButtonColor: "rgb(118, 118, 118)",
+    });
       const userInfo = JSON.parse(_userInfo);
       dispatch(
         setUser(userInfo)
-        
       );
       if(window.location.pathname === "/"){
         history.push("/mypage");
-      }
-   }
+      }}
   };
 };
 
 const logoutDB = () => {
   return function (dispatch, getState, { history }) {
-    deleteCookie("token");
+    deleteCookie("sss_token");
     deleteCookie("_study");
     axios.defaults.headers.common["Authorization"] = null;
     delete axios.defaults.headers.common["Authorization"];
-    dispatch(logOut());
-    history.replace('/');
-  };
-};
+    console.log(history.state);
+    history.push('/');
+    //로그인 만료 후 뒤로가기 방지
+    window.onpopstate = () => {
+      console.log('인식');
+      history.go(1);
+    }
+  dispatch(logOut());
+};};
 
 export default handleActions(
   {
@@ -192,7 +197,6 @@ export default handleActions(
       produce(state, (draft) => {
         draft.user = null;
       }),
-
     [GET_USER]: (state, action) => produce(state, (draft) => {}),
   },
   initialState

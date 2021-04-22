@@ -22,18 +22,9 @@ const SignUp = (props) => {
 
   //이메일 중복 확인 API
   const verificateId = () => {
-    //test  code
-    // Swal.fire({
-    //   text: "이메일 중복여부",
-    //   confirmButtonColor: "#E3344E",
-    // });
-    axios({
-      method: "post",
-      url:`${config.api}/user/email`,
-      data: {
-        email: id,
-      },
-    })
+    const data = { email: id };
+    axios
+      .post(`${config.api}/user/email`, data)
       .then((res) => {
         if (res.data.msg === "success") {
           setVerifiedId(id);
@@ -55,18 +46,9 @@ const SignUp = (props) => {
 
   //닉네임 중복확인 API
   const verificateNick = () => {
-    //test code
-    // Swal.fire({
-    //   text: "닉네임 중복여부",
-    //   confirmButtonColor: "#E3344E",
-    // });
-    axios({
-      method: "post",
-      url: `${config.api}/user/nickname`,
-      data: {
-        nickname: nick,
-      },
-    })
+    const data = { nickname: nick };
+    axios
+      .post(`${config.api}/user/nickname`, data)
       .then((res) => {
         if (res.data.msg === "success") {
           setVerifiedNick(nick);
@@ -114,7 +96,7 @@ const SignUp = (props) => {
         <LoginBox>
           <InternalBox>
             <Image
-            contain
+              contain
               width="292px"
               height="72px"
               src="https://spartacodingclub.kr/static/v5/icons/logo_v2_hover.svg"
@@ -146,9 +128,19 @@ const SignUp = (props) => {
                   }}
                   disabled={!emailCheck(id) ? true : false}
                 >
-                  중복
-                  <br />
-                  확인
+                  {verified_id && verified_id === id ? (
+                    <React.Fragment>
+                      사용
+                      <br />
+                      가능
+                    </React.Fragment>
+                  ) : (
+                    <React.Fragment>
+                      중복
+                      <br />
+                      확인
+                    </React.Fragment>
+                  )}
                 </Button>
               </Grid>
               <Grid is_flex margin="0">
@@ -173,9 +165,19 @@ const SignUp = (props) => {
                   _onClick={verificateNick}
                   disabled={nick.length < 3 ? true : false}
                 >
-                  중복
-                  <br />
-                  확인
+                  {verified_nick && verified_nick === nick ? (
+                    <React.Fragment>
+                      사용
+                      <br />
+                      가능
+                    </React.Fragment>
+                  ) : (
+                    <React.Fragment>
+                      중복
+                      <br />
+                      확인
+                    </React.Fragment>
+                  )}
                 </Button>
               </Grid>
 

@@ -2,16 +2,14 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import styled from "styled-components";
-import { Grid, Button, Text, Image } from "../elements";
+import { Button, Text, Image } from "../elements";
 import { Header, Chat } from "../components";
 import { history } from "../redux/configStore";
-import Runtan from "../images/runtan.gif";
 import Cheer from "../images/cheer.png";
 import Fire from "../images/fire.png";
 import Spinner from "../shared/Spinner";
 import "../scss/class.scss";
 import AddToPhotosIcon from "@material-ui/icons/AddToPhotos";
-import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import GroupCreate from "../components/GroupCreate";
 import { actionCreators as groupActions } from "../redux/modules/group";
 import Slider from "react-slick";
@@ -20,12 +18,11 @@ import "../../node_modules/slick-carousel/slick/slick-theme.css";
 
 const GroupList = (props) => {
   const dispatch = useDispatch();
-
   const group_list = useSelector((state) => state.group.group_list);
   const chatOnOff = useSelector((state) => state.quest.chat);
   const loading = useSelector((state) => state.group.isLoading);
   const [modalOpen, setModalOpen] = React.useState(false);
-  console.log(group_list);
+
   const openModal = () => {
     console.log(modalOpen);
     setModalOpen(true);
@@ -35,8 +32,15 @@ const GroupList = (props) => {
     setModalOpen(false);
   };
 
+  const alert = () => {
+    Swal.fire({
+      html: `원활한 활동을 위해<br/>클럽은 동시에 4곳만 가입할 수 있어요 😸`,
+      confirmButtonColor: "rgb(118, 118, 118)",
+    });
+  };
+
   const joinClub = (group) => {
-    if (group_list.joined.length > 4) {
+    if (group_list.joined.length >= 4) {
       Swal.fire({
         html: `원활한 활동을 위해<br/>클럽은 동시에 4곳만 가입할 수 있어요 😸`,
         confirmButtonColor: "rgb(118, 118, 118)",
@@ -73,33 +77,29 @@ const GroupList = (props) => {
     responsive: [
       // 반응형 웹 구현 옵션
       {
-        breakpoint: 1412, //화면 사이즈 960px
+        breakpoint: 1412,
         settings: {
-          //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
           slidesToShow: 4,
           slidesToScroll: 4,
         },
       },
       {
-        breakpoint: 1149, //화면 사이즈 768px
+        breakpoint: 1149,
         settings: {
-          //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
           slidesToShow: 3,
           slidesToScroll: 3,
         },
       },
       {
-        breakpoint: 811, //화면 사이즈 768px
+        breakpoint: 811,
         settings: {
-          //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
           slidesToShow: 2,
           slidesToScroll: 2,
         },
       },
       {
-        breakpoint: 545, //화면 사이즈 768px
+        breakpoint: 545,
         settings: {
-          //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
           slidesToShow: 1,
           slidesToScroll: 1,
         },
@@ -151,32 +151,34 @@ const GroupList = (props) => {
               <Slider {...settings}>
                 {group_list.unjoined.map((group, idx) => {
                   return (
-                    <div  key={group.groupId}>
-                    <GroupBox
-                     
-                    
-                    >
-                      <TextBox>
-                        <Text size="15px" bold title>
-                          {group.groupName}
-                        </Text>
-                        <Text size="12px" margin="1px 3px 0px 0">
-                          {group.groupDesc}
-                        </Text>
-                      </TextBox>
-                      <BtnBox>
-                        <Image src={Cheer} width="50px" height="45px" contain />
-                        <Button
-                          size="11px"
-                          padding="2px 0px"
-                          _onClick={() => {
-                            joinClub(group);
-                          }}
-                        >
-                          가입하기
-                        </Button>
-                      </BtnBox>
-                    </GroupBox>
+                    <div key={group.groupId}>
+                      <GroupBox>
+                        <TextBox>
+                          <Text size="15px" bold title>
+                            {group.groupName}
+                          </Text>
+                          <Text size="12px" margin="1px 3px 0px 0">
+                            {group.groupDesc}
+                          </Text>
+                        </TextBox>
+                        <BtnBox>
+                          <Image
+                            src={Cheer}
+                            width="50px"
+                            height="45px"
+                            contain
+                          />
+                          <Button
+                            size="11px"
+                            padding="2px 0px"
+                            _onClick={() => {
+                              joinClub(group);
+                            }}
+                          >
+                            가입하기
+                          </Button>
+                        </BtnBox>
+                      </GroupBox>
                     </div>
                   );
                 })}
@@ -184,10 +186,17 @@ const GroupList = (props) => {
             </SlideBox>
 
             <IconBox>
-              <AddToPhotosIcon
-                style={{ color: "#e3344e", fontSize: 45 }}
-                onClick={openModal}
-              ></AddToPhotosIcon>
+              {group_list.joined.length >= 4 ? (
+                <AddToPhotosIcon
+                  style={{ color: "#e3344e", fontSize: 45 }}
+                  onClick={alert}
+                ></AddToPhotosIcon>
+              ) : (
+                <AddToPhotosIcon
+                  style={{ color: "#e3344e", fontSize: 45 }}
+                  onClick={openModal}
+                ></AddToPhotosIcon>
+              )}
             </IconBox>
 
             <GroupCreate open={modalOpen} close={closeModal}>
@@ -254,10 +263,6 @@ const SlideBox = styled.div`
   & :last-child {
     margin: 0px;
   }
-`;
-
-const Point = styled.span`
-  color: #e3344e;
 `;
 const GroupBox = styled.div`
   max-width: 220px;

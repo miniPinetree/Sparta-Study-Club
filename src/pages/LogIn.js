@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import styled from "styled-components";
 import '../scss/main.scss';
 import bgImg from "./images/bg.png";
+import {history} from "../redux/configStore";
 import { Text, Grid, Input, Button, Image } from "../elements";
 
 import { emailCheck } from "../shared/common";
@@ -13,7 +14,6 @@ const LogIn = (props) => {
   const dispatch = useDispatch();
   const [id, setId] = React.useState("");
   const [pwd, setPwd] = React.useState("");
-
   //로그인 API 호출
   const login = () => {
     if (id === "" || pwd === "") {

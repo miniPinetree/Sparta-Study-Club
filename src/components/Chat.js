@@ -46,6 +46,7 @@ const Chat = (props) => {
   };
 
   React.useEffect(() => {
+    console.log('채팅불러오기 useEffect')
     chatActions.socket.onopen = function () {
       console.log("connect socket");
     };
