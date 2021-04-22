@@ -2,7 +2,7 @@
 
 # [SPARTA STUDY-CLUB] 몰입과 효율 향상을 위한 학습관리 웹 앱
 
-![image](https://user-images.githubusercontent.com/68773118/115099567-b1eaad80-9f71-11eb-953d-48ea6a5cadbe.png)
+![플젝 정리용](https://user-images.githubusercontent.com/68773118/115776896-9d823700-a3ef-11eb-8907-d07593c789d7.png)
 
 ### 목차
 [1. 프로젝트 설명 ](#프로젝트-설명)<br/>
@@ -12,12 +12,14 @@
 [5. 배운 점 ](#-i-learned)<br/>
 
 ## 프로젝트 설명 
+
 ### 기간/인원
 (2021.04.09 ~ 2021.04.22 (13일)) 
 Front-end 1인, Back-end 2인으로 구성되어 13일간 진행한 프로젝트입니다.
 저는 프론트엔드를 담당하였습니다. 
 
-![플젝 정리용](https://user-images.githubusercontent.com/68773118/115776896-9d823700-a3ef-11eb-8907-d07593c789d7.png)
+
+![image](https://user-images.githubusercontent.com/68773118/115099567-b1eaad80-9f71-11eb-953d-48ea6a5cadbe.png)
 
 ### 시현영상 [Youtube](https://youtu.be/PO9PinZHFJs)
 
