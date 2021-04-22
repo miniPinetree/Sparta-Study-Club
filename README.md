@@ -13,18 +13,17 @@
 
 ## 프로젝트 설명 
 
+## 시현영상 [Youtube](https://youtu.be/PO9PinZHFJs)
 ### 기간/인원
 (2021.04.09 ~ 2021.04.22) <br/>
 Front-end 1인, Back-end 2인으로 구성되어 13일간 진행한 프로젝트입니다.
 저는 프론트엔드를 담당하였습니다. 
 
 
-![image](https://user-images.githubusercontent.com/68773118/115099567-b1eaad80-9f71-11eb-953d-48ea6a5cadbe.png)
-
-### 시현영상 [Youtube](https://youtu.be/PO9PinZHFJs)
-
 # 작성 중 
 ---
+
+![image](https://user-images.githubusercontent.com/68773118/115099567-b1eaad80-9f71-11eb-953d-48ea6a5cadbe.png)
 
 리액트를 이용한 첫 팀 프로젝트를 진행했습니다.
 
