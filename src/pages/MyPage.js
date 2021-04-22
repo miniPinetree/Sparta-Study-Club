@@ -79,7 +79,7 @@ const MyPage = (props) => {
 
   return (
     <React.Fragment>
-      <ContainerBox style={chatOnOff ? { paddingLeft: "230px" } : {}}>
+      <ContainerBox chatOnOff={chatOnOff}>
         <Header />
         <Chat chat={chatOnOff} />
         {loading ? (
@@ -122,12 +122,12 @@ const MyPage = (props) => {
                     </Text>
                   </Mentbox>
                   <BtnBox>
-                    <TimeBtn onClick={setTargetTime}>1시간</TimeBtn>
-                    <TimeBtn onClick={setTargetTime}>2시간</TimeBtn>
-                    <TimeBtn onClick={setTargetTime}>3시간</TimeBtn>
-                    <TimeBtn onClick={setTargetTime}>4시간</TimeBtn>
-                    <TimeBtn onClick={setTargetTime}>5시간</TimeBtn>
-                    <TimeBtn onClick={setTargetTime}>6시간</TimeBtn>
+                    <TimeBtn onClick={setTargetTime}>1h</TimeBtn>
+                    <TimeBtn onClick={setTargetTime}>2h</TimeBtn>
+                    <TimeBtn onClick={setTargetTime}>3h</TimeBtn>
+                    <TimeBtn onClick={setTargetTime}>4h</TimeBtn>
+                    <TimeBtn onClick={setTargetTime}>5h</TimeBtn>
+                    <TimeBtn onClick={setTargetTime}>6h</TimeBtn>
                   </BtnBox>
                 </React.Fragment>
               )}
@@ -157,8 +157,8 @@ const MyPage = (props) => {
                 />
                 <QuestListBox>
                   {dayQuest.length === 0 ? (
-                    <Text size="15px" margin="80px 0px 0px 0px" color="#BBBBBB">
-                      등록된 오늘의 목표가 없습니다!
+                    <Text size="15px" margin="20px 0 0 0" color="#BBBBBB">
+                      등록된 목표가 없습니다!
                     </Text>
                   ) : (
                     dayQuest.map((q) => {
@@ -173,12 +173,13 @@ const MyPage = (props) => {
                 <Chart />
               </Grid>
               <Grid>
-                <QuestBox>
-                  <Calendar />
-                </QuestBox>
-                <RtanBox>
+                <QuestBox cal={true}>
+                  <Calendar mobile={true}/>
+                  <RtanBox>
                   <Image src={Rtan} width="70px" height="70px" />
                 </RtanBox>
+                </QuestBox>
+                
               </Grid>
             </ItemBox>
           </ContentBox>
@@ -192,6 +193,11 @@ export default MyPage;
 const ContainerBox = styled.div`
   box-sizing: border-box;
   width: 100%;
+  ${props=>props.chatOnOff? `padding-left:230px`:`null`};
+      /* 테블릿 세로 (해상도 768px ~ 1023px) */
+      @media all and (max-width:1023px)
+ {padding:0px;}
+
 `;
 const ContentBox = styled.div`
   margin: 30px auto 10px auto;
@@ -199,14 +205,33 @@ const ContentBox = styled.div`
   display: flex;
   justify-content: center;
   gap: 35px;
+ @media all and (min-width:768px) and (max-width:1023px)
+ {padding-top:100px;
+ padding-right:45px;
+ overflow:hidden;} 
+  /* 모바일*/ 
+  @media all and (max-width:767px)
+ {width: 85%;
+ padding-left:35px;
+ flex-direction:column;
+ align-items:center;
+ margin:0 auto;
+ gap: 0;
+ }
+
 `;
 const ItemBox = styled.div`
   padding: 15px;
   width: 30%;
+  @media all and (max-width:767px)
+ {width:90%;}
 `;
 const Mentbox = styled.div`
   display: flex;
   font-family: "GmarketSansBold";
+  @media all and (max-width:767px)
+ {width:100%;}
+
 `;
 const Point = styled.span`
   color: #e3344e;
@@ -214,6 +239,7 @@ const Point = styled.span`
 const BtnBox = styled.div`
   display: flex;
   margin: 20px 0px 25px 0px;
+
 
   & :first-child {
     border-top-left-radius: 10px;
@@ -230,6 +256,8 @@ const ProgressBox = styled.div`
 `;
 
 const TimeBtn = styled.button`
+text-align:center;
+width:16.7%;
   cursor: pointer;
   padding: 10px 18.6px;
   border: 1px solid #000;
@@ -237,17 +265,23 @@ const TimeBtn = styled.button`
   background-color: #000;
   color: #ffffff;
   outline: none;
-  font-size: 12px;
+  font-size: 14px;
+  @media all and (max-width:1231px)
+ {padding: 8px 27px 8px 12px;
+  }
   &:hover {
     color: #ffd042;
   }
   :disabled {
   }
+
 `;
 
 const QuestBox = styled.div`
-  min-height: 75%;
   width: 100%;
+  height:83%;
+  min-width:${props=>props.cal? `336px`:`241.8px`};
+  min-height:${props=>props.cal? `410px`:`74.3%`};
   background-color: rgb(255, 255, 255, 0.4);
   box-shadow: 0px 1px 8px #dfdbdb;
   border-radius: 10px;
@@ -255,25 +289,26 @@ const QuestBox = styled.div`
   padding: 20px;
   box-sizing: border-box;
   font-size: 17px;
+  ${props=>props.cal? `position:relative`:`null`};
+  @media all and (max-width:767px)
+ { min-height:${props=>props.cal? `50px`:`10%`};
+ min-width:${props=>props.cal? `80px`:`241.8px`};
+
+ /* ${props=>props.cal? `display:none`:`null`}; */
+ }
+
   &.questlist {
     margin-left: 3px;
   }
-/* PC , 테블릿 가로 (해상도 768px ~ 1023px)*/ 
-@media all and (min-width:768px) and (max-width:1023px) 
-{}
-/* 모바일 가로, 테블릿 세로 (해상도 480px ~ 767px)*/ 
-@media all and (min-width:480px) and (max-width:767px)
- { /*스타일입력*/} 
-/* 모바일 가로, 테블릿 세로 (해상도 ~ 479px)*/ 
-@media all and (max-width:479px)
- { /*스타일입력*/}
-
+ 
 `;
 
 const QuestListBox = styled.div`
   margin-top: 18px;
   max-height: 480px;
   overflow-y: scroll;
+  @media all and (max-width:767px)
+  {max-height:102px;}
   &::-webkit-scrollbar {
     width: 17px;
     height: 100vh;
@@ -286,6 +321,7 @@ const QuestListBox = styled.div`
     background-clip: padding-box;
     border: 4px solid transparent;
   }
+
 `;
 const TodoInput = styled.input`
   background-color: transparent;
@@ -296,10 +332,24 @@ const TodoInput = styled.input`
   text-align: center;
   padding: 7px;
   margin-top: 7px;
+ @media all and (min-width:768px) and (max-width:1023px)
+ {width: 80%;
+   ::placeholder {
+  font-size: 0.9em;
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  font-size: 0.9em;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  font-size: 0.9em;
+}} 
+
 `;
 const RtanBox = styled.div`
-  position: relative;
+  position: absolute;
   z-index: 30;
-  top: -50px;
-  left: 365px;
+  bottom: -10px;
+  right: -25px;
 `;

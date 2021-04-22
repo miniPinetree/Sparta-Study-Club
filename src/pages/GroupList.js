@@ -108,7 +108,7 @@ const GroupList = (props) => {
 
   return (
     <React.Fragment>
-      <ContainerBox style={chatOnOff ? { paddingLeft: "230px" } : {}}>
+      <ContainerBox chatOnOff={chatOnOff}>
         <Header />
         <Chat chat={chatOnOff} />
         {loading ? (
@@ -213,13 +213,30 @@ export default GroupList;
 const ContainerBox = styled.div`
   box-sizing: border-box;
   width: 100%;
+  ${props=>props.chatOnOff? `padding-left:230px`:`null`};
+  @media all and  (max-width:1023px){
+    padding:0;
+    overflow:hidden;
+  }
 `;
-
 const ContentBox = styled.div`
   margin: 60px auto 0px auto;
   padding: 0px 100px 0 130px;
   width: 85%;
   gap: 35px;
+  @media all and  (max-width:1023px){
+    margin:0 0 0 80px ;
+    padding:130px 0 0 0;
+    box-sizing:border-box;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-end;
+  }
+  @media all and (max-width:767px)
+ { margin:0 0 0 50px ;
+  padding:23px 0 0 0;
+   gap: 0px; }
 `;
 const BoxTitle = styled.div`
   color: #9b9b9b;
@@ -241,6 +258,19 @@ const ListBox = styled.div`
   font-size: 17px;
   margin-bottom: 30px;
   display: flex;
+  @media all and (min-width:768px) and (max-width:1023px)
+ {width: 80%;
+ max-height: 380px;
+ flex-wrap:wrap;
+ align-items:center;
+ margin-bottom:80px;
+}
+  @media all and (max-width:767px)
+ {width: 80%;
+ height:380px;
+ max-height: 380px;
+ flex-direction:column;
+ }
   & :last-child {
     margin: 0px;
   }
@@ -259,26 +289,40 @@ const SlideBox = styled.div`
   font-size: 17px;
   margin-bottom: 30px;
   position: relative;
+  @media all and (min-width:768px) and (max-width:1023px)
+ {width: 80%;
+ }
+ @media all and (max-width:767px)
+ {width: 80%;
+ height:190px;
+ margin-bottom: 10px;
+ }
   & :last-child {
     margin: 0px;
   }
 `;
 const GroupBox = styled.div`
   max-width: 220px;
-  min-width: 201.4px;
-  height: 130px;
+  min-width: 220px;
   overflow: hidden;
   background-color: rgb(255, 255, 255, 0.4);
   border-radius: 10px;
   box-shadow: 0px 1px 8px #dfdbdb;
   text-align: center;
   align-items: center;
+  min-height: 130px;
+  max-height: 130px;
   padding: 10px 20px;
   box-sizing: border-box;
   font-size: 17px;
   display: flex;
   justify-content: space-between;
   margin: 0 10px 0 0;
+  @media all and (max-width:767px)
+ {
+  min-height: 20%;
+  height: 130px;
+ }
 `;
 
 const TextBox = styled.div`
@@ -291,18 +335,6 @@ const BtnBox = styled.div`
   margin: auto 0px;
 `;
 
-const MoreBtn = styled.div`
-  width: 30px;
-  height: 170px;
-  position: absolute;
-  background-color: #e3344e;
-  right: 0px;
-  top: 0px;
-  border-radius: 0 10px 10px 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
 const IconBox = styled.div`
   display: flex;
   justify-content: flex-end;

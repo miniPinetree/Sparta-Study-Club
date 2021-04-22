@@ -23,7 +23,7 @@ console.log(range);
 // console.log(range);
   const rangeLabel = range.map((day) => {
     if (day.studySetTime && day.questRate > 30) {
-      return day.studySetTime + "시간동안 " + day.questRate + "%달성!";
+      return day.studySetTime + "시간동안 " + Math.round(day.questRate) + "%달성!";
     } else if (day.studySetTime && day.questRate >= 0) {
       return "달성률" + day.questRate + "% 생산성을 높여야해요!";
     } else {
@@ -170,9 +170,12 @@ console.log(range);
 
 const ChartBox = styled.div`
   width: 100%;
+  min-width:352px;
   height: 87%;
   box-sizing: border-box;
   position: relative;
+  @media all and (max-width:767px)
+  {min-width:280px;}
 `;
 const Xaxis = styled.hr`
   width: 100%;
@@ -180,7 +183,7 @@ const Xaxis = styled.hr`
   border: none;
   height: 1.2px;
   position: absolute;
-  bottom: 42px;
+  bottom: 10px;
   background-color: black;
 `;
 const LabelBox = styled.div`
@@ -191,10 +194,17 @@ padding:0 1px 0 10px;
 
 const Label = styled.div`
   height: 33px;
-  width: 85px;
+  width: 20%;
+  min-width:69.7px;
   text-align: center;
   padding: 0 3px;
   box-sizing: border-box;
+  @media all and (max-width:1105px)
+ {max-height:45px;
+ overflow:hidden;}
+ @media all and (max-width:767px)
+  {display:none;}
+
 `;
 const Point = styled.span`
   color: #e3344e;

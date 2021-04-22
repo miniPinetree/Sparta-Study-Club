@@ -117,6 +117,11 @@ height:630px;
 position:relative;
 box-sizing:border-box;
 padding:40px 0 0 0;
+@media all and (max-width:767px)
+ { width:100%;
+height:90%;
+padding:80px 0 0 0;
+ }
 `;
 const LoginBox = styled.div`
 width:450px;
@@ -124,12 +129,15 @@ height:550px;
   border-radius: 15px;
   box-shadow: 1px 1px 20px #cfcfcf;
   background-color: #ffffff;
-  margin: 0px auto;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   margin: auto;
+  @media all and (max-width:767px)
+ { width:82%;
+height:80%;
+ }
 `;
 const InternalBox = styled.div`
   width: 65%;
@@ -138,6 +146,10 @@ const InternalBox = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  @media all and (max-width:767px)
+ { width:80%;
+height:80%;
+ }
 `;
 
 const Rtan = styled.div`
@@ -151,8 +163,12 @@ const Rtan = styled.div`
   position:absolute;
   right:0;
   bottom:0;
-  @media screen and (max-width: 1067px) {
-}
+  @media all and (max-width:767px)
+ { width:140px;
+height:140px;
+right:10px;
+  bottom:37px;
+ }
 `;
 
 export default LogIn;

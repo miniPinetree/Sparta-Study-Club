@@ -43,4 +43,8 @@ export default Comment;
 
 const UserContent = styled.div`
 display:flex;
+@media all and (max-width:767px)
+ { max-height: 17.6px;
+ overflow:hidden;
+ }
 `;

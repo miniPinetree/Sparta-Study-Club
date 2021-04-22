@@ -18,17 +18,12 @@ import { useSelector, useDispatch } from "react-redux";
 const Header = (props) => {
 
     const dispatch = useDispatch();
-
-    const clickLogo = ()=>{
-      
-    }
-
   return (
     <React.Fragment>
           <HeaderBox>
               <IconBox style={{margin:'0px'}} onClick={() => {
                 history.push('/mypage')}}>
-            <Image src={Logo} width="55px" height="30px" margin="10px 0px"/>
+            <Image src={Logo} width="55px" height="30px" margin="10px auto"/>
              </IconBox>
                 <IconBox>
               <IconInnerBox >
@@ -72,6 +67,11 @@ const HeaderBox = styled.div`
     left:0;
     z-index:999;
     
+    @media all and (max-width:767px)
+ {width:45px;
+ margin:0px;
+ position:fixed;
+ top:0px;}
     
 
 `
@@ -83,6 +83,8 @@ const IconBox = styled.div`
     flex-direction: column;
     gap:30px;
     margin:25px 0px;
+    @media all and (max-width:767px)
+ {width:100%;}
 `
 
 const IconInnerBox = styled.div`
@@ -91,7 +93,10 @@ const IconInnerBox = styled.div`
     height: 50px;
     box-sizing: border-box;
     padding-top:7px;
-    
+
+    @media all and (max-width:767px)
+ {width:100%;}
+
     &:hover{
         background-color: #ed5c72;
         border:1px solid #ed5c72;

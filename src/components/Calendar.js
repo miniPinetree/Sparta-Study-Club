@@ -1,61 +1,47 @@
 import React from "react";
 import styled from "styled-components";
+import quest, { actionCreators as questActions } from "../redux/modules/quest";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { faChevronCircleRight } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch,useSelector } from "react-redux";
+import { useState } from 'react';
 import {Grid} from '../elements';
 import moment from 'moment';
-import { useState } from 'react';
 import Daily from './Daily';
-import { useDispatch,useSelector } from "react-redux";
-import quest, { actionCreators as questActions } from "../redux/modules/quest";
 
 const Calendar = (props) => {
- 
+  const dispatch = useDispatch();
   const thisMonth = useSelector((state) => state.quest.calendar);
   const today = thisMonth?thisMonth:moment();
-  
-  
- //오늘이 들어간 시작하는 이번달 주가 1년중에서 몇번째 주인지.
- const firstWeek = today.clone().startOf('month').week(); //시작하는 week() 주.
-  //끝나는 주가 1이면 53주로. 아니라면 이번달 끝나는 주로 바로 사용.
- const lastweek = today.clone().endOf('month').week() === 1 ? 53 : today.clone().endOf('month').week();//끝나는 week()주
- const dispatch = useDispatch();
- 
+ //월의 시작과 끝 주를 계산
+ const firstWeek = today.clone().startOf('month').week();
+ const lastweek = today.clone().endOf('month').week() === 1 ? 53 : today.clone().endOf('month').week();
+//월 이동
   const changeMonth = (move) => {
-    
     if (move === -1) {
        let _date = today.clone().subtract(1, 'month').format('YYYYM');
        dispatch(questActions.getMonthQuestDB(_date,'subtract'));
     }
-
     if (move === 1) {
       let _date = today.clone().add(1, 'month').format('YYYYM');
       dispatch(questActions.getMonthQuestDB(_date,'add'));
     }
-
   }
-  
-  
+
  const calendarArr = () => {
-  
   let result = [];
   let week = firstWeek;
   for (week; week <= lastweek; week++) {
-   
    result = result.concat(
     <CalendarInnerBox key={week}>
-     {
+     {//캘린더 각 주에 들어가는 날짜
       Array(7).fill(0).map((data,index) => {
-      
-      let days =  today.clone().startOf('year').week(week).startOf('week').add(index, 'day');
-      //오늘
+      let days = today.clone().startOf('year').week(week).startOf('week').add(index, 'day');
       if (moment().format('YYYYMMDD') === days.format('YYYYMMDD')) {
-       return <Daily day={days.format('D')} key={index} date={days.format('YYYY/MM/DD')}/>
-      //이번달 아님
+       return <Daily day={days.format('D')} key={index} date={days.format('YYYY/MM/DD')} point={true}/>
       } else if (days.format('MM') !== today.format('MM')) {
        return <NotThisMonth key={index}/>
-      //평범한 날
       } else {
        return <Daily day={days.format('D')} key={index} date={days.format('YYYY/MM/DD')}/>
       }
@@ -103,43 +89,78 @@ const Month = styled.span`
   margin: 0px 15px;
   font-size: 18px;
   font-weight: 600;
+  @media all and (max-width:767px){
+    font-size: 15px;
+ }
 `
 
 const CalendarBox = styled.div`
   border:1px solid black;
   margin-top: 15px;
-  padding: 5px 0px 2px 0px;
+  padding: 5px 0px 0px 0px;
   background-color: #ffffff;
+   min-width:285px;
+ min-height:320px;
+ @media all and (max-width:767px){
+  min-width:71px;
+  min-height:80px;
+ }
+
 `;
 
 const WeekBox = styled.div`
 display: grid;
 grid-template-columns: repeat(7,1fr);
 align-items:center;
+@media all and (max-width:767px){
+  padding-left:10px;
+}
 & .sun{
     color:#E3302E;
   }
 & .sat{
     color:#24A5CD;
   }
-`
-
+`;
 const Week = styled.div`
  font-size: 12px;
  font-weight: 600;
-`
+ width:14.2%;
+ min-width:40px;
+ @media all and (max-width:767px){
+  min-width:10px;
+  font-size:10px;
+ }
+`;
 
 const CalendarInnerBox = styled.div`
  display: flex;
-`
+ min-width:280px;
+ @media all and (max-width:767px){
+  min-width:70px;
+ }
+`;
 
 const DayBox = styled.div`
  display: grid;
  padding:3px 0px 2px 3px;
-`
+ box-sizing:border-box;
+ min-width:280px;
+ min-height:300px;
+ grid-row-gap: 0px;
+ @media all and (max-width:767px){
+  min-width:70px;
+  min-height:65px;
+ }
+`;
 
 const NotThisMonth = styled.div`
- width:54px;
- height: 60px;
- 
-`
+ width:14.2%;
+ min-width:40px;
+ height: 20%;
+ min-height:60px;
+ @media all and (max-width:767px){
+  min-width:10px;
+  min-height:25px;
+ }
+`;

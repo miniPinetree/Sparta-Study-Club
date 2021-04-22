@@ -1,18 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 import { Grid, Text, UserChat } from "../elements";
+import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { actionCreators as questActions } from "../redux/modules/quest";
-import { useSelector, useDispatch } from "react-redux";
-import Swal from "sweetalert2";
-import { config } from "../shared/config";
 import { actionCreators as chatActions } from "../redux/modules/chat";
+import Swal from "sweetalert2";
 import "../scss/class.scss";
 
 const Chat = (props) => {
   const dispatch = useDispatch();
-
   const user = useSelector((state) => state.user.user);
   const chatOnOff = useSelector ((state)=>state.quest.chat);
   const chat_list = useSelector((state) => state.chat.chat_list);
@@ -151,6 +149,8 @@ const ChatBox = styled.div`
   box-shadow: 1px 0px 7px #ece7e7;
   overflow-y: scroll;
   box-sizing: border-box;
+  @media all and (max-width:767px)
+ {  left: 45px; }
 
   &::-webkit-scrollbar {
     width: 17px;
@@ -174,6 +174,8 @@ const ChatTopbox = styled.div`
   top: 0;
   left: 65px;
   background-color: #f7eaec;
+  @media all and (max-width:767px)
+ {  left: 45px; }
 `;
 
 const ChatBottomBox = styled.div`
@@ -186,6 +188,8 @@ const ChatBottomBox = styled.div`
   text-align: center;
   box-sizing: border-box;
   padding: 5px 0px;
+  @media all and (max-width:767px)
+ {  left: 45px; }
 `;
 const ChatInput = styled.input`
   width: 220px;

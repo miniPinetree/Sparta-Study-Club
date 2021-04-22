@@ -5,19 +5,12 @@ import styled from "styled-components";
 import { Grid, Button, Text, Image } from "../elements";
 import { Header, Chat } from "../components";
 import {Runtan, Jump, Cheer, Fire, Dino, Trophy} from "../images";
-// import Runtan from "../images/runtan.gif";
-// import Jump from "../images/jump.png";
-// import Cheer from "../images/cheer.png";
-// import Fire from "../images/fire.png";
-// import Dino from "../images/dino_kill.png";
-// import Trophy from "../images/trophy.png";
 import Spinner from "../shared/Spinner";
 import Quest from "../components/Quest";
 import Comment from "../components/Comment";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import MenuListComposition from "../components/MenuList";
 import { actionCreators as groupActions } from "../redux/modules/group";
-import {actionCreators as userActions} from "../redux/modules/group";
 import { actionCreators as cmtActions } from "../redux/modules/comment";
 
 const GroupDetail = (props) => {
@@ -27,14 +20,19 @@ const GroupDetail = (props) => {
   const id = props.match.params.id;
   const group = group_list.find((group) => group.groupId === id);
   const user = useSelector((state) => state.user.user);
-  const rank = useSelector((state) => state.group.rank);
   const isLoading = useSelector((state) => state.group.isLoading);
   const cmt_list = useSelector((state) => state.comment.cmt_list);
   const chatOnOff = useSelector((state) => state.quest.chat);
+  const rank = useSelector((state) => state.group.rank);
+  const rankForSort = [...rank];
+  const sorted_rank = rankForSort.sort((a,b)=>
+  b.questRate - a.questRate   || b.studySetTime - a.studySetTime
+  );
+  console.log(rank);
+  console.log(sorted_rank);
   const [open, setOpen] = React.useState(false);
   const [msg, setMsg] = React.useState("");
-  console.log(group, isLoading, cmt_list);
-
+  
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
@@ -106,7 +104,7 @@ const GroupDetail = (props) => {
             <RankList>
               <BoxTitle>명예의 전당</BoxTitle>
               <Grid>
-                {rank.map((r, idx) => {
+                {sorted_rank.map((r, idx) => {
                   return idx < 5 ? (
                     idx == 0 ? (
                       <Rank className="first">
@@ -120,7 +118,7 @@ const GroupDetail = (props) => {
                           {r.nickname}
                         </Text>
                         <Text size="8px" center title>
-                          6시간 <br />
+                          {r.studySetTime? r.studySetTime:0}시간<br />
                           <Point>{Math.round(r.questRate)}%</Point>
                         </Text>
                       </Rank>
@@ -136,7 +134,7 @@ const GroupDetail = (props) => {
                           {r.nickname}
                         </Text>
                         <Text size="8px" center title>
-                          6시간 <br />
+                        {r.studySetTime? r.studySetTime:0}시간<br />
                           <Point>{Math.round(r.questRate)}%</Point>
                         </Text>
                       </Rank>
@@ -144,6 +142,7 @@ const GroupDetail = (props) => {
                   ) : null;
                 })}
               </Grid>
+              <DinoImg>
               <Image
                 src={Dino}
                 width="220px"
@@ -151,6 +150,7 @@ const GroupDetail = (props) => {
                 margin="30px 0 0 0"
                 contain
               />
+              </DinoImg>
             </RankList>
           </ContentBox>
         )}
@@ -164,16 +164,27 @@ const ContainerBox = styled.div`
   box-sizing: border-box;
   width: 100%;
   height: 100%;
+  @media all and (max-width:767px)
+ {overflow:hidden;
+ }
 `;
 
 const ContentBox = styled.div`
   margin: 60px auto 0px auto;
   padding: 0px 100px 0 130px;
   width: 85%;
-
   gap: 35px;
   display: flex;
   justify-content: center;
+  @media all and (min-width:768px) and (max-width:1023px){
+    flex-direction:column;
+  }
+  @media all and (max-width:767px)
+ {padding: 0px 50px 0 60px;
+  margin: 55px auto 0px auto;
+  flex-direction:column;
+  gap: 15px;
+ }
 `;
 const BoxTitle = styled.div`
   color: #e3344e;
@@ -206,7 +217,9 @@ const ListBox = styled.div`
   box-sizing: border-box;
   font-size: 17px;
   margin-bottom: 30px;
-
+  @media all and (max-width:1023px)
+ {width:90%;
+ } 
   & :last-child {
     margin: 0px;
   }
@@ -229,6 +242,11 @@ const GroupBox = styled.div`
   justify-content: space-between;
   display: flex;
   flex-direction: column;
+  @media all  and (min-width:768px) and (max-width:1023px){
+    width:545px;}
+    @media all and (max-width:767px)
+ {width:250px;
+ }
 `;
 
 const RankList = styled.div`
@@ -242,6 +260,9 @@ const RankList = styled.div`
   margin-bottom: 30px;
   position: relative;
   justify-content: space-between;
+  @media all and (max-width:1023px)
+ {width:90%;
+ } 
 `;
 
 const Rank = styled.div`
@@ -256,8 +277,17 @@ background-color: ${(props) => (props.className ? "#FCE3E3;" : "#ffffff;")}
     justify-content:space-between;
     align-items: center;
     white-space: pre-line;
-
+    @media all and (max-width:1023px)
+ {height:35px;
+ } 
 `;
+
+const DinoImg = styled.div`
+ @media all and (max-width:1023px)
+ {display:none;
+ } 
+`;
+
 const Point = styled.span`
   color: #e3344e;
 `;
@@ -266,6 +296,7 @@ const CmtList = styled.div`
   margin-top: 18px;
   max-height: 515px;
   overflow-y: auto;
+ 
   &::-webkit-scrollbar {
     width: 17px;
     height: 100vh;
@@ -290,4 +321,11 @@ const TodoInput = styled.input`
   text-align: center;
   padding: 7px;
   margin-top: 7px;
+  @media all and (max-width:1023px)
+ {width:80%;  
+ ::placeholder {
+  font-size: 0.8em;
+}
+
+ } 
 `;

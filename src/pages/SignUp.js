@@ -180,15 +180,6 @@ const SignUp = (props) => {
                   )}
                 </Button>
               </Grid>
-
-              {/* 팀원 의견 묻기 : 표시되는 시간이 너무 짧아 효용성 의문 */}
-              {/* {nick && nick.length < 3 ? (
-              <Text color="#E2344E" size="11px" margin="0 0 10px 10px">
-                3자 이상 입력해주세요.
-              </Text>
-            ) : (
-              ""
-            )} */}
               <Input
                 border="none"
                 placeholder="비밀번호를 입력해주세요"
@@ -262,6 +253,11 @@ const InRtan = styled.div`
   position: relative;
   box-sizing: border-box;
   padding: 40px 0 0 0;
+  @media all and (max-width:767px)
+ { width:100%;
+height:90%;
+padding:80px 0 0 0;
+ }
 `;
 
 const LoginBox = styled.div`
@@ -276,6 +272,10 @@ const LoginBox = styled.div`
   justify-content: center;
   flex-direction: column;
   margin: auto;
+  @media all and (max-width:767px)
+ { width:82%;
+height:88%;
+ }
 `;
 const InternalBox = styled.div`
   width: 65%;
@@ -284,6 +284,9 @@ const InternalBox = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  @media all and (max-width:767px)
+ { width:80%;
+height:80%;
 `;
 
 const Rtan = styled.div`
@@ -297,8 +300,12 @@ const Rtan = styled.div`
   position: absolute;
   right: 0;
   bottom: 0;
-  @media screen and (max-width: 1067px) {
-  }
+  @media all and (max-width:767px)
+ { width:140px;
+height:140px;
+right:8px;
+  bottom:0px;
+ }
 `;
 
 export default SignUp;
