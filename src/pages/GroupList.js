@@ -12,12 +12,14 @@ import "../scss/class.scss";
 import AddToPhotosIcon from "@material-ui/icons/AddToPhotos";
 import GroupCreate from "../components/GroupCreate";
 import { actionCreators as groupActions } from "../redux/modules/group";
+import {actionCreators as userActions} from "../redux/modules/group";
 import Slider from "react-slick";
 import "../../node_modules/slick-carousel/slick/slick.css";
 import "../../node_modules/slick-carousel/slick/slick-theme.css";
 
 const GroupList = (props) => {
   const dispatch = useDispatch();
+  const user = useSelector((state)=>state.user.user);
   const group_list = useSelector((state) => state.group.group_list);
   const chatOnOff = useSelector((state) => state.quest.chat);
   const loading = useSelector((state) => state.group.isLoading);
@@ -59,12 +61,9 @@ const GroupList = (props) => {
       });
     }
   };
-
   React.useEffect(() => {
-    console.log("DB에서 받아온 정보", group_list);
-    dispatch(groupActions.getGroupDB());
+      dispatch(groupActions.getGroupDB());
   }, []);
-
   const settings = {
     dots: false,
     arrows: true,

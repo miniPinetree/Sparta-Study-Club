@@ -33,6 +33,11 @@ const LogIn = (props) => {
       dispatch(userActions.loginDB(id, pwd));
     }
   };
+
+  React.useEffect(()=>{
+
+  },[])
+
   return (
 
       <Container>

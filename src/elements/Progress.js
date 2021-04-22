@@ -50,7 +50,7 @@ export default Progress;
 
 const ProgressBar = styled.div`
   background-color: #eee;
-  width: 420px;
+  width: 100%;
   margin-left: 2px;
   height: 20px;
   display: flex;
@@ -65,7 +65,6 @@ const HighLight = styled.div`
   transition: width 1s;
   border-radius: 10px;
 `;
-
 const Dot = styled.div`
   background-color: #ffffff;
   border: 3px solid #e3344e;

@@ -4,18 +4,20 @@ import Swal from "sweetalert2";
 import styled from "styled-components";
 import { Grid, Button, Text, Image } from "../elements";
 import { Header, Chat } from "../components";
-import Runtan from "../images/runtan.gif";
-import Jump from "../images/jump.png";
-import Cheer from "../images/cheer.png";
-import Fire from "../images/fire.png";
-import Dino from "../images/dino_kill.png";
-import Trophy from "../images/trophy.png";
+import {Runtan, Jump, Cheer, Fire, Dino, Trophy} from "../images";
+// import Runtan from "../images/runtan.gif";
+// import Jump from "../images/jump.png";
+// import Cheer from "../images/cheer.png";
+// import Fire from "../images/fire.png";
+// import Dino from "../images/dino_kill.png";
+// import Trophy from "../images/trophy.png";
 import Spinner from "../shared/Spinner";
 import Quest from "../components/Quest";
 import Comment from "../components/Comment";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import MenuListComposition from "../components/MenuList";
 import { actionCreators as groupActions } from "../redux/modules/group";
+import {actionCreators as userActions} from "../redux/modules/group";
 import { actionCreators as cmtActions } from "../redux/modules/comment";
 
 const GroupDetail = (props) => {
@@ -42,13 +44,10 @@ const GroupDetail = (props) => {
   };
 
   React.useEffect(() => {
-    if (group) {
-      dispatch(groupActions.getRankDB(id));
-      dispatch(cmtActions.setCmtDB(id));
-      return;
-    }
-    dispatch(groupActions.getGroupDB());
-  }, [group]);
+        dispatch(groupActions.getGroupDB());
+        dispatch(groupActions.getRankDB(id));
+        dispatch(cmtActions.setCmtDB(id));
+    }, []);
   
   return (
     <React.Fragment>

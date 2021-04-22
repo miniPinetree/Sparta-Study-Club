@@ -138,9 +138,9 @@ const deleteGroupDB = (group) => {
           .then((res) => {
             switch (res.data.msg) {
               case "success":
-                dispatch(deleteGroup(group));
                 Swal.fire("삭제 완료!", "클럽이 삭제되었습니다.", "success");
-                history.replace("/group");
+                dispatch(deleteGroup(group));
+                window.location.href = '/group';
                 break;
               case "not_login":
                 Swal.fire({

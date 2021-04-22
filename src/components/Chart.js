@@ -11,7 +11,7 @@ const Chart = (props) => {
   const user = useSelector((state)=>state.user.user);
   let range = [];
 console.log(dayInfo);
-//그래프로 보여줄 범위는 최대 5일
+//그래프 표기 범위 설정
 if(dayInfo.length>5){
   dayInfo.filter((q,idx)=>{
     if(idx<5){
@@ -146,7 +146,6 @@ console.log(range);
         />
         <Xaxis />
         <LabelBox>
-          {/* day기준 map으로 data 채워넣기 */}
           {range.map((day, idx) => {
             const date = day.day.split("/");
             return (
@@ -170,8 +169,8 @@ console.log(range);
 };
 
 const ChartBox = styled.div`
-  width: 445px;
-  height: 255px;
+  width: 100%;
+  height: 87%;
   box-sizing: border-box;
   position: relative;
 `;
@@ -191,9 +190,8 @@ padding:0 1px 0 10px;
 `;
 
 const Label = styled.div`
-  height: 30px;
+  height: 33px;
   width: 85px;
-  
   text-align: center;
   padding: 0 3px;
   box-sizing: border-box;

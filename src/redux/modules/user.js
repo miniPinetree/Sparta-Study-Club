@@ -28,15 +28,14 @@ const initialState = {
 //회원가입 API
 const signupDB = (id, pwd, nick) => {
   return function (dispatch, getState, { history }) {
-    axios({
-      method: "post",
-      url: `${config.api}/user`,
-      data: {
-        email: id,
+    const data = {
+      email: id,
         password: pwd,
         nickname: nick,
-      },
-    }).then((res) => {
+    }
+      axios
+    .post(`${config.api}/user`, data)
+    .then((res) => {
         if (res.data.msg === "success") {
           Swal.fire({
             text: "가입이 완료되었습니다!",
@@ -146,7 +145,6 @@ const setTimeDB = (targetTime)=>{
 const loginCheckDB = () => {
   return function (dispatch, getState, { history }) {
 //  const nickname = getState().user.user.nickname;
-console.log('로그인체크함수실행');
  const token = getCookie('sss_token');
  const _userInfo = getCookie('_study');
  axios.defaults.headers.common[
@@ -154,12 +152,7 @@ console.log('로그인체크함수실행');
 ] = `Bearer ${token}`; //Bearer
    if(!token|| !_userInfo){
       history.replace('/')
-      
    }else{
-    Swal.fire({
-      text: "로그인 체크.",
-      confirmButtonColor: "rgb(118, 118, 118)",
-    });
       const userInfo = JSON.parse(_userInfo);
       dispatch(
         setUser(userInfo)
@@ -174,16 +167,16 @@ const logoutDB = () => {
   return function (dispatch, getState, { history }) {
     deleteCookie("sss_token");
     deleteCookie("_study");
+    dispatch(logOut());
     axios.defaults.headers.common["Authorization"] = null;
     delete axios.defaults.headers.common["Authorization"];
-    console.log(history.state);
-    history.push('/');
-    //로그인 만료 후 뒤로가기 방지
+    history.push ('/'); 
+    if(window.location.pathname !== "/"){
+      //로그인 만료 후 뒤로가기 방지
     window.onpopstate = () => {
-      console.log('인식');
-      history.go(1);
+        history.go(1);
+      }
     }
-  dispatch(logOut());
 };};
 
 export default handleActions(
