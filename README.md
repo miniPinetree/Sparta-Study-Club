@@ -2,6 +2,8 @@
 
 # SPARTA Study Club
 
+![image](https://user-images.githubusercontent.com/68773118/115997016-84120280-a61c-11eb-9328-1262936e29a0.png)
+
 ### 목차
 [1. 프로젝트 설명 ](#프로젝트-설명)<br/>
 [2. 사용기술 ](#tools)<br/>
@@ -9,12 +11,11 @@
 [4. 진행과정 ](#진행과정)<br/>
 [5. 배운 점 ](#-i-learned)<br/>
 
-![image](https://user-images.githubusercontent.com/68773118/115997016-84120280-a61c-11eb-9328-1262936e29a0.png)
 
 ## 프로젝트 설명 
-
 몰입과 효율 향상을 위한 학습관리 서비스입니다. 
 사용자는 시간과 목표를 직접 설정할 수 있으며 시간 설정 이후 경과시간을 프로그레스 바로 확인할 수 있습니다. 달성률과 매일의 퀘스트 내용은 축적되어 그래프로 시간 활용도의 변화를 알려주고 캘린더를 통해 과거 퀘스트 내역과 달성률을 확인할 수 있습니다.
+
 ## 시현영상 [Youtube](https://www.youtube.com/watch?v=PO9PinZHFJs&t=4s)
 
 ### 기간/인원
