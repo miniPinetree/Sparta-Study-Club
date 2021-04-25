@@ -39,7 +39,8 @@ Node.js, AWS(S3, EC2)
 ### 1. [반응형 WEB]
 - view Point와 media query를 이용한 태블릿/모바일 반응형 구현
 
-![플젝 정리용 (1)](https://user-images.githubusercontent.com/68773118/115997774-58444c00-a61f-11eb-95cc-76e29ebb12e6.gif)
+![ezgif com-gif-maker (6)](https://user-images.githubusercontent.com/68773118/116006598-e54ecb80-a646-11eb-92ca-910b21efd02a.gif)
+
 
 ### 2. [JWT토큰을 이용한 회원가입, 로그인 유지 구현]
 - axios로 API 통신
