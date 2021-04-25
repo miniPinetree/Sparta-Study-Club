@@ -28,7 +28,7 @@ Front-end 1인, Back-end 2인
 
 
 ## 🛠 Tools
-React, Redux
+React, Redux,
 chart.js, ws(websocket),
 Node.js, AWS(S3, EC2)
 
