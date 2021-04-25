@@ -34,6 +34,8 @@ React, Redux,
 chart.js, ws(websocket),
 Node.js, AWS(S3, EC2)
 
+<br/>
+
 ## 🕹 기능정보 (클릭 시 기능별 포스팅 링크로 이동합니다.)
 ### 1. [반응형 WEB]()
 - view Point와 media query를 이용한 태블릿/모바일 반응형 구현
@@ -55,6 +57,7 @@ Node.js, AWS(S3, EC2)
 
 ### 6. [스터디 클럽 기능]()
 
+<br/>
 
 ## ⛓ 진행과정
 ### 협업환경 구축
@@ -71,6 +74,8 @@ Node.js, AWS(S3, EC2)
 ![](https://images.velog.io/images/mygomi/post/cbe08cfd-b755-4c5f-a65f-06bcf86c157f/image.png)
 
 ![](https://images.velog.io/images/mygomi/post/3157eb4e-74c6-4330-9c34-d0aa1f06bd97/image.png)
+
+<br/>
 
 ## 🔎 I learned 
 아래 N가지 주제에 대해 생각해볼 수 있는 기회였습니다.
