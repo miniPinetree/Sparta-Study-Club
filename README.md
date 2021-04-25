@@ -59,29 +59,19 @@ Node.js, AWS(S3, EC2)
 
 ## 진행과정
 ### 협업환경 구축
-- notion을 이용하여 진행현황과 요청사항을 공유할 수 있도록 했습니다.
-- gather, slack을 적절히 혼용하여 실시간 회의를 진행했습니다.
+문서 축적을 notion으로 통일하고 gather를 이용하여 실시간 회의를 진행했습니다.
+1, 2주차에 구현할 기능을 나누어 사용자 개인이 사용할 마이페이지 내의 시간, 목표 설정 기능을 1주차에 구현하고 스터디 클럽과 채팅 기능은 2주차에 구현하고자 했습니다.
+와이어프레임과 API설계도 주차별로 진행했습니다.
+### 1. 와이어프레임
+![](https://images.velog.io/images/mygomi/post/1f2283ea-1278-42db-9ae6-bf5e4a0f43b4/%ED%94%8C%EC%A0%9D%20%EC%A0%95%EB%A6%AC%EC%9A%A9%20(1).png)
+### 2. API설계
+![](https://images.velog.io/images/mygomi/post/b30e21fb-aaee-4f37-930d-fe525ccd5636/image.png)
 
-![](https://images.velog.io/images/mygomi/post/7f26afec-e3ab-4e7e-b2e4-c736d7253276/2.png)
-<br>
-#### API 설계 
-이번 프로젝트를 통해 <span style="color:#FF7948">API설계의 중요성</span>을 실감할 수 있었습니다.
-API 설계 필요성에 대한 인식 부족과 미흡한 설계로 프로젝트 진행 도중, 후반부에 오류가 몇 차례 발생하였고 프론트-백이 실시간으로 코드 에러를 해결해나가며 API설계를 수정하는 일이 있었기 때문입니다. 
-request, response data형태를 사전에 잘 설계하여야 하고 협의된 내용을 반드시 지켜야 함을 (또는 수정하더라도 반드시 사전협의와 소통이 필요하다는 것을) 알게 되었습니다.  
+![](https://images.velog.io/images/mygomi/post/6a1f83b0-eb9f-4402-89de-9ab41fa92d7b/image.png)
 
-![](https://images.velog.io/images/mygomi/post/ece67f36-fd84-4edd-83f6-dfa807194e08/image.png)
+![](https://images.velog.io/images/mygomi/post/cbe08cfd-b755-4c5f-a65f-06bcf86c157f/image.png)
 
-<br>
-
-#### View 분석
-다른 팀원이 github에 공유 레포지토리를 생성하는 동안 View를 분석하여 <span style="color:#FF7948">Figma를 이용해 팀원간 공유할 수 있는 자료</span>를 만들었습니다. 
-Figma는 디자인 툴이긴 하나 현업에서 디자이너와 협업 시에 접하게 될 수도 있겠다는 생각에 간단하게나마 직접 사용해보고자 했습니다.  
-**협업하는 이가 어떤 일을 어떻게 하는 지 관심을 가지는 것도 중요하다고 생각하기 때문입니다.**
-
-View를 분석할 때는 눈에 보이는 디자인을 기준으로 <span style="color:#FF7948">컴포넌트를 어떻게 세분화 시킬 지</span> 고민하며 분석했습니다.  
-프로젝트를 진행하며 **데이터를 효율적으로 관리할 수 있도록 데이터의 흐름도 고려하여 컴포넌트를 설계해야 함을 깨달았습니다.**  
-
-![](https://images.velog.io/images/mygomi/post/90c4df29-2462-4a7a-b43e-a38ea46b26ea/image.png)
+![](https://images.velog.io/images/mygomi/post/3157eb4e-74c6-4330-9c34-d0aa1f06bd97/image.png)
 
 ## 🔎 I learned 
 아래 N가지 주제에 대해 생각해볼 수 있는 기회였습니다.
