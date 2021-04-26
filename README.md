@@ -29,10 +29,10 @@ Front-end 1인, Back-end 2인으로 구성된 팀에서 프론트엔드를 담�
 
 
 ## 🛠 Tools
-React, Redux,
+React, Redux(redux-actions, immer,redux-thunk),
 chart.js, ws(websocket),
 Node.js, AWS(S3, EC2)
-
+API통신 : axios
 <br/>
 
 ## 🕹 기능정보 (클릭 시 기능별 포스팅 링크로 이동합니다.)
