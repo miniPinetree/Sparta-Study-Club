@@ -31,7 +31,7 @@
 ### 기간/인원
 ```
 (2021.04.09 ~ 2021.04.22) 
-Front-end 1인, Back-end 2인으로 구성된 팀에서 프론트엔드를 담당했다. 
+Front-end 1인, Back-end 2인으로 구성된 팀에서 프론트엔드를 담당 
 ```
 [서버단 repository](https://github.com/sanchoco/SpartaStudyClub)
 
