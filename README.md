@@ -112,7 +112,7 @@ replace가 '뒤로 갈 수 없음'을 의미하는 것이 아니라 직전 페�
 ### 1. 와이어프레임
 ![](https://images.velog.io/images/mygomi/post/1f2283ea-1278-42db-9ae6-bf5e4a0f43b4/%ED%94%8C%EC%A0%9D%20%EC%A0%95%EB%A6%AC%EC%9A%A9%20(1).png)
 ### 2. API설계
-[전체 API설계 보기](https://www.notion.so/659ff77b579a4effbab26906b59dc389?v=efeb0be9417b4397835bf7d01ba75adc)
+### [전체 API설계 보기](https://www.notion.so/659ff77b579a4effbab26906b59dc389?v=efeb0be9417b4397835bf7d01ba75adc)
 
 ![](https://images.velog.io/images/mygomi/post/6a1f83b0-eb9f-4402-89de-9ab41fa92d7b/image.png)
 
