@@ -7,11 +7,11 @@
 [1. 프로젝트 설명 ](#프로젝트-설명)<br/>
 [2. 사용기술 ](#-tools)<br/>
 [3. 배운 점 ](#-i-learned)<br/>
-[4. 기능정보 ](#-기능정보)<br/>
+[4. 진행과정 ](#-진행과정)<br/>
+[5. 기능정보 ](#-기능정보)<br/>
 - 반응형 WEB, JWT 로그인 구현, WebSocket을 이용한 실시간 채팅, chart.js를 이용한 과거 학습이력 그래프
 - 시간 설정 및 시간 경과율 Progress Bar, 퀘스트 설정 및 과거 퀘스트 조회, 스터디 클럽 가입/탈퇴 기능<br/>
 
-[5. 진행과정 ](#-진행과정)<br/>
 
 
 ## 프로젝트 설명 
@@ -102,6 +102,24 @@ replace가 '뒤로 갈 수 없음'을 의미하는 것이 아니라 직전 페�
 
 ```
 
+## ⛓ 진행과정
+### 협업환경 구축
+문서 축적을 notion으로 통일하고 gather를 이용하여 실시간 회의를 진행했다.
+1, 2주차에 구현할 기능을 나누어 사용자 개인이 사용할 마이페이지 내의 시간, 목표 설정 기능을 1주차에 구현하고 스터디 클럽과 채팅 기능은 2주차에 구현하고자 했다.
+와이어프레임과 API설계도 주차별로 진행했다.
+### 1. 와이어프레임
+![](https://images.velog.io/images/mygomi/post/1f2283ea-1278-42db-9ae6-bf5e4a0f43b4/%ED%94%8C%EC%A0%9D%20%EC%A0%95%EB%A6%AC%EC%9A%A9%20(1).png)
+### 2. API설계
+![](https://images.velog.io/images/mygomi/post/b30e21fb-aaee-4f37-930d-fe525ccd5636/image.png)
+
+![](https://images.velog.io/images/mygomi/post/6a1f83b0-eb9f-4402-89de-9ab41fa92d7b/image.png)
+
+![](https://images.velog.io/images/mygomi/post/cbe08cfd-b755-4c5f-a65f-06bcf86c157f/image.png)
+
+![](https://images.velog.io/images/mygomi/post/3157eb4e-74c6-4330-9c34-d0aa1f06bd97/image.png)
+
+<br/>
+
 ## 🕹 기능정보
 
 ### 1. 반응형 WEB
@@ -190,23 +208,4 @@ const Progress = (props) => {
 - 전체보기 클럽은 carousel을 적용하여 화살표를 클릭해 다음 클럽 목록을 확인할 수 있다. 반응형으로 제작하여 화면 크기가 줄어듦에 따라 보여지던 클럽의 개수가 5개에서 1개까지로 줄어든다. 
 
 <br/>
-
-## ⛓ 진행과정
-### 협업환경 구축
-문서 축적을 notion으로 통일하고 gather를 이용하여 실시간 회의를 진행했다.
-1, 2주차에 구현할 기능을 나누어 사용자 개인이 사용할 마이페이지 내의 시간, 목표 설정 기능을 1주차에 구현하고 스터디 클럽과 채팅 기능은 2주차에 구현하고자 했다.
-와이어프레임과 API설계도 주차별로 진행했다.
-### 1. 와이어프레임
-![](https://images.velog.io/images/mygomi/post/1f2283ea-1278-42db-9ae6-bf5e4a0f43b4/%ED%94%8C%EC%A0%9D%20%EC%A0%95%EB%A6%AC%EC%9A%A9%20(1).png)
-### 2. API설계
-![](https://images.velog.io/images/mygomi/post/b30e21fb-aaee-4f37-930d-fe525ccd5636/image.png)
-
-![](https://images.velog.io/images/mygomi/post/6a1f83b0-eb9f-4402-89de-9ab41fa92d7b/image.png)
-
-![](https://images.velog.io/images/mygomi/post/cbe08cfd-b755-4c5f-a65f-06bcf86c157f/image.png)
-
-![](https://images.velog.io/images/mygomi/post/3157eb4e-74c6-4330-9c34-d0aa1f06bd97/image.png)
-
-<br/>
-
 
