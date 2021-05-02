@@ -159,7 +159,6 @@ const Progress = (props) => {
   const targetTime=user.studySetTime;
   //경과시간 계산
   const calProgress = () => {
-    // if (progressTime<targetTime||!progressTime){}
     const _progressTime =
       (new Date().getTime() - user.startTime) / 1000 / 60 / 60;
     let rate = _progressTime/targetTime*100;
