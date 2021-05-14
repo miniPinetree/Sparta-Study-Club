@@ -19,7 +19,7 @@ chart.js를 이용한 과거 학습이력 그래프, 시간 설정 및 시간 �
 
 ## 프로젝트 소개
 
-### 시현영상 [Youtube](https://www.youtube.com/watch?v=PO9PinZHFJs&t=4s)
+### 시연영상 [Youtube](https://www.youtube.com/watch?v=PO9PinZHFJs&t=4s)
 ```
 몰입과 효율 향상을 위한 학습관리 서비스
 ```
