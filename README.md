@@ -6,7 +6,7 @@
 [사이트 바로가기](http://mini-talk.shop.s3-website.ap-northeast-2.amazonaws.com/group
 ) 
 <br/> 
-[시연영상 바로보기] (https://www.youtube.com/watch?v=PO9PinZHFJs&t=4s)
+[시연영상 바로보기](https://www.youtube.com/watch?v=PO9PinZHFJs&t=4s)
 
 ## 목차
 ### 1. [프로젝트 소개](#프로젝트-소개)<br/>
