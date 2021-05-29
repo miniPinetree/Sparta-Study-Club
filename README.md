@@ -2,6 +2,7 @@
 # SPARTA Study Club
 
 ![image](https://user-images.githubusercontent.com/68773118/115997016-84120280-a61c-11eb-9328-1262936e29a0.png)
+
 [사이트 바로가기](http://mini-talk.shop.s3-website.ap-northeast-2.amazonaws.com/group
 ) <br/> [시연영상 바로보기] (https://www.youtube.com/watch?v=PO9PinZHFJs&t=4s)
 ## 목차
