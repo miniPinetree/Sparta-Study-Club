@@ -229,3 +229,9 @@ const Progress = (props) => {
 ![](https://images.velog.io/images/mygomi/post/6a1f83b0-eb9f-4402-89de-9ab41fa92d7b/image.png)
 
 <br/>
+
+
+---
+
+### Show your support
+Give a ⭐️ if this project helped you!
