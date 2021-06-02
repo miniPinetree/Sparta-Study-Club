@@ -52,7 +52,7 @@ Front-end 1인, Back-end 2인으로 구성된 팀에서 프론트엔드를 담�
 - View (React with JavaScript, React-Router, material-UI, Styled-components)
 - State Management (Redux, Redux-Thunk, Immer, Redux-actions)
 - Build Tool (Create React App)
-- Code Quality Tool (ESLint, Prettier)
+- Code Quality Tool (Prettier)
 - Infrastructure (AWS S3, Route 53)
 - Other Tools (Git, Github, notion, Slack, oven, Google Docs)
 - ws protocol, chart.js
